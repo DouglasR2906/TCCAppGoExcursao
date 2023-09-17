@@ -3,23 +3,24 @@ package tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.Usuario;
 
 @Table(name= "dadoscadastrais")
 @Entity(name = "DadosCadastrais")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "idDadosCadastrais")
 public class DadosCadastrais {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_dadosCadastrais")
+    private Long idDadosCadastrais;
     @OneToOne
-    @PrimaryKeyJoinColumn(name = "id_usuario_dadosCadastrais")
+    @JoinColumn(name = "id_usuario_dadosCadastrais")
     private Usuario usuario;
     @Column(name = "nome_dadosCadastrais")
     private String nomeDadosCadastrais;

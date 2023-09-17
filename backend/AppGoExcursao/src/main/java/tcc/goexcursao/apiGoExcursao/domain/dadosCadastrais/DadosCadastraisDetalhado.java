@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public record DadosCadastraisDetalhado(
     Long idDadosCadastrais,
+    Long idUsuarioDadosCadastrais,
     String nomeDadosCadastrais,
     String documentoDadosCadastrais,
     LocalDate dataNascimentoDadosCadastrais,
@@ -16,7 +17,8 @@ public record DadosCadastraisDetalhado(
     SexoDadosCadastrais sexoDadosCadastrais
      ) {
     public DadosCadastraisDetalhado(DadosCadastrais dadosCadastrais){
-        this(dadosCadastrais.getUsuario().getIdUsuario(),
+        this(dadosCadastrais.getIdDadosCadastrais(),
+        dadosCadastrais.getUsuario().getIdUsuario(),
         dadosCadastrais.getNomeDadosCadastrais(),
         dadosCadastrais.getDocumentoDadosCadastrais(),
         dadosCadastrais.getDataNascimentoDadosCadastrais(),

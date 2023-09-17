@@ -1,5 +1,6 @@
 package tcc.goexcursao.apiGoExcursao.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,47 +19,53 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais.*;
+import tcc.goexcursao.apiGoExcursao.domain.usuario.UsuarioRepository;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("dadosCadastrais")
+@SecurityRequirement(name = "bearer-key")
 public class DadosCadastraisController {
 
     @Autowired
-    private DadosCadastraisRepository repository;
+    private DadosCadastraisRepository dadosCadastraisRepository;
+    
+    private UsuarioRepository usuarioRepository;
 
     @PostMapping
     @Transactional
     public ResponseEntity<DadosCadastraisDetalhado> cadastrar(@RequestBody @Valid DadosCadastro dadosCadastro, UriComponentsBuilder uriBuilder){
+        var usuario = usuarioRepository.getReferenceById(dadosCadastro.idUsuarioDadosCadastrais());
         var dadosCadastrais = new DadosCadastrais(dadosCadastro);
-        repository.save(dadosCadastrais);
-        var uri = uriBuilder.path("/DadosCadastrais/{id}").buildAndExpand(dadosCadastrais.getUsuario().getIdUsuario()).toUri();
+        dadosCadastrais.setUsuario(usuario);
+        dadosCadastraisRepository.save(dadosCadastrais);
+        var uri = uriBuilder.path("/DadosCadastrais/{id}").buildAndExpand(dadosCadastrais.getIdDadosCadastrais()).toUri();
         return ResponseEntity.created(uri).body(new DadosCadastraisDetalhado(dadosCadastrais));
     }
 
     @GetMapping
     public ResponseEntity<List<DadosCadastraisDetalhado>> listar(){
-        var DadosCadastrais = repository.findAll().stream().map(DadosCadastraisDetalhado::new).toList();
+        var DadosCadastrais = dadosCadastraisRepository.findAll().stream().map(DadosCadastraisDetalhado::new).toList();
         return ResponseEntity.ok(DadosCadastrais);
     }
 
     @GetMapping("/listarTodos")
     public ResponseEntity<Page<DadosCadastraisListagem>> listar(@PageableDefault(size=10, sort = {"nomeDadosCadastrais"}) Pageable paginacao){
-        var pageUsarios = repository.findAll(paginacao).map(DadosCadastraisListagem::new);
+        var pageUsarios = dadosCadastraisRepository.findAll(paginacao).map(DadosCadastraisListagem::new);
         return ResponseEntity.ok(pageUsarios);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosCadastraisDetalhado> findById(@PathVariable Long id){
-        var DadosCadastrais = repository.getReferenceById(id);
+        var DadosCadastrais = dadosCadastraisRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosCadastraisDetalhado(DadosCadastrais));
     }
 
     @PutMapping
     @Transactional
     public ResponseEntity<DadosCadastraisDetalhado> atualizar(@RequestBody @Valid DadosCadastraisAtualizar dadosCadastraisAtualizar){
-        var dadosCadastrais = repository.getReferenceById(dadosCadastraisAtualizar.idDadosCadastrais());
+        var dadosCadastrais = dadosCadastraisRepository.getReferenceById(dadosCadastraisAtualizar.idDadosCadastrais());
         dadosCadastrais.atualizarInformacoes(dadosCadastraisAtualizar);
         return ResponseEntity.ok(new DadosCadastraisDetalhado(dadosCadastrais));
     }
@@ -66,7 +73,7 @@ public class DadosCadastraisController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity excluir(@PathVariable Long id){
-        repository.deleteById(id);
+        dadosCadastraisRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

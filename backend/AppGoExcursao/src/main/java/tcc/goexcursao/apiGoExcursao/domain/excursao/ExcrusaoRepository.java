@@ -10,6 +10,4 @@ public interface ExcrusaoRepository extends JpaRepository<Excursao, Long> {
     Page<Excursao> findAllByCanceladaExcursaoTrue(Pageable paginacao);
 
     Page<Excursao> findAllByCanceladaExcursaoFalse(Pageable paginacao);
-
-    List<Excursao> findAllByIdUsuarioExcursao(Long id);
 }

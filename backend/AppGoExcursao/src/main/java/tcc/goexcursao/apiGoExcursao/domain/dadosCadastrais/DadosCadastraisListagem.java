@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public record DadosCadastraisListagem(
     Long idDadosCadastrais,
+    Long idUsuarioDadosCadastrais,
     String nomeDadosCadastrais,
     String documentoDadosCadastrais,
     LocalDate dataNascimentoDadosCadastrais,
@@ -13,13 +14,14 @@ public record DadosCadastraisListagem(
     SexoDadosCadastrais sexoDadosCadastrais
      ) {   
     public DadosCadastraisListagem(DadosCadastrais dadosCadastrais){
-        this(dadosCadastrais.getUsuario().getIdUsuario(),
-        dadosCadastrais.getNomeDadosCadastrais(),
-        dadosCadastrais.getDocumentoDadosCadastrais(),
-        dadosCadastrais.getDataNascimentoDadosCadastrais(),
-        dadosCadastrais.getPaisDadosCadastrais(),
-        dadosCadastrais.getCidadeDadosCadastrais(),
-        dadosCadastrais.getUfDadosCadastrais(),
-        dadosCadastrais.getSexoDadosCadastrais());
+        this(dadosCadastrais.getIdDadosCadastrais(),
+                dadosCadastrais.getUsuario().getIdUsuario(),
+                dadosCadastrais.getNomeDadosCadastrais(),
+                dadosCadastrais.getDocumentoDadosCadastrais(),
+                dadosCadastrais.getDataNascimentoDadosCadastrais(),
+                dadosCadastrais.getPaisDadosCadastrais(),
+                dadosCadastrais.getCidadeDadosCadastrais(),
+                dadosCadastrais.getUfDadosCadastrais(),
+                dadosCadastrais.getSexoDadosCadastrais());
     }
 }

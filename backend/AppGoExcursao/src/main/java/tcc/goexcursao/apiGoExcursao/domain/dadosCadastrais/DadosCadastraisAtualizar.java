@@ -10,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 public record DadosCadastraisAtualizar(
     @NotNull
     Long idDadosCadastrais,
+    @NotNull
+    Long idUsuarioDadosCadastrais,
     String nomeDadosCadastrais,
     String documentoDadosCadastrais,
     @DateTimeFormat(pattern = "yyyy-MM-dd")

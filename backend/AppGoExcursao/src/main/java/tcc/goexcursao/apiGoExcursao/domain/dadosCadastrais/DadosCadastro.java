@@ -10,6 +10,10 @@ import jakarta.validation.constraints.Pattern;
 public record DadosCadastro(
     // Validações utilizadas do bean validation https://jakarta.ee/specifications/bean-validation/3.0/jakarta-bean-validation-spec-3.0.html#builtinconstraints
     // Para fazer algumas validações padrões como não receber o valor em branco ou null 
+
+    @NotNull
+    Long idUsuarioDadosCadastrais,
+
     @NotBlank(message = "{nome.obrigatorio}")
     String nomeDadosCadastrais,
 
