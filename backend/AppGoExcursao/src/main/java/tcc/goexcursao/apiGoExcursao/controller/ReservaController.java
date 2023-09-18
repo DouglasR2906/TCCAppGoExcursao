@@ -1,5 +1,6 @@
 package tcc.goexcursao.apiGoExcursao.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("reserva")
+@SecurityRequirement(name = "bearer-key")
 public class ReservaController {
 
     @Autowired
@@ -37,16 +39,18 @@ public class ReservaController {
         var usuario = usuarioRepository.findById(dadosReserva.idUsuarioReserva()).orElse(null);
         var excursao = excrusaoRepository.findById(dadosReserva.idExcursaoReserva()).orElse(null);
 
-        Reserva reserva = null;
-        if (usuario != null && excursao != null) {
-            reserva = new Reserva(dadosReserva);
-            //reserva.setDivulgador(usuario);
-            reserva.setExcursao(excursao);
-            reservaRepository.save(reserva);
-        }else {
-            tradorDeErros.tratarErro404();
-            throw new ValidacaoException("Usuário/Excursão informado não encontrado!");
+        if (usuario == null){
+            throw new ValidacaoException("Usuário informado não encontrado!");
         }
+
+        if (excursao == null){
+            throw new ValidacaoException("Excursão informada não encontrada!");
+        }
+
+        var reserva = new Reserva(dadosReserva);
+        reserva.setDivulgador(usuario);
+        reserva.setExcursao(excursao);
+        reservaRepository.save(reserva);
 
         var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(reserva.getIdReserva()).toUri();
         return ResponseEntity.created(uri).body(new DadosReservaListagem(reserva));

@@ -29,20 +29,20 @@ ENGINE = InnoDB;
 -- Table `goexcursao`.`dadosCadastrais`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `goexcursao`.`dadosCadastrais` (
-  `id_usuario_dadosCadastrais` BIGINT NOT NULL,
-  `nome_dadosCadastrais` VARCHAR(50) NOT NULL DEFAULT ' ',
-  `documento_dadosCadastrais` VARCHAR(14) NOT NULL DEFAULT ' ',
-  `data_nascimento_dadosCadastrais` DATE NULL,
-  `pais_dadosCadastrais` VARCHAR(35) NULL,
-  `cidade_dadosCadastrais` VARCHAR(45) NULL,
-  `uf_dadosCadastrais` VARCHAR(2) NULL DEFAULT ' ',
-  `email_dadosCadastrais` VARCHAR(100) NOT NULL,
-  `telefone_1_dadosCadastrais` VARCHAR(11) NOT NULL,
-  `telefone_2_dadosCadastrais` VARCHAR(11) NULL,
-  `sexo_dadosCadastrais` VARCHAR(10),
-  PRIMARY KEY (`id_usuario_dadosCadastrais`),
-  CONSTRAINT `fk_dadosCadastrais_usuarios1`
-    FOREIGN KEY (`id_usuario_dadosCadastrais`)
+  `id_usuario_dadoscadastrais` BIGINT NOT NULL,
+  `nome_dadoscadastrais` VARCHAR(50) NOT NULL DEFAULT ' ',
+  `documento_dadoscadastrais` VARCHAR(14) NOT NULL DEFAULT ' ',
+  `data_nascimento_dadoscadastrais` DATE NULL,
+  `pais_dadoscadastrais` VARCHAR(35) NULL,
+  `cidade_dadoscadastrais` VARCHAR(45) NULL,
+  `uf_dadoscadastrais` VARCHAR(2) NULL DEFAULT ' ',
+  `email_dadoscadastrais` VARCHAR(100) NOT NULL,
+  `telefone_1_dadoscadastrais` VARCHAR(11) NOT NULL,
+  `telefone_2_dadoscadastrais` VARCHAR(11) NULL,
+  `sexo_dadoscadastrais` VARCHAR(10),
+  PRIMARY KEY (`id_usuario_dadoscadastrais`),
+  CONSTRAINT `fk_dadoscadastrais_usuarios1`
+    FOREIGN KEY (`id_usuario_dadoscadastrais`)
     REFERENCES `goexcursao`.`usuarios` (`id_usuarios`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
@@ -53,7 +53,7 @@ ENGINE = InnoDB;
 -- Table `goexcursao`.`categoria`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `goexcursao`.`categoria` (
-  `id_categoria` BIGINT NOT NULL,
+  `id_categoria` BIGINT NOT NULL AUTO_INCREMENT,
   `descricao_categoria` VARCHAR(45) NOT NULL DEFAULT ' ',
   PRIMARY KEY (`id_categoria`))
 ENGINE = InnoDB;
@@ -141,7 +141,7 @@ ENGINE = InnoDB;
 -- Table `goexcursao`.`forma_pagamento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `goexcursao`.`forma_pagamento` (
-  `id_forma_pagamento` BIGINT NOT NULL,
+  `id_forma_pagamento` BIGINT NOT NULL AUTO_INCREMENT,
   `descricao_forma_pagamento` VARCHAR(45) NOT NULL DEFAULT ' ',
   PRIMARY KEY (`id_forma_pagamento`))
 ENGINE = InnoDB;
@@ -151,17 +151,17 @@ ENGINE = InnoDB;
 -- Table `goexcursao`.`forma_pagto_excursao`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `goexcursao`.`forma_pagto_excursao` (
-  `id_excursao_formaPagtoExcursao` BIGINT NOT NULL,
-  `id_forma_pagamento_formaPagtoExcursao` BIGINT NOT NULL,
-  PRIMARY KEY (`id_excursao_formaPagtoExcursao`, `id_forma_pagamento_formaPagtoExcursao`),
-  INDEX `fk_forma_pagto_excursao_forma_pagamento1_idx` (`id_forma_pagamento_formaPagtoExcursao` ASC) VISIBLE,
+  `id_excursao_formapagtoexcursao` BIGINT NOT NULL,
+  `id_forma_pagamento_formapagtoexcursao` BIGINT NOT NULL,
+  PRIMARY KEY (`id_excursao_formapagtoexcursao`, `id_forma_pagamento_formapagtoexcursao`),
+  INDEX `fk_forma_pagto_excursao_forma_pagamento1_idx` (`id_forma_pagamento_formapagtoexcursao` ASC) VISIBLE,
   CONSTRAINT `fk_forma_pagto_excursao_excursao1`
-    FOREIGN KEY (`id_excursao_formaPagtoExcursao`)
+    FOREIGN KEY (`id_excursao_formapagtoexcursao`)
     REFERENCES `goexcursao`.`excursao` (`id_excursao`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_forma_pagto_excursao_forma_pagamento1`
-    FOREIGN KEY (`id_forma_pagamento_formaPagtoExcursao`)
+    FOREIGN KEY (`id_forma_pagamento_formapagtoexcursao`)
     REFERENCES `goexcursao`.`forma_pagamento` (`id_forma_pagamento`)
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)

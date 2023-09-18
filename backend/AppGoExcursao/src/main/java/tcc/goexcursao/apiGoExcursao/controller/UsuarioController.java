@@ -1,5 +1,6 @@
 package tcc.goexcursao.apiGoExcursao.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais.*;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.*;
+import tcc.goexcursao.apiGoExcursao.infra.exception.ValidacaoException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("usuario")
+@SecurityRequirement(name = "bearer-key")
 public class UsuarioController {
     @Autowired
     private UsuarioRepository repository;
@@ -28,6 +31,10 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity<DadosUsuarioListagem> cadastrar(@RequestBody @Valid DadosUsuario dadosUsuario, UriComponentsBuilder uriBuilder){
         var senhaCodificada = passwordEncoder.encode(dadosUsuario.senhaUsuario());
+        var usuarioExiste = repository.existsByLoginUsuario(dadosUsuario.loginUsuario());
+        if (usuarioExiste){
+            throw new ValidacaoException("Login de usuário já cadastrado, favor verificar!");
+        }
         var usuario = new Usuario(dadosUsuario.loginUsuario(), senhaCodificada, dadosUsuario.ativoUsuario());
        repository.save(usuario);
         var uri = uriBuilder.path("/Usuario/{login}").buildAndExpand(usuario.getLoginUsuario()).toUri();
@@ -81,5 +88,12 @@ public class UsuarioController {
         var senhaCodificada = passwordEncoder.encode(dadosUsuarioAtualizar.senhaUsuario());
         usuario.atualizarSenha(senhaCodificada);
         return ResponseEntity.ok(new DadosUsuarioListagem(usuario));
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id){
+        var usuario = repository.getReferenceById(id);
+        usuario.excluir();
+        return ResponseEntity.noContent().build();
     }
 }

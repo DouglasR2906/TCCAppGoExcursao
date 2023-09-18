@@ -17,33 +17,31 @@ public class DadosCadastrais {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_dadosCadastrais")
+    @Column(name = "id_dadoscadastrais")
     private Long idDadosCadastrais;
     @OneToOne
-    @JoinColumn(name = "id_usuario_dadosCadastrais")
+    @JoinColumn(name = "id_usuario_dadoscadastrais")
     private Usuario usuario;
-    @Column(name = "nome_dadosCadastrais")
+    @Column(name = "nome_dadoscadastrais")
     private String nomeDadosCadastrais;
-    @Column(name = "documento_dadosCadastrais")
+    @Column(name = "documento_dadoscadastrais")
     private String documentoDadosCadastrais;
-    @Column(name = "data_nascimento_dadosCadastrais")
+    @Column(name = "data_nascimento_dadoscadastrais")
     LocalDate dataNascimentoDadosCadastrais;
-    @Column(name = "pais_dadosCadastrais")
+    @Column(name = "pais_dadoscadastrais")
     private String paisDadosCadastrais;
-    @Column(name = "cidade_dadosCadastrais")
+    @Column(name = "cidade_dadoscadastrais")
     private String cidadeDadosCadastrais;
-    @Column(name = "uf_dadosCadastrais")
+    @Column(name = "uf_dadoscadastrais")
     private String ufDadosCadastrais;
-    @Column(name = "email_dadosCadastrais")
+    @Column(name = "email_dadoscadastrais")
     private String emailDadosCadastrais;
-    @Column(name = "telefone1_dadosCadastrais")
+    @Column(name = "telefone_1_dadoscadastrais")
     private String telefone1DadosCadastrais;
-    @Column(name = "telefone2_dadosCadastrais")
+    @Column(name = "telefone_2_dadoscadastrais")
     private String telefone2DadosCadastrais;
-    @Column(name = "senha_dadosCadastrais")
-    private String senhaDadosCadastrais;
     @Enumerated(EnumType.STRING)
-    @Column(name = "sexo_dadosCadastrais")
+    @Column(name = "sexo_dadoscadastrais")
     private SexoDadosCadastrais sexoDadosCadastrais;
 
     public DadosCadastrais(DadosCadastro dadosCadastro){
@@ -56,7 +54,6 @@ public class DadosCadastrais {
         this.emailDadosCadastrais = dadosCadastro.emailDadosCadastrais();
         this.telefone1DadosCadastrais = dadosCadastro.telefone1DadosCadastrais();
         this.telefone2DadosCadastrais = dadosCadastro.telefone2DadosCadastrais();
-        this.senhaDadosCadastrais = dadosCadastro.senhaDadosCadastrais();
         this.sexoDadosCadastrais = dadosCadastro.sexoDadosCadastrais();
     }
 
@@ -89,9 +86,6 @@ public class DadosCadastrais {
             this.telefone2DadosCadastrais = " ";
         }else {
             this.telefone2DadosCadastrais = dadosDadosCadastrais.telefone2DadosCadastrais();
-        }
-        if (dadosDadosCadastrais.senhaDadosCadastrais() != null){
-            this.senhaDadosCadastrais = dadosDadosCadastrais.senhaDadosCadastrais();
         }
         if (dadosDadosCadastrais.sexoDadosCadastrais() != null){
             this.sexoDadosCadastrais = dadosDadosCadastrais.sexoDadosCadastrais();

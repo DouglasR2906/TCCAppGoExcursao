@@ -48,9 +48,6 @@ public class Usuario implements UserDetails {
         if (dadosUsuario.loginUsuario() != null){
             this.loginUsuario = dadosUsuario.loginUsuario();
         }
-        if (dadosUsuario.senhaUsuario() != null){
-            this.senhaUsuario = dadosUsuario.senhaUsuario();
-        }
         if (dadosUsuario.ativoUsuario() != null){
             this.ativoUsuario = dadosUsuario.ativoUsuario();
         }

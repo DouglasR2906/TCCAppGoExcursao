@@ -20,6 +20,11 @@ public class TradorDeErros {
         return ResponseEntity.badRequest().body(erros.stream().map(DadosValidacaoErro::new).toList());
     }
 
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity tratarErro400(ValidacaoException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
     private record DadosValidacaoErro(String campo, String mensagem){
         public DadosValidacaoErro(FieldError erro){
             this(erro.getField(), erro.getDefaultMessage());

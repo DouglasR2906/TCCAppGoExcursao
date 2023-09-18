@@ -20,6 +20,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais.*;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.UsuarioRepository;
+import tcc.goexcursao.apiGoExcursao.infra.exception.ValidacaoException;
 
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class DadosCadastraisController {
 
     @Autowired
     private DadosCadastraisRepository dadosCadastraisRepository;
-    
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @PostMapping
@@ -46,8 +48,8 @@ public class DadosCadastraisController {
 
     @GetMapping
     public ResponseEntity<List<DadosCadastraisDetalhado>> listar(){
-        var DadosCadastrais = dadosCadastraisRepository.findAll().stream().map(DadosCadastraisDetalhado::new).toList();
-        return ResponseEntity.ok(DadosCadastrais);
+        var dadosCadastrais = dadosCadastraisRepository.findAll().stream().map(DadosCadastraisDetalhado::new).toList();
+        return ResponseEntity.ok(dadosCadastrais);
     }
 
     @GetMapping("/listarTodos")
@@ -61,7 +63,12 @@ public class DadosCadastraisController {
         var DadosCadastrais = dadosCadastraisRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosCadastraisDetalhado(DadosCadastrais));
     }
-
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<DadosCadastraisDetalhado> findByIdUsuario(@PathVariable Long id){
+        var usuario = usuarioRepository.getReferenceById(id);
+        var dadosCadastrais = dadosCadastraisRepository.findByUsuario(usuario);
+        return ResponseEntity.ok(new DadosCadastraisDetalhado(dadosCadastrais));
+    }
     @PutMapping
     @Transactional
     public ResponseEntity<DadosCadastraisDetalhado> atualizar(@RequestBody @Valid DadosCadastraisAtualizar dadosCadastraisAtualizar){
