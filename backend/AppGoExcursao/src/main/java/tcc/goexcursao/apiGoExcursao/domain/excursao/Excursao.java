@@ -3,10 +3,12 @@ package tcc.goexcursao.apiGoExcursao.domain.excursao;
 import jakarta.persistence.*;
 import lombok.*;
 import tcc.goexcursao.apiGoExcursao.domain.categoria.Categoria;
+import tcc.goexcursao.apiGoExcursao.domain.formaPagamento.FormaPagamento;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.Usuario;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Table(name = "excursao")
 @Entity(name = "Excursao")
@@ -47,6 +49,14 @@ public class Excursao {
     private Categoria categoria;
     @Column(name = "cancelada_excursao")
     private Boolean canceladaExcursao;
+
+    @ManyToMany
+    @JoinTable(
+            name = "forma_pagto_excursao",
+            joinColumns = @JoinColumn(name = "id_excursao_formapagtoexcursao"),
+            inverseJoinColumns = @JoinColumn(name = "id_forma_pagamento_formapagtoexcursao")
+    )
+    private Set<FormaPagamento> formasPagamento;
 
     public Excursao(DadosExcursao dadosExcursao) {
         this.tituloExcursao = dadosExcursao.tituloExcursao();
