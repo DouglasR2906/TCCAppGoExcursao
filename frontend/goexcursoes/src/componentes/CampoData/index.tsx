@@ -8,6 +8,16 @@ function CampoData({ obrigatorio, label, valor, placeholder, aoAlterado }: Input
   const aoDigitado = (evento: React.ChangeEvent<HTMLInputElement>) => {
     aoAlterado(evento.target.value);
   }
+
+  const inputMaskProps: InputMaskProps = {
+    value,
+    onChange,
+    required,
+    placeholder,
+    mask,
+    validate,
+  };
+
   return (
     <div className={style.campodata}>
       <label>{label}</label>
