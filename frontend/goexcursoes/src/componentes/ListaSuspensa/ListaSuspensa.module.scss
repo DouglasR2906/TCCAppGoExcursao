@@ -1,0 +1,33 @@
+.lista {
+    margin: 8px 0px;
+}
+
+.lista label{
+    text-align: left;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.lista select{
+    background-color: #FFF;
+    box-shadow: 10px 10px 30px rgb(0, 0, 0.06);
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    padding: 16px;
+    box-sizing: border-box;
+    opacity: 0.8;
+    border-radius: 5px;
+}
+
+.option{
+    background-color: #FFF;
+    box-shadow: 10px 10px 30px rgb(0, 0, 0.06);
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    padding: 16px;
+    box-sizing: border-box;
+    opacity: 0.8;
+}
