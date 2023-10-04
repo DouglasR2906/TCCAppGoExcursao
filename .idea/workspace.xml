@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="642b48d1-cc56-4b3d-8ea0-86761acfc770" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/frontend/goexcursoes/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/goexcursoes/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/goexcursoes/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/goexcursoes/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/goexcursoes/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/goexcursoes/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/goexcursoes/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/goexcursoes/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/goexcursoes/src/reportWebVitals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/goexcursoes/src/setupTests.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="AddFrontEndReact" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2VxAsf7xqcnuQ7hm41ORdCbAerv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/GitHub/TCCAppGoExcursao/backend/AppGoExcursao"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="642b48d1-cc56-4b3d-8ea0-86761acfc770" name="Changes" comment="" />
+      <created>1695767567782</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1695767567782</updated>
+    </task>
+    <servers />
+  </component>
+</project>

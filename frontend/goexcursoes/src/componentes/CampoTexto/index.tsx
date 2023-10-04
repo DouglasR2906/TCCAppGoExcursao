@@ -1,9 +1,8 @@
 import React from 'react';
 import style from './CampoTexto.module.scss'
-import { InputProps } from '../../types/input';
+import { InputTextoProps } from '../../types/inputTexto';
 
-
-function CampoTexto ({obrigatorio, label, placeholder, valor, aoAlterado}: InputProps) {
+function CampoTexto ({obrigatorio, label, placeholder, valor, aoAlterado}: InputTextoProps) {
   
   const aoDigitado = (evento: React.ChangeEvent<HTMLInputElement>) => {
     aoAlterado(evento.target.value);

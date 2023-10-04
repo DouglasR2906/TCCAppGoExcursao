@@ -24,7 +24,7 @@ const CardExcursao: React.FC<DadosExcursaoProps> = ({destino, dataIda, dataVolta
             Data Partida: {dataIda}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Data Volta': {dataVolta}
+            Data Volta: {dataVolta}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Categoria: {categoria}

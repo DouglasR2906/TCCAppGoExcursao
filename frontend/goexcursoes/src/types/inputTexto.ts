@@ -1,4 +1,4 @@
-export interface InputProps {
+export interface InputTextoProps {
   obrigatorio: boolean;
   label: string;
   placeholder: string;
