@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Banner from "../componentes/Banner";
 import Formulario from "../componentes/Formulario";
-import { Excursao as excursao} from "../types/excursao";
+import { Excursao as excursao } from "../types/excursao";
 import ExcursoesLista from "../componentes/ExcursoesLista";
 
 function App() {
@@ -13,11 +13,11 @@ function App() {
   };
   return (
     <div>
-      <Banner/>
-      <Formulario adicionaBusca={adicionaBusca}/>
-      <ExcursoesLista excursoes={busca}/>
+      <Banner />
+      <Formulario adicionaBusca={adicionaBusca} />
+      <ExcursoesLista excursoes={busca} />
     </div>
-  );
+  )
 }
 
 export default App;

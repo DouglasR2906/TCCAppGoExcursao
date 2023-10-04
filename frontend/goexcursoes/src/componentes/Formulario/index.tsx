@@ -7,7 +7,7 @@ import Botao from "../Botao";
 import { Excursao as excursao } from '../../types/excursao'
 
 function Formulario({ adicionaBusca }: { adicionaBusca: (buscarExcursoes: excursao) => void }) {
-  const itens = ["Lazer", "Shows", "Eventos", "Concursos"];
+  const itens = ["", "Lazer", "Shows", "Eventos", "Concursos"];
   const [busca, setBusca] = useState<excursao>({
     destino: '',
     dataIda: '',
@@ -46,30 +46,30 @@ function Formulario({ adicionaBusca }: { adicionaBusca: (buscarExcursoes: excurs
             obrigatorio={true}
             label="Data de Ida"
             placeholder="00/00/0000"
-            valor={busca.dataIda}
-            aoAlterado={dataIda => setBusca({ ...busca, dataIda })}
+            valorData={busca.dataIda}
+            aoAlteradoData={dataIda => setBusca({ ...busca, dataIda })}
           />
           <CampoData
             obrigatorio={true}
             label="Data de Volta"
             placeholder="00/00/0000"
-            valor={busca.dataVolta}
-            aoAlterado={dataVolta => setBusca({ ...busca, dataVolta })}
+            valorData={busca.dataVolta}
+            aoAlteradoData={dataVolta => setBusca({ ...busca, dataVolta })}
           />
         </div>
 
-        <CampoTexto
+        {/* <CampoTexto
           obrigatorio={true}
           label="Imagem"
           placeholder="URL da imagem do destino"
           valor={busca.imgUrl}
           aoAlterado={imgUrl => setBusca({ ...busca, imgUrl })}
-        />
+        /> */}
 
         <ListaSuspensa
           obrigatorio={true}
           label="Categorias"
-          placeholder=""
+          placeholder="Lazer, Show, Evento..."
           itens={itens}
           valor={busca.categoria}
           aoAlterado={categoria => setBusca({ ...busca, categoria })}
