@@ -5,7 +5,6 @@ import ListaSuspensa from "../ListaSuspensa";
 import style from "./Formulario.module.scss";
 import Botao from "../Botao";
 import { Excursao as excursao } from '../../types/excursao'
-import dayjs from 'dayjs';
 
 function Formulario({ adicionaBusca }: { adicionaBusca: (buscarExcursoes: excursao) => void }) {
   const itens = ["", "Lazer", "Shows", "Eventos", "Concursos"];
