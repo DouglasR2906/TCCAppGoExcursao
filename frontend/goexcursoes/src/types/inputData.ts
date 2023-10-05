@@ -1,7 +1,9 @@
+import { Dayjs } from "dayjs";
+
 export interface InputDataProps {
   obrigatorio: boolean;
   label: string;
   placeholder: string;
-  valorData: string;
-  aoAlteradoData: (valor: string) => void;
+  valorData: Dayjs | null;
+  aoAlteradoData: (valor: Dayjs|null) => void;
 }

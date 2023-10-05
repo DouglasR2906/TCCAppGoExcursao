@@ -1,7 +1,9 @@
+import { Dayjs } from "dayjs";
+
 export interface Excursao {
     destino: string;
-    dataIda: string;
-    dataVolta: string;
+    dataIda: Dayjs | null;
+    dataVolta: Dayjs | null;
     categoria: string;
-    imgUrl: string | '';  
+    imgUrl: string | ''
 }

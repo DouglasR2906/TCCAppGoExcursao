@@ -5,13 +5,14 @@ import ListaSuspensa from "../ListaSuspensa";
 import style from "./Formulario.module.scss";
 import Botao from "../Botao";
 import { Excursao as excursao } from '../../types/excursao'
+import dayjs from "dayjs";
 
 function Formulario({ adicionaBusca }: { adicionaBusca: (buscarExcursoes: excursao) => void }) {
   const itens = ["", "Lazer", "Shows", "Eventos", "Concursos"];
   const [busca, setBusca] = useState<excursao>({
     destino: '',
-    dataIda: '',
-    dataVolta: '',
+    dataIda: dayjs(),
+    dataVolta: dayjs(),
     categoria: '',
     imgUrl: ''
   });
@@ -23,8 +24,8 @@ function Formulario({ adicionaBusca }: { adicionaBusca: (buscarExcursoes: excurs
 
     setBusca({
       destino: '',
-      dataIda: '',
-      dataVolta: '',
+      dataIda: dayjs(),
+      dataVolta: dayjs(),
       categoria: '',
       imgUrl: ''
     })
@@ -58,13 +59,13 @@ function Formulario({ adicionaBusca }: { adicionaBusca: (buscarExcursoes: excurs
           />
         </div>
 
-        {/* <CampoTexto
+        <CampoTexto
           obrigatorio={true}
           label="Imagem"
           placeholder="URL da imagem do destino"
           valor={busca.imgUrl}
           aoAlterado={imgUrl => setBusca({ ...busca, imgUrl })}
-        /> */}
+        />
 
         <ListaSuspensa
           obrigatorio={true}
