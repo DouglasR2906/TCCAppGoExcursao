@@ -1,72 +1,40 @@
-import { useEffect, useState } from "react";
-import Banner from "../componentes/Banner/banner";
-import Formulario from "../componentes/Formulario/formulario";
-import { Excursao as excursao } from "../types/excursao";
-import ExcursoesLista from "../componentes/ListaExcursoes/listaExcursoes";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import ExcursaoModal from "../componentes/ModalExcursao/modalExcursao";
+import { useEffect, useState } from 'react';
+import Banner from 'componentes/Banner/banner';
+import Formulario from 'componentes/Formulario/formulario';
+import { Excursao } from 'types/excursao';
+import  excursao  from 'data/excursao.json';
+import ExcursoesLista from '../componentes/ListaExcursoes/listaExcursoes';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import ExcursaoModal from '../componentes/ModalExcursao/modalExcursao';
 import 'dayjs/locale/pt-br';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 dayjs.locale('pt-br');
 
 
 function App() {
+  const excursaoList = excursao.map(item => ({...item, dataIda: dayjs(item.dataIda),dataVolta: dayjs(item.dataVolta),}));
+
   const [open, setOpen] = useState(false);
-  const [busca, setBusca] = useState<excursao[]>([{
-    id: '1',
-    destino: 'Formiga MG',
-    dataIda: dayjs('08/10/2023'),
-    dataVolta: dayjs('09/10/2023'),
-    categoria: 'Eventos',
-    imgUrl: 'https://encurtador.com.br/kuADQ',
-    selecionado: false
-  }, {
-    id: '2',
-    destino: 'Belo Horizonte MG',
-    dataIda: dayjs('09/10/2023'),
-    dataVolta: dayjs('10/10/2023'),
-    categoria: 'Shows',
-    imgUrl: 'https://encurtador.com.br/isEM6',
-    selecionado: false
-  },
-  {
-    id: '3',
-    destino: 'Fortaleza CE',
-    dataIda: dayjs('11/10/2023'),
-    dataVolta: dayjs('12/10/2023'),
-    categoria: 'Lazer',
-    imgUrl: 'https://encurtador.com.br/alAHJ',
-    selecionado: false
-  },
-  {
-    id: '4',
-    destino: 'São Paulo SP',
-    dataIda: dayjs('13/10/2023'),
-    dataVolta: dayjs('14/10/2023'),
-    categoria: 'Concurso',
-    imgUrl: 'https://encurtador.com.br/amnT7',
-    selecionado: false
-  }]);
-  const [selecionada, setSelecionada] = useState<excursao>();
+  const [selecionada, setSelecionada] = useState<Excursao>();
+  const [busca, setBusca] = useState(excursaoList);
+  
 
   useEffect(() => {
-    console.log("open: ", open, selecionada);
+    console.log('open: ', open, selecionada);
     
-    if (!open && selecionada && selecionada?.selecionado) {
-      setSelecionada({...selecionada,
-        selecionado: false,
-      });
-    };
+    if (!open && selecionada && selecionada.selecionado) {
+      selecionarExcursao(selecionada);
+    }
 
   }, [open, selecionada]);
 
-  const adicionaBusca = (buscarExcursoes: excursao) => {
+  const adicionaBusca = (buscarExcursoes: Excursao) => {
     const uuid = crypto.randomUUID();
     setBusca(buscasAntigas => [...buscasAntigas, { ...buscarExcursoes, selecionado: false, id: uuid }]);
   };
 
-  function selecionarExcursao(excursaoSelecionada: excursao) {
+  function selecionarExcursao(excursaoSelecionada: Excursao) {
     excursaoSelecionada.selecionado = !excursaoSelecionada.selecionado;
     setSelecionada(excursaoSelecionada);
     setBusca(buscasAnteriores => buscasAnteriores.map(excursao => ({
@@ -80,8 +48,8 @@ function App() {
   }
 
   const fecharModal = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
       <div>
@@ -91,7 +59,7 @@ function App() {
         <ExcursaoModal excursao={selecionada} open={open} onClose={fecharModal} />
       </div>
     </LocalizationProvider>
-  )
+  );
 }
 
 export default App;

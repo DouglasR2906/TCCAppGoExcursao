@@ -1,0 +1,35 @@
+[{
+    "id": "1",
+    "destino": "Formiga MG",
+    "dataIda": "2023-10-08",
+    "dataVolta": "2023-10-09",
+    "categoria": "Eventos",
+    "imgUrl": "https://encurtador.com.br/kuADQ",
+    "selecionado": false
+  }, {
+    "id": "2",
+    "destino": "Belo Horizonte MG",
+    "dataIda": "2023-10-09",
+    "dataVolta": "2023-10-10",
+    "categoria": "Shows",
+    "imgUrl": "https://encurtador.com.br/isEM6",
+    "selecionado": false
+  },
+  {
+    "id": "3",
+    "destino": "Fortaleza CE",
+    "dataIda": "2023-10-11",
+    "dataVolta": "2023-10-12",
+    "categoria": "Lazer",
+    "imgUrl": "https://encurtador.com.br/alAHJ",
+    "selecionado": false
+  },
+  {
+    "id": "4",
+    "destino": "São Paulo SP",
+    "dataIda": "2023-10-13",
+    "dataVolta": "2023-10-14",
+    "categoria": "Concurso",
+    "imgUrl": "https://encurtador.com.br/amnT7",
+    "selecionado": false
+  }]

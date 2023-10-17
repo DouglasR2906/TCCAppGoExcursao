@@ -10,10 +10,10 @@ interface Props extends Excursao {
   selecionarExcursao: (excursaoSelecionada: Excursao) => void
 }
 
-const CardExcursao: React.FC<Props> = ({ id, destino, dataIda, dataVolta, categoria, imgUrl, selecionado, selecionarExcursao}) => {
+const CardExcursao: React.FC<Props> = ({ id, destino, dataIda, dataVolta, categoria, imgUrl, selecionado, selecionarExcursao }) => {
   return (
-    <Card sx={{ maxWidth: 345, backgroundColor: selecionado ? '#0f0' : 'fff'}}>
-      <CardActionArea onClick={() => selecionarExcursao({id, destino, dataIda, dataVolta, categoria, imgUrl, selecionado})}>
+    <Card sx={{ maxWidth: 345 }}>
+      <CardActionArea onClick={() => selecionarExcursao({ id, destino, dataIda, dataVolta, categoria, imgUrl, selecionado })}>
         <CardMedia
           component="img"
           height="140"
@@ -25,10 +25,10 @@ const CardExcursao: React.FC<Props> = ({ id, destino, dataIda, dataVolta, catego
             {destino}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Data Partida: {dataIda?.format("DD/MM/YYYY")}
+            Data Partida: {dataIda?.format('DD/MM/YYYY')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Data Volta: {dataVolta?.format("DD/MM/YYYY")}
+            Data Volta: {dataVolta?.format('DD/MM/YYYY')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Categoria: {categoria}
@@ -37,6 +37,6 @@ const CardExcursao: React.FC<Props> = ({ id, destino, dataIda, dataVolta, catego
       </CardActionArea>
     </Card>
   );
-}
+};
 
 export default CardExcursao;

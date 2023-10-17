@@ -1,10 +1,10 @@
-import { Dayjs } from "dayjs";
+import { Dayjs } from 'dayjs';
 
 export interface Excursao {
     id: string;
     destino: string;
-    dataIda: Dayjs | null;
-    dataVolta: Dayjs | null;
+    dataIda: Dayjs; 
+    dataVolta: Dayjs;
     categoria: string;
     imgUrl: string | '';  
     selecionado: boolean

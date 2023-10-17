@@ -1,18 +1,18 @@
-import React from "react";
-import styel from "./ListaSuspensa.module.scss"
-import { InputTextoProps } from "../../types/inputTexto";
+import React from 'react';
+import styel from './ListaSuspensa.module.scss';
+import { InputTextoProps } from '../../types/inputTexto';
 
 interface Props extends InputTextoProps{
   itens: string[]
 }
 
-function ListaSuspensa({ obrigatorio, label, itens, valor, placeholder, aoAlterado }: Props) {
+function ListaSuspensa({ obrigatorio, label, itens, valor, aoAlterado }: Props) {
 
   const aoSelecionado = (evento: React.ChangeEvent<HTMLSelectElement>) => {
     if (aoAlterado){
       aoAlterado(evento.target.value);
     }
-  }
+  };
 
   return (
     <div className={styel.lista}>
@@ -22,6 +22,6 @@ function ListaSuspensa({ obrigatorio, label, itens, valor, placeholder, aoAltera
       </select>
     </div>
   );
-};
+}
 
 export default ListaSuspensa;

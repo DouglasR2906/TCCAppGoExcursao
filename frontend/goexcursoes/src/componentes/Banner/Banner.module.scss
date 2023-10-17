@@ -17,7 +17,6 @@
 
 .container {
   position: relative;
-  padding: 0.5rem;
 }
 
 .wave {
@@ -27,6 +26,6 @@
   width: 100%;
 }
 
-.banner::after {
-  clear: both;
-}
+// .banner::after {
+//   clear: both;
+// }

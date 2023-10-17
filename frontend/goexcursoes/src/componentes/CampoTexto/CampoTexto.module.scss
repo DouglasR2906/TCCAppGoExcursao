@@ -9,13 +9,22 @@
     font-size: 16px;
 }
 
+.campotexto div{
+    display: flex;
+    padding: 0px 5px 0px 0px;
+    background-color: #FFF;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 10px 10px 30px rgb(0, 0, 0.06);
+}
+
 .campotexto input{
     background-color: #FFF;
-    box-shadow: 10px 10px 30px rgb(0, 0, 0.06);
-    width: 100%;
     border: none;
     font-size: 12px;
+    outline: none;
+    width: 100%;
     padding: 12px;
-    box-sizing: border-box;
     border-radius: 5px;
 }
