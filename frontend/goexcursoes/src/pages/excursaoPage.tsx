@@ -6,8 +6,7 @@ import formasPagamento from "data/formasPagamento.json";
 import Cabecalho from "componentes/Cabecalho/cabecalho";
 import { Excursao } from "types/excursao";
 import { Link, useLocation } from "react-router-dom";
-import ExcursaoModal from "componentes/ModalReserva/modalReserva";
-import ExcursaoReserva from "componentes/ModalReserva/modalReserva";
+import ModalReserva from "componentes/ModalReserva/modalReserva";
 
 export default function ExcursaoPage() {
   const location = useLocation();
@@ -80,11 +79,10 @@ export default function ExcursaoPage() {
           <Grid item xs={12}>
             <Card sx={{ height: "100%" }}>
               <CardContent>
-                <Typography>Origem: {excursao.origem}</Typography>
-                <Typography>Destino: {excursao.destino}</Typography>
-                <Typography>Saída: {excursao?.dataIda}</Typography>
-                <Typography>Volta: {excursao?.dataVolta}</Typography>
-                <Typography>Valor: R$200.00</Typography>
+                <Typography variant="h6">Origem: {excursao.origem}</Typography>
+                <Typography variant="h6">Destino: {excursao.destino}</Typography>
+                <Typography variant="h6">Saída: {excursao?.dataIda}</Typography>
+                <Typography variant="h6">Volta: {excursao?.dataVolta}</Typography>
 
                 <List color='black'>
                   <Typography> Formas de Pagamento:</Typography>
@@ -96,7 +94,7 @@ export default function ExcursaoPage() {
                     ))}
                   </Grid>
                 </List>
-
+                <Typography variant="h5">Valor: R${excursao.valorTotal.toFixed(2)}</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -124,7 +122,7 @@ export default function ExcursaoPage() {
           </Grid>
         </Grid>
       </Grid>
-      <ExcursaoReserva excursao={excursao} open={open} onClose={fecharModal} />
+      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} />
     </Grid>
   );
 }

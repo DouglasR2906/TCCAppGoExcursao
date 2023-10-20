@@ -1,11 +1,14 @@
-import { Dayjs } from 'dayjs';
+import { Dayjs } from "dayjs";
 
 export interface Excursao {
-    id: string;
-    destino: string;
-    dataIda: Dayjs; 
-    dataVolta: Dayjs;
-    categoria: string;
-    imgUrl: string | '';  
-    selecionado: boolean
+  id: string;
+  titulo: string;
+  origem: string;
+  destino: string;
+  dataIda: string;
+  dataVolta: string;
+  categoria: string;
+  imgUrl: string | "";
+  valorTotal: number;
+  selecionado: boolean;
 }

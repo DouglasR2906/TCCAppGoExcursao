@@ -1,10 +1,10 @@
-import React from 'react';
-import style from './Botao.module.scss';
+import React from "react";
+import style from "./Botao.module.scss";
 // import { Button } from '@mui/material';
 
 interface Props {
     children: React.ReactNode,
-    type: 'button' | 'submit' | 'reset' | undefined
+    type: "button" | "submit" | "reset" | undefined
 }
 
 function Botao ({children, type}: Props) {

@@ -1,6 +1,6 @@
-import React from 'react';
-import styel from './ListaSuspensa.module.scss';
-import { InputTextoProps } from '../../types/inputTexto';
+import React from "react";
+import styel from "./ListaSuspensa.module.scss";
+import { InputTextoProps } from "../../types/inputTexto";
 
 interface Props extends InputTextoProps{
   itens: string[]

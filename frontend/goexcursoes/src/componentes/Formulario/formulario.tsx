@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import CampoData from '../CampoData/campoData';
-import CampoTexto from '../CampoTexto/campoTexto';
-import ListaSuspensa from '../ListaSuspensa/listaSupensa';
-import style from './Formulario.module.scss';
-import Botao from '../Botao/botao';
-import { Excursao } from '../../types/excursao';
-import dayjs from 'dayjs';
-import { Container, FormGroup } from '@mui/material';
+import React, { useState } from "react";
+import CampoData from "../CampoData/campoData";
+import CampoTexto from "../CampoTexto/campoTexto";
+import ListaSuspensa from "../ListaSuspensa/listaSupensa";
+import style from "./Formulario.module.scss";
+import Botao from "../Botao/botao";
+import { Excursao } from "../../types/excursao";
+import dayjs from "dayjs";
+import { Container } from "@mui/material";
 
 interface Props {
   adicionaBusca: (buscarExcursao: Excursao) => void
@@ -14,14 +14,17 @@ interface Props {
 }
 
 function Formulario({ adicionaBusca }: Props) {
-  const itens = ['', 'Lazer', 'Shows', 'Eventos', 'Concursos'];
+  const itens = ["", "Lazer", "Shows", "Eventos", "Concursos"];
   const [busca, setBusca] = useState<Excursao>({
-    id: '',
-    destino: '',
-    dataIda: dayjs(),
-    dataVolta: dayjs(),
-    categoria: '',
-    imgUrl: '',
+    id: "",
+    titulo: "",
+    origem: "",
+    destino: "",
+    dataIda: "",
+    dataVolta: "",
+    categoria: "",
+    imgUrl: "",
+    valorTotal: 0,
     selecionado: false
   });
 
@@ -29,12 +32,15 @@ function Formulario({ adicionaBusca }: Props) {
     evento.preventDefault();
 
     setBusca({
-      id: '',
-      destino: '',
-      dataIda: dayjs(),
-      dataVolta: dayjs(),
-      categoria: '',
-      imgUrl: '',
+      id: "",
+      titulo: "",
+      origem: "",
+      destino: "",
+      dataIda: "",
+      dataVolta: "",
+      categoria: "",
+      imgUrl: "",
+      valorTotal: 0,
       selecionado: false
     });
 
@@ -56,14 +62,12 @@ function Formulario({ adicionaBusca }: Props) {
             <CampoData
               obrigatorio={true}
               label="Data de Ida"
-              placeholder="00/00/0000"
               valorData={busca.dataIda}
               aoAlteradoData={dataIda => setBusca({ ...busca, dataIda })}
             />
             <CampoData
               obrigatorio={true}
               label="Data de Volta"
-              placeholder="00/00/0000"
               valorData={busca.dataVolta}
               aoAlteradoData={dataVolta => setBusca({ ...busca, dataVolta })}
             />
@@ -87,7 +91,7 @@ function Formulario({ adicionaBusca }: Props) {
             valor={busca.categoria}
             aoAlterado={categoria => setBusca({ ...busca, categoria })}
           />
-          <Botao type='submit'>Buscar</Botao>
+          <Botao type="submit">Buscar</Botao>
         </Container>
       </form>
     </section>

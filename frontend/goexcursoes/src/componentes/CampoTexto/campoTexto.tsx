@@ -1,7 +1,7 @@
-import React from 'react';
-import style from './CampoTexto.module.scss';
-import { InputTextoProps } from '../../types/inputTexto';
-import { FaLocationDot } from 'react-icons/fa6';
+import React from "react";
+import style from "./CampoTexto.module.scss";
+import { InputTextoProps } from "../../types/inputTexto";
+import { FaLocationDot } from "react-icons/fa6";
 
 function CampoTexto({ icone, obrigatorio, label, placeholder, valor, aoAlterado }: InputTextoProps) {
 
@@ -14,8 +14,8 @@ function CampoTexto({ icone, obrigatorio, label, placeholder, valor, aoAlterado 
       <label>{label}</label>
       <div>
         <input value={valor} onChange={aoDigitado} required={obrigatorio} placeholder={placeholder} />
-        {icone === 'busca' &&
-          <FaLocationDot style={{color: '#686665'}} />
+        {icone === "busca" &&
+          <FaLocationDot style={{color: "#686665"}} />
         }
       </div>
     </div>

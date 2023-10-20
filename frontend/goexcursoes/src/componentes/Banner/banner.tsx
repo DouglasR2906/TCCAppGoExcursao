@@ -1,5 +1,5 @@
-import Cabecalho from '../Cabecalho/cabecalho';
-import style from './Banner.module.scss';
+import Cabecalho from "../Cabecalho/cabecalho";
+import style from "./Banner.module.scss";
 
 function Banner() {
   return (
@@ -18,7 +18,7 @@ function Banner() {
           ></path>
         </svg>
       </div>
-      <Cabecalho />
+      <Cabecalho /> 
     </div>
   );
 }
