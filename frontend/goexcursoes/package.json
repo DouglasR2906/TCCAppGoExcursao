@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.14.11",
+    "@mui/icons-material": "^5.14.14",
     "@mui/material": "^5.14.11",
     "@mui/x-date-pickers": "^6.16.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -15,6 +15,7 @@
     "@types/node": "^16.18.55",
     "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.8",
+    "axios": "^1.5.1",
     "dayjs": "^1.11.10",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",

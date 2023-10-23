@@ -5,48 +5,25 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-// import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-// import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 
-const pages = [
-  {
-    label: "Lazer",
-    to: "/excursaoPage"
-  },
-  {
-    label: "Eventos",
-    to: "/excursaoPage"
-  },
-  {
-    label: "Shows",
-    to: "/excursaoPage"
-  },
-  {
-    label: "Concursos",
-    to: "/excursaoPage"
-  }
-];
+interface Props {
+  bgColor: string;
+  posicao: "fixed" | "absolute" | "sticky" | "static" | "relative" | undefined;
+}
+
 const settings = ["Dados Cadastrais", "Reservas", "Sair"];
 
-function Cabecalho() {
+function Cabecalho({ bgColor, posicao }: Props) {
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -54,8 +31,10 @@ function Cabecalho() {
   };
 
   return (
-    <AppBar position="static" sx={{ background: "#fff" }}>
-      <Container maxWidth="xl">
+    <AppBar position={"static"} sx={{
+      background: "#e1e1e4",
+    }}>
+      <Container maxWidth="xl" sx={{ opacity: 1 }}>
         <Toolbar disableGutters>
           <Link to={"/"}>
             <Avatar

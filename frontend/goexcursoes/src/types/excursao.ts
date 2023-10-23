@@ -6,9 +6,12 @@ export interface Excursao {
   origem: string;
   destino: string;
   dataIda: string;
+  horaIda: string;
   dataVolta: string;
+  horaVolta: string;
   categoria: string;
   imgUrl: string | "";
+  localEmbarque: string;
   valorTotal: number;
   selecionado: boolean;
 }

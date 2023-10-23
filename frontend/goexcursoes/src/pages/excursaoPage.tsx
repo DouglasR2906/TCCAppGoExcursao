@@ -3,14 +3,17 @@ import { Typography, Grid, Card, CardContent, CardMedia, List, ListItem, Button 
 import { GrClose, GrStar } from "react-icons/gr";
 import { BiDollarCircle } from "react-icons/bi";
 import formasPagamento from "data/formasPagamento.json";
-import Cabecalho from "componentes/Cabecalho/cabecalho";
-import { Excursao } from "types/excursao";
-import { Link, useLocation } from "react-router-dom";
-import ModalReserva from "componentes/ModalReserva/modalReserva";
+import excursoes from "data/excursao.json";
+import { useNavigate, useParams } from "react-router-dom";
+import ModalReserva from "componentes/Excursoes/ModalReserva/modalReserva";
+import { Usuario } from "types/usuario";
+
+const usuario: Usuario = { id: "1", login: "douglasr.comp@hotmail.com", senha: "26122015", ativo: true };
 
 export default function ExcursaoPage() {
-  const location = useLocation();
-  const excursao: Excursao = location.state;
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const excursao = excursoes.find(excursao => excursao.id === id);
   const [open, setOpen] = useState(false);
 
   if (!excursao) return null;
@@ -44,12 +47,11 @@ export default function ExcursaoPage() {
   };
 
   return (
-    <Grid >
-      <Cabecalho />
+    <Grid marginTop={8} >
       <Grid container spacing={2} sx={{
         bgcolor: "background.paper",
         // boxShadow: 1,
-        // borderRadius: '5px',
+        // borderRadius: "5px",
         border: "none",
         width: "95vw",
         p: 2,
@@ -60,13 +62,11 @@ export default function ExcursaoPage() {
         <Grid item container sx={{ display: "flex", alignItems: "center", padding: 2 }}>
           <Typography variant="h4" sx={{ flex: 1 }}>{excursao?.titulo}</Typography>
           <Button variant="contained" sx={{ marginLeft: "auto" }} onClick={abrirModal}>
-            Reservar
+            <span>Reservar</span>
           </Button>
-          <Link to={"/"}>
-            <Button variant="text" sx={{ marginLeft: "auto", alignItems: "center" }}>
-              <GrClose size={20} />
-            </Button>
-          </Link>
+          <Button variant="text" sx={{ marginLeft: "auto", alignItems: "center" }} onClick={() => navigate(-1)}>
+            <GrClose size={20} />
+          </Button>
         </Grid>
         <Grid item container xs={12} sm={12} md={6} spacing={2}>
           <Grid item xs={12} >
@@ -122,7 +122,7 @@ export default function ExcursaoPage() {
           </Grid>
         </Grid>
       </Grid>
-      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} />
+      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} usuario={usuario} />
     </Grid>
   );
 }

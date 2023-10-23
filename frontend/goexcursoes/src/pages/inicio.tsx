@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Banner from "componentes/Banner/banner";
-import Formulario from "componentes/Formulario/formulario";
+import Banner from "componentes/Genericos/Banner/banner";
+import Formulario from "componentes/Excursoes/Formulario/formulario";
 import { Excursao } from "types/excursao";
 import excursao from "data/excursao.json";
-import ExcursoesLista from "../componentes/ListaExcursoes/listaExcursoes";
+import ExcursoesLista from "../componentes/Excursoes/ListaExcursoes/listaExcursoes";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/pt-br";
@@ -13,9 +13,7 @@ dayjs.locale("pt-br");
 
 
 function Inicio() {
-  // const excursaoList = excursao.map(item => ({ ...item, dataIda: dayjs(item.dataIda), dataVolta: dayjs(item.dataVolta), }));
   const navigate = useNavigate();
-  // const [open, setOpen] = useState(false);
   const [selecionada, setSelecionada] = useState<Excursao>();
   const [busca, setBusca] = useState(excursao);
 
@@ -40,8 +38,7 @@ function Inicio() {
     }))
     );
     if (excursaoSelecionada.selecionado) {
-      // setOpen(true);
-      navigate("/excursaoPage", { state: { ...excursaoSelecionada }, replace: true });
+      navigate(`/excursaoPage/${excursaoSelecionada.id}`);
     }
 
   }

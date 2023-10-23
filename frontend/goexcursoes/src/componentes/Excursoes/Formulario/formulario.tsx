@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import CampoData from "../CampoData/campoData";
-import CampoTexto from "../CampoTexto/campoTexto";
-import ListaSuspensa from "../ListaSuspensa/listaSupensa";
+import CampoData from "../../Genericos/CampoData/campoData";
+import CampoTexto from "../../Genericos/CampoTexto/campoTexto";
+import ListaSuspensa from "../../Genericos/ListaSuspensa/listaSupensa";
 import style from "./Formulario.module.scss";
-import Botao from "../Botao/botao";
-import { Excursao } from "../../types/excursao";
-import dayjs from "dayjs";
+import Botao from "../../Genericos/Botao/botao";
+import { Excursao } from "../../../types/excursao";
 import { Container } from "@mui/material";
+import { GrSearch } from "react-icons/gr";
 
 interface Props {
   adicionaBusca: (buscarExcursao: Excursao) => void
@@ -21,9 +21,12 @@ function Formulario({ adicionaBusca }: Props) {
     origem: "",
     destino: "",
     dataIda: "",
+    horaIda: "",
     dataVolta: "",
+    horaVolta: "",
     categoria: "",
     imgUrl: "",
+    localEmbarque: "",
     valorTotal: 0,
     selecionado: false
   });
@@ -37,9 +40,12 @@ function Formulario({ adicionaBusca }: Props) {
       origem: "",
       destino: "",
       dataIda: "",
+      horaIda: "",
       dataVolta: "",
+      horaVolta: "",
       categoria: "",
       imgUrl: "",
+      localEmbarque: "",
       valorTotal: 0,
       selecionado: false
     });
@@ -62,27 +68,16 @@ function Formulario({ adicionaBusca }: Props) {
             <CampoData
               obrigatorio={true}
               label="Data de Ida"
-              valorData={busca.dataIda}
               aoAlteradoData={dataIda => setBusca({ ...busca, dataIda })}
             />
             <CampoData
               obrigatorio={true}
               label="Data de Volta"
-              valorData={busca.dataVolta}
               aoAlteradoData={dataVolta => setBusca({ ...busca, dataVolta })}
             />
           </div>
 
-          <CampoTexto
-            icone=""
-            obrigatorio={true}
-            label="Imagem"
-            placeholder="URL da imagem do destino"
-            valor={busca.imgUrl}
-            aoAlterado={imgUrl => setBusca({ ...busca, imgUrl })}
-          />
-
-          <ListaSuspensa
+          {/* <ListaSuspensa
             icone=""
             obrigatorio={true}
             label="Categorias"
@@ -90,8 +85,8 @@ function Formulario({ adicionaBusca }: Props) {
             itens={itens}
             valor={busca.categoria}
             aoAlterado={categoria => setBusca({ ...busca, categoria })}
-          />
-          <Botao type="submit">Buscar</Botao>
+          /> */}
+          <Botao type="submit"> Buscar <GrSearch size={15} /></Botao>
         </Container>
       </form>
     </section>

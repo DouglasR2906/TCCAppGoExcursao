@@ -8,11 +8,11 @@ interface Props extends Excursao {
   selecionarExcursao: (excursaoSelecionada: Excursao) => void
 }
 
-function CardExcursao({ id, titulo, origem, destino, dataIda, dataVolta, categoria, imgUrl, valorTotal, selecionado, selecionarExcursao }: Props) {
+function CardExcursao({ id, titulo, origem, destino, dataIda, horaIda, dataVolta, horaVolta, categoria, imgUrl, localEmbarque, valorTotal, selecionado, selecionarExcursao }: Props) {
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea onClick={() => selecionarExcursao({ id, titulo, origem, destino, dataIda, dataVolta, categoria, imgUrl, valorTotal, selecionado })}>
+    <Card sx={{ maxWidth: 400 }}>
+      <CardActionArea onClick={() => selecionarExcursao({ id, titulo, origem, destino, dataIda, horaIda, dataVolta, horaVolta, categoria, imgUrl, localEmbarque, valorTotal, selecionado })}>
         <CardMedia
           component="img"
           height="140"
