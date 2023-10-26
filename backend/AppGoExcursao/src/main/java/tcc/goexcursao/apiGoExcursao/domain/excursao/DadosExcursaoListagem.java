@@ -1,5 +1,7 @@
 package tcc.goexcursao.apiGoExcursao.domain.excursao;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,12 +13,16 @@ public record DadosExcursaoListagem(
         String cidadeDestinoExcursao,
         String descricaoExcursao,
         Double valorExcursao,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
         LocalDate dataIdaExcursao,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
         LocalDate dataVoltaExcursao,
         LocalTime horaIdaExcursao,
         LocalTime horaVoltaExcursao,
         Long idCategoriaExcursao,
-        Boolean canceladaExcursao
+        Boolean canceladaExcursao,
+        String localEmbarqueExcursao,
+        String urlImagensExcursao
 ) {
     public DadosExcursaoListagem(Excursao excursao){
         this(excursao.getIdExcursao(),
@@ -31,7 +37,9 @@ public record DadosExcursaoListagem(
                 excursao.getHoraIdaExcursao(),
                 excursao.getHoraVoltaExcursao(),
                 excursao. getCategoria().getIdCategoria(),
-                excursao.getCanceladaExcursao()
+                excursao.getCanceladaExcursao(),
+                excursao.getLocalEmbarqueExcursao(),
+                excursao.getUrlImagensExcursao()
         );
     }
 }

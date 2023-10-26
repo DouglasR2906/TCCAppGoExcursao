@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais.*;
+import tcc.goexcursao.apiGoExcursao.domain.excursao.DadosExcursaoListagem;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.*;
 import tcc.goexcursao.apiGoExcursao.infra.exception.ValidacaoException;
 
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("usuario")
-@SecurityRequirement(name = "bearer-key")
+//@SecurityRequirement(name = "bearer-key")
 public class UsuarioController {
     @Autowired
     private UsuarioRepository repository;
@@ -72,6 +73,11 @@ public class UsuarioController {
         return ResponseEntity.ok(pageUsuario);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosUsuarioListagem> findById(@PathVariable Long id){
+        var usuario = repository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosUsuarioListagem(usuario));
+    }
 
     @PutMapping
     @Transactional

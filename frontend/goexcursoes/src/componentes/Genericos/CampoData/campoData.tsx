@@ -1,26 +1,13 @@
-import { useState, useEffect } from "react";
-import style from "./CampoData.module.scss";
-import { InputDataProps } from "../../../types/inputData";
 import { DatePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
+import { InputDataProps } from "../../../types/inputData";
+import style from "./CampoData.module.scss";
 
-function CampoData({ label, aoAlteradoData }: InputDataProps) {
-  const [data, setData] = useState<Dayjs | null>(dayjs());
-
-  useEffect(() => {
-    if (data) {
-      aoDigitado(data.format("DD/MM/YYYY"));
-    }
-  }, [data]);
-
-  function aoDigitado(data: string) {
-    aoAlteradoData(data);
-  }
+function CampoData({ label, valor, setData }: InputDataProps) {
 
   return (
     <div className={style.campodata}>
       <label>{label}</label>
-      <DatePicker value={data} onChange={(valor) => setData(valor)} />
+      <DatePicker value={valor} onChange={(valor) => setData(valor)} />
     </div>
   );
 }

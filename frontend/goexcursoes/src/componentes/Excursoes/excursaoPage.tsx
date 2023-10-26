@@ -1,22 +1,62 @@
-import { useState } from "react";
-import { Typography, Grid, Card, CardContent, CardMedia, List, ListItem, Button } from "@mui/material";
-import { GrClose, GrStar } from "react-icons/gr";
-import { BiDollarCircle } from "react-icons/bi";
-import formasPagamento from "data/formasPagamento.json";
-import excursoes from "data/excursao.json";
-import { useNavigate, useParams } from "react-router-dom";
+import { Button, Card, CardContent, CardMedia, Grid, List, ListItem, Typography } from "@mui/material";
 import ModalReserva from "componentes/Excursoes/ModalReserva/modalReserva";
+import formasPagamento from "data/formasPagamento.json";
+import dayjs, { Dayjs } from "dayjs";
+import http from "http/http";
+import { useEffect, useState } from "react";
+import { BiDollarCircle } from "react-icons/bi";
+import { GrClose, GrStar } from "react-icons/gr";
+import { useNavigate, useParams } from "react-router-dom";
+import { Excursao } from "types/excursao";
 import { Usuario } from "types/usuario";
 
 const usuario: Usuario = { id: "1", login: "douglasr.comp@hotmail.com", senha: "26122015", ativo: true };
 
 export default function ExcursaoPage() {
   const { id } = useParams();
+  const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
+  const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
+
+  const [excursao, setExcursao] = useState<Excursao>({
+    idExcursao: 0,
+    idUsuarioExcursao: 0,
+    tituloExcursao: "",
+    descricaoExcursao: "",
+    valorExcursao: 0,
+    cidadeOrigemExcursao: "",
+    cidadeDestinoExcursao: "",
+    dataIdaExcursao: "",
+    dataVoltaExcursao: "",
+    horaIdaExcursao: "",
+    horaVoltaExcursao: "",
+    idCategoriaExcursao: 0,
+    canceladaExcursao: false,
+    urlImagensExcursao: "",
+    localEmbarqueExcursao: "",
+    selecionado: false
+  });
+
   const navigate = useNavigate();
-  const excursao = excursoes.find(excursao => excursao.id === id);
-  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    http.get<Excursao>(`excursao/${id}`)
+      .then(resposta => {
+        setExcursao(resposta.data);
+      })
+      .catch(erro => {
+        console.log(erro);
+      });
+  }, []);
+
+  useEffect(() => {
+    setDataIda(dayjs(excursao.dataIdaExcursao));
+    setDataVolta(dayjs(excursao.dataVoltaExcursao));
+  }, [excursao]);
 
   if (!excursao) return null;
+
+  const [open, setOpen] = useState(false);
+
 
   function Avaliacao(mediaAvaliacao: number) {
     const mediaRounded = Math.round(mediaAvaliacao);
@@ -47,7 +87,7 @@ export default function ExcursaoPage() {
   };
 
   return (
-    <Grid marginTop={8} >
+    <Grid marginTop={5} >
       <Grid container spacing={2} sx={{
         bgcolor: "background.paper",
         // boxShadow: 1,
@@ -60,7 +100,7 @@ export default function ExcursaoPage() {
         maxWidth: "95vw",
       }}>
         <Grid item container sx={{ display: "flex", alignItems: "center", padding: 2 }}>
-          <Typography variant="h4" sx={{ flex: 1 }}>{excursao?.titulo}</Typography>
+          <Typography variant="h4" sx={{ flex: 1 }}>{excursao.tituloExcursao}</Typography>
           <Button variant="contained" sx={{ marginLeft: "auto" }} onClick={abrirModal}>
             <span>Reservar</span>
           </Button>
@@ -72,17 +112,17 @@ export default function ExcursaoPage() {
           <Grid item xs={12} >
             <Card sx={{ height: "100%" }} >
               <CardContent>
-                <Typography>Aqui estara a descrição da excursao</Typography>
+                <Typography>{excursao.descricaoExcursao}</Typography>
               </CardContent>
             </Card>
           </Grid>
           <Grid item xs={12}>
             <Card sx={{ height: "100%" }}>
               <CardContent>
-                <Typography variant="h6">Origem: {excursao.origem}</Typography>
-                <Typography variant="h6">Destino: {excursao.destino}</Typography>
-                <Typography variant="h6">Saída: {excursao?.dataIda}</Typography>
-                <Typography variant="h6">Volta: {excursao?.dataVolta}</Typography>
+                <Typography variant="h6">Origem: {excursao.cidadeOrigemExcursao}</Typography>
+                <Typography variant="h6">Destino: {excursao.cidadeDestinoExcursao}</Typography>
+                <Typography variant="h6">Saída: {dataIda?.format("DD/MM/YYYY")}</Typography>
+                <Typography variant="h6">Volta: {dataVolta?.format("DD/MM/YYYY")}</Typography>
 
                 <List color='black'>
                   <Typography> Formas de Pagamento:</Typography>
@@ -94,7 +134,7 @@ export default function ExcursaoPage() {
                     ))}
                   </Grid>
                 </List>
-                <Typography variant="h5">Valor: R${excursao.valorTotal.toFixed(2)}</Typography>
+                <Typography variant="h5">Valor: R${excursao.valorExcursao.toFixed(2)}</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -106,7 +146,7 @@ export default function ExcursaoPage() {
                 component="img"
                 alt="Destination Image"
                 height="100%"
-                image={excursao?.imgUrl}
+                image={excursao.urlImagensExcursao}
               />
             </Card>
           </Grid>

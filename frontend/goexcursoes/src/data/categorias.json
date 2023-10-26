@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "descricao": "Lazer"
+  },
+  {
+    "id": 2,
+    "descricao": "Show"
+  },
+  {
+    "id": 3,
+    "descricao": "Concurso"
+  },
+  {
+    "id": 4,
+    "descricao": "Evento"
+  }
+]

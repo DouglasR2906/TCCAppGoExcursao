@@ -1,31 +1,29 @@
-import { useEffect, useState } from "react";
-import {
-  Modal,
-  Typography,
-  Container,
-  Grid,
-  CardContent,
-  Button,
-  IconButton,
-  TextField,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  Snackbar,
-  Alert
-} from "@mui/material";
-import { Excursao } from "../../../types/excursao";
-import { GrAdd, GrClose, GrFormNext, GrFormPrevious, GrSend, GrSubtract } from "react-icons/gr";
 import StarIcon from "@mui/icons-material/Star";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import {
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  IconButton,
+  Modal,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography
+} from "@mui/material";
+import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
 import formasPagamento from "data/formasPagamento.json";
-import { Viajante } from "types/viajantes";
+import dayjs, { Dayjs } from "dayjs";
+import { useEffect, useState } from "react";
+import { GrAdd, GrClose, GrFormNext, GrFormPrevious, GrSend, GrSubtract } from "react-icons/gr";
 import { Reserva } from "types/reserva";
 import { Usuario } from "types/usuario";
-import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
+import { Viajante } from "types/viajantes";
+import { Excursao } from "../../../types/excursao";
 
 interface Props {
   usuario: Usuario
@@ -48,8 +46,16 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
     qtdViajantes: 0,
     formaPagamento: 0
   });
+  const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
+  const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
+
   const [viajantes, setViajantes] = useState<Viajante[]>([]);
-  const [totalGeral, setTotalGeral] = useState(excursao?.valorTotal);
+  const [totalGeral, setTotalGeral] = useState(excursao.valorExcursao);
+
+  useEffect(() => {
+    setDataIda(dayjs(excursao.dataIdaExcursao));
+    setDataVolta(dayjs(excursao.dataVoltaExcursao));
+  }, [excursao]);
 
   const removeQtde = () => {
     if (qtde > 1) setQtde(qtde - 1);
@@ -60,8 +66,8 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
   };
 
   useEffect(() => {
-    if (qtde > 0 && excursao?.valorTotal) {
-      setTotalGeral(excursao.valorTotal * qtde);
+    if (qtde > 0 && excursao.valorExcursao) {
+      setTotalGeral(excursao.valorExcursao * qtde);
     }
   }, [qtde, setTotalGeral]);
 
@@ -175,7 +181,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
       return;
     }
 
-    setReserva({ ...reserva, idExcursao: parseInt(excursao.id), idUsuario: parseInt(usuario.id), qtdViajantes: qtde });
+    setReserva({ ...reserva, idExcursao: excursao.idExcursao, idUsuario: parseInt(usuario.id), qtdViajantes: qtde });
     console.log("Reserva:", reserva);
     setMensagem("Reserva concluída com sucesso");
     setTipoSnack("success");
@@ -223,7 +229,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
                   <Grid item xs={12} padding={"0rem 1rem 0rem 1rem"} height={"fit-content"}>
                     <Grid container padding={"1rem 1rem 0rem 1rem"} alignItems={"center"} >
                       <Grid item xs={9}>
-                        <Typography variant="h6">{excursao?.titulo}</Typography>
+                        <Typography variant="h6">{excursao.tituloExcursao}</Typography>
                       </Grid>
                       <Grid item xs={3}>
                         <Typography variant="h5"> R$ {totalGeral?.toFixed(2)}</Typography>
@@ -233,10 +239,13 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
                   <Grid item xs={12} padding={"0rem 1rem 0rem 1rem"} >
                     <Grid container padding={"1rem 1rem 0rem 1rem"}>
                       <Typography textAlign={"left"} variant="subtitle1">
-                        Viagem dia <strong>{excursao?.dataIda}</strong> às <strong>{excursao?.horaIda}h</strong> {" "}
-                        volta <strong>{excursao?.dataVolta}</strong> às <strong>{excursao?.horaVolta}h</strong>
+                        Viagem dia <strong>{dataIda?.format("DD/MM/YYYY")}</strong> às <strong>{excursao.horaIdaExcursao}h</strong> {" "}
+                        volta <strong>{dataVolta?.format("DD/MM/YYYY")}</strong> às <strong>{excursao.horaVoltaExcursao}h</strong>
                       </Typography>
-                      <Typography textAlign={"left"} variant="subtitle1">Saindo de <strong>{excursao?.origem}</strong> para <strong>{excursao?.destino}</strong></Typography>
+                      <Typography textAlign={"left"} variant="subtitle1">
+                        Saindo de <strong>{excursao.cidadeOrigemExcursao}</strong>
+                        para <strong>{excursao.cidadeDestinoExcursao}</strong>
+                      </Typography>
                       <Grid container xs={12} >
                         <FormControl fullWidth>
                           <FormLabel sx={{ color: "black" }}> Formas de Pagamento:</FormLabel>
@@ -305,7 +314,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
                 <Grid item>
                   <Grid container sx={{ display: "flex", flexDirection: "row" }}>
                     <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"center"}>
-                      <Typography variant="h6">{excursao?.titulo}</Typography>
+                      <Typography variant="h6">{excursao.tituloExcursao}</Typography>
                     </Grid>
                     <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"left"}>
                       <Typography variant="h6" textAlign={"left"}>Viajantes: </Typography>
@@ -317,10 +326,15 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
                     </Grid>
                     <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"left"}>
                       <Typography textAlign={"left"} variant="subtitle1">
-                        Viagem dia <strong>{excursao?.dataIda}</strong> às <strong>{excursao?.horaIda}h</strong> {" "}
-                        volta <strong>{excursao?.dataVolta}</strong> às <strong>{excursao?.horaVolta}h</strong> <br />
-                        Saindo de <strong>{excursao?.origem}</strong> para <strong>{excursao?.destino}</strong> <br />
-                        Local de embarque: {excursao?.localEmbarque}
+                        Viagem dia <strong>{dataIda?.format("DD/MM/YYYY")}</strong>
+                        às <strong>{excursao.horaIdaExcursao}h</strong> {" "}
+
+                        volta <strong>{dataVolta?.format("DD/MM/YYYY")}</strong>
+                        às <strong>{excursao.horaVoltaExcursao}h</strong> <br />
+
+                        Saindo de <strong>{excursao.cidadeOrigemExcursao}</strong>
+                        para <strong>{excursao?.cidadeDestinoExcursao}</strong> <br />
+                        Local de embarque: {excursao.localEmbarqueExcursao}
                       </Typography>
                     </Grid>
                     <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"left"} >

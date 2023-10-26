@@ -1,56 +1,26 @@
+import { Container } from "@mui/material";
+import dayjs, { Dayjs } from "dayjs";
 import React, { useState } from "react";
+import { GrSearch } from "react-icons/gr";
+import { Excursao } from "../../../types/excursao";
+import Botao from "../../Genericos/Botao/botao";
 import CampoData from "../../Genericos/CampoData/campoData";
 import CampoTexto from "../../Genericos/CampoTexto/campoTexto";
-import ListaSuspensa from "../../Genericos/ListaSuspensa/listaSupensa";
 import style from "./Formulario.module.scss";
-import Botao from "../../Genericos/Botao/botao";
-import { Excursao } from "../../../types/excursao";
-import { Container } from "@mui/material";
-import { GrSearch } from "react-icons/gr";
 
 interface Props {
-  adicionaBusca: (buscarExcursao: Excursao) => void
+  adicionaBusca: (busca: string, dataIda: Dayjs | null, dataVolta: Dayjs | null) => void
   excursaoSelecionada: Excursao | undefined
 }
 
 function Formulario({ adicionaBusca }: Props) {
-  const itens = ["", "Lazer", "Shows", "Eventos", "Concursos"];
-  const [busca, setBusca] = useState<Excursao>({
-    id: "",
-    titulo: "",
-    origem: "",
-    destino: "",
-    dataIda: "",
-    horaIda: "",
-    dataVolta: "",
-    horaVolta: "",
-    categoria: "",
-    imgUrl: "",
-    localEmbarque: "",
-    valorTotal: 0,
-    selecionado: false
-  });
+  const [busca, setBusca] = useState("");
+  const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
+  const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
 
   const aoSalvar = (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
-
-    setBusca({
-      id: "",
-      titulo: "",
-      origem: "",
-      destino: "",
-      dataIda: "",
-      horaIda: "",
-      dataVolta: "",
-      horaVolta: "",
-      categoria: "",
-      imgUrl: "",
-      localEmbarque: "",
-      valorTotal: 0,
-      selecionado: false
-    });
-
-    adicionaBusca(busca);
+    adicionaBusca(busca, dataIda, dataVolta);
   };
   return (
     <section className={style.formulario} onSubmit={aoSalvar}>
@@ -61,19 +31,21 @@ function Formulario({ adicionaBusca }: Props) {
             obrigatorio={true}
             label="Buscar Destino"
             placeholder="Pra onde vai?"
-            valor={busca.destino}
-            aoAlterado={destino => setBusca({ ...busca, destino })}
+            valor={busca}
+            aoAlterado={setBusca}
           />
           <div className={style.datacontainer}>
             <CampoData
               obrigatorio={true}
               label="Data de Ida"
-              aoAlteradoData={dataIda => setBusca({ ...busca, dataIda })}
+              valor={dataIda}
+              setData={setDataIda}
             />
             <CampoData
               obrigatorio={true}
               label="Data de Volta"
-              aoAlteradoData={dataVolta => setBusca({ ...busca, dataVolta })}
+              valor={dataVolta}
+              setData={setDataVolta}
             />
           </div>
 

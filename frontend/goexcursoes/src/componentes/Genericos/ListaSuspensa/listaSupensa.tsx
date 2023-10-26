@@ -1,9 +1,13 @@
 import React from "react";
+import { Categorias } from "types/categorias";
 import styel from "./ListaSuspensa.module.scss";
-import { InputTextoProps } from "../../../types/inputTexto";
 
-interface Props extends InputTextoProps {
-  itens: string[]
+interface Props {
+  obrigatorio: boolean,
+  label: string,
+  itens: Categorias[],
+  valor: string,
+  aoAlterado: React.Dispatch<React.SetStateAction<string>>
 }
 
 function ListaSuspensa({ obrigatorio, label, itens, valor, aoAlterado }: Props) {
@@ -18,7 +22,7 @@ function ListaSuspensa({ obrigatorio, label, itens, valor, aoAlterado }: Props) 
     <div className={styel.lista}>
       <label>{label}</label>
       <select onChange={aoSelecionado} required={obrigatorio} value={valor}>
-        {itens.map((item, index) => <option key={index} className="option" value={item}>{item}</option>)}
+        {itens.map((item) => <option key={item.id} className="option" value={item.descricao}>{item.descricao}</option>)}
       </select>
     </div>
   );

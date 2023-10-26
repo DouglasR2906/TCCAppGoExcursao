@@ -1,5 +1,9 @@
+import { Dayjs } from "dayjs";
+import React from "react";
+
 export interface InputDataProps {
   obrigatorio: boolean;
   label: string;
-  aoAlteradoData: (valor: string) => void;
+  valor: Dayjs | null;
+  setData: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 }

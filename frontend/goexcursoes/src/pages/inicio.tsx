@@ -1,22 +1,48 @@
-import { useEffect, useState } from "react";
-import Banner from "componentes/Genericos/Banner/banner";
 import Formulario from "componentes/Excursoes/Formulario/formulario";
-import { Excursao } from "types/excursao";
-import excursao from "data/excursao.json";
-import ExcursoesLista from "../componentes/Excursoes/ListaExcursoes/listaExcursoes";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Banner from "componentes/Genericos/Banner/banner";
+import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/pt-br";
-import dayjs from "dayjs";
+import http from "http/http";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Excursao } from "types/excursao";
+import ExcursoesLista from "../componentes/Excursoes/ListaExcursoes/listaExcursoes";
 dayjs.locale("pt-br");
 
 
 function Inicio() {
   const navigate = useNavigate();
-  const [selecionada, setSelecionada] = useState<Excursao>();
-  const [busca, setBusca] = useState(excursao);
+  const [excursoes, setExcursoes] = useState<Excursao[]>([]);
 
+  const [selecionada, setSelecionada] = useState<Excursao>({
+    idExcursao: 0,
+    idUsuarioExcursao: 0,
+    tituloExcursao: "",
+    descricaoExcursao: "",
+    valorExcursao: 0,
+    cidadeOrigemExcursao: "",
+    cidadeDestinoExcursao: "",
+    dataIdaExcursao: "",
+    dataVoltaExcursao: "",
+    horaIdaExcursao: "",
+    horaVoltaExcursao: "",
+    idCategoriaExcursao: 0,
+    canceladaExcursao: false,
+    urlImagensExcursao: "",
+    localEmbarqueExcursao: "",
+    selecionado: false
+  });
+  const [busca, setBusca] = useState({ busca: "", dataIda: dayjs(), dataVolta: dayjs() });
+
+  useEffect(() => {
+    http.get<Excursao[]>("excursao")
+      .then(resposta => {
+        setExcursoes(resposta.data);
+      })
+      .catch(erro => {
+        console.log(erro);
+      });
+  }, []);
 
   useEffect(() => {
     if (selecionada && selecionada.selecionado) {
@@ -24,33 +50,26 @@ function Inicio() {
     }
   }, [selecionada]);
 
-  const adicionaBusca = (buscarExcursoes: Excursao) => {
-    const uuid = crypto.randomUUID();
-    setBusca(buscasAntigas => [...buscasAntigas, { ...buscarExcursoes, selecionado: false, id: uuid }]);
+  const adicionaBusca = (busca: string, dataIda: Dayjs | null, dataVolta: Dayjs | null) => {
+    if (dataIda && dataVolta) setBusca({ busca: busca, dataIda: dataIda, dataVolta: dataVolta });
   };
 
   function selecionarExcursao(excursaoSelecionada: Excursao) {
     excursaoSelecionada.selecionado = !excursaoSelecionada.selecionado;
     setSelecionada(excursaoSelecionada);
-    setBusca(buscasAnteriores => buscasAnteriores.map(excursao => ({
-      ...excursao,
-      selecionado: excursao.id === excursaoSelecionada.id && !excursao.selecionado ? true : false
-    }))
-    );
+
     if (excursaoSelecionada.selecionado) {
-      navigate(`/excursaoPage/${excursaoSelecionada.id}`);
+      navigate(`/excursaoPage/${excursaoSelecionada.idExcursao}`);
     }
 
   }
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-      <div>
-        <Banner />
-        <Formulario adicionaBusca={adicionaBusca} excursaoSelecionada={selecionada} />
-        <ExcursoesLista excursoes={busca} selecionarExcursao={selecionarExcursao} />
-      </div>
-    </LocalizationProvider>
+    <div>
+      <Banner />
+      <Formulario adicionaBusca={adicionaBusca} excursaoSelecionada={selecionada} />
+      <ExcursoesLista excursoes={excursoes} selecionarExcursao={selecionarExcursao} />
+    </div>
   );
 }
 

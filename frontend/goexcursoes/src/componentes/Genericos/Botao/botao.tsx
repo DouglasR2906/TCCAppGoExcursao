@@ -3,13 +3,13 @@ import style from "./Botao.module.scss";
 // import { Button } from '@mui/material';
 
 interface Props {
-    children: React.ReactNode,
-    type: "button" | "submit" | "reset" | undefined
+  children: React.ReactNode,
+  type: "button" | "submit" | "reset" | undefined
 }
 
-function Botao ({children, type}: Props) {
+function Botao({ children, type }: Props) {
   return (
-    <button className={style.botao} type={type}>
+    <button className={style.botao} type={type} >
       {children}
     </button>
     // <Button variant='contained' className={style.botao} >

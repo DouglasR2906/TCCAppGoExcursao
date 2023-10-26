@@ -1,17 +1,18 @@
-import { Dayjs } from "dayjs";
-
 export interface Excursao {
-  id: string;
-  titulo: string;
-  origem: string;
-  destino: string;
-  dataIda: string;
-  horaIda: string;
-  dataVolta: string;
-  horaVolta: string;
-  categoria: string;
-  imgUrl: string | "";
-  localEmbarque: string;
-  valorTotal: number;
-  selecionado: boolean;
+  idExcursao: number;
+  idUsuarioExcursao: number;
+  tituloExcursao: string;
+  cidadeOrigemExcursao: string;
+  cidadeDestinoExcursao: string;
+  descricaoExcursao: string;
+  valorExcursao: number;
+  dataIdaExcursao: string;
+  dataVoltaExcursao: string;
+  horaIdaExcursao: string;
+  horaVoltaExcursao: string;
+  idCategoriaExcursao: number;
+  canceladaExcursao: boolean;
+  urlImagensExcursao: string;
+  localEmbarqueExcursao: string;
+  selecionado: boolean | undefined;
 }

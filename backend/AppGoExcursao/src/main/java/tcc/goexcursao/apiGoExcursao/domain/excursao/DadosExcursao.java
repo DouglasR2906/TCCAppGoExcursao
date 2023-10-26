@@ -37,6 +37,11 @@ public record DadosExcursao(
         @NotNull
         Long idCategoriaExcursao,
         @NotNull
-        Boolean canceladaExcursao
+        Boolean canceladaExcursao,
+        @NotBlank
+        String localEmbarqueExcursao,
+        @NotBlank
+        String urlImagensExcursao
+
 ) {
 }
