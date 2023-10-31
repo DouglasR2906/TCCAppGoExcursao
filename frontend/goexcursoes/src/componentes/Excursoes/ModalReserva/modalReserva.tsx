@@ -21,6 +21,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { GrAdd, GrClose, GrFormNext, GrFormPrevious, GrSend, GrSubtract } from "react-icons/gr";
 import { Reserva } from "types/reserva";
+import { TipoSnack } from "types/tipoSnack";
 import { Usuario } from "types/usuario";
 import { Viajante } from "types/viajantes";
 import { Excursao } from "../../../types/excursao";
@@ -32,10 +33,10 @@ interface Props {
   onClose: () => void
 }
 
-type tipoSnack = "error" | "info" | "success" | "warning";
+
 const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
   const [mensagem, setMensagem] = useState("");
-  const [tipoSnack, setTipoSnack] = useState<tipoSnack>("success");
+  const [tipoSnack, setTipoSnack] = useState<TipoSnack>("success");
   const [openSnack, setOpenSnack] = useState(false);
   const [qtde, setQtde] = useState(1);
   const [passo, setPasso] = useState(0);
@@ -50,11 +51,12 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
   const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
 
   const [viajantes, setViajantes] = useState<Viajante[]>([]);
-  const [totalGeral, setTotalGeral] = useState(excursao.valorExcursao);
+  const [totalGeral, setTotalGeral] = useState(0);
 
   useEffect(() => {
     setDataIda(dayjs(excursao.dataIdaExcursao));
     setDataVolta(dayjs(excursao.dataVoltaExcursao));
+    setTotalGeral(excursao.valorExcursao);
   }, [excursao]);
 
   const removeQtde = () => {
@@ -85,16 +87,16 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
     };
 
     return (
-      <Grid item container padding={2} alignItems={"flex-start"} height={"100%"}>
+      <Grid container padding={2} alignItems={"flex-start"} height={"75vh"} overflow={"auto"}>
         {Array.from({ length: qtde }).map((_, i) => (
-          <Grid item container key={i} xs={12} padding={"0.2rem 0rem"} sx={{
+          <Grid container key={i} padding={"0.2rem 0rem"} sx={{
             maxWidth: "100%",
             overflow: "auto"
           }}>
             <Grid item xs={12}>
               <Typography>Dados Viajante {i + 1}:</Typography>
             </Grid>
-            <Grid item xs={7} width={"100%"} marginRight={1}>
+            <Grid item xs={9} width={"100%"} paddingRight={1}>
               <TextField
                 size="small"
                 required
@@ -102,7 +104,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
                 value={viajantes[i]?.nomeViajante || ""}
                 onChange={(e) => atualizarNomeViajante(i, e.target.value)} fullWidth />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <TextField
                 size="small"
                 required
@@ -142,7 +144,6 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
 
   const ConfirmaRererva = () => {
     if (qtde === 0) {
-      console.log("qtde:", qtde);
       setMensagem("Quantidade de passageiros inválida - Favor Verificar");
       setTipoSnack("error");
       setOpenSnack(true);
@@ -153,12 +154,10 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
       setMensagem("Nenhuma forma de pagamento Selecionada - Favor Verificar");
       setTipoSnack("error");
       setOpenSnack(true);
-      console.log("FormaPgto:", reserva.formaPagamento, "msg:", mensagem);
       return;
     }
 
     if (viajantes.length !== qtde) {
-      console.log("Excursao:", excursao);
       setMensagem("Favor informar todos os passageiros");
       setTipoSnack("error");
       setOpenSnack(true);
@@ -166,7 +165,6 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
     }
 
     if (!excursao) {
-      console.log("Excursao:", excursao);
       setMensagem("Nenhuma Excursão selecionada - Favor Verificar");
       setTipoSnack("error");
       setOpenSnack(true);
@@ -174,7 +172,6 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
     }
 
     if (!usuario || !usuario.ativo) {
-      console.log("usuario:", usuario);
       setMensagem("Favor realizar login - Favor Verificar");
       setTipoSnack("error");
       setOpenSnack(true);
@@ -182,7 +179,6 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
     }
 
     setReserva({ ...reserva, idExcursao: excursao.idExcursao, idUsuario: parseInt(usuario.id), qtdViajantes: qtde });
-    console.log("Reserva:", reserva);
     setMensagem("Reserva concluída com sucesso");
     setTipoSnack("success");
     setOpenSnack(true);
@@ -218,7 +214,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
                   <GrClose size={20} />
                 </Button>
               </Grid>
-              <Grid item container xs={12} height={"fit-content"}>
+              <Grid container height={"fit-content"}>
                 <Typography bgcolor={passo >= 0 ? "#00FF00" : "#8FBC8F"} sx={{ flex: 1, width: "34%", height: "0.3rem", borderRadius: 0 }} />
                 <Typography bgcolor={passo > 0 ? "#00FF00" : "#8FBC8F"} sx={{ width: "33%", height: "0.3rem", borderRadius: 0 }} />
                 <Typography bgcolor={passo > 1 ? "#00FF00" : "#8FBC8F"} sx={{ width: "33%", height: "0.3rem", borderRadius: 0 }} />
@@ -246,7 +242,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
                         Saindo de <strong>{excursao.cidadeOrigemExcursao}</strong>
                         para <strong>{excursao.cidadeDestinoExcursao}</strong>
                       </Typography>
-                      <Grid container xs={12} >
+                      <Grid container>
                         <FormControl fullWidth>
                           <FormLabel sx={{ color: "black" }}> Formas de Pagamento:</FormLabel>
                           <RadioGroup
@@ -279,7 +275,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
                     <Typography textAlign={"left"}>Contato: douglasr.comp@hotamil.com</Typography>
                     {Avaliacao(2.8)}
                   </Grid>
-                  <Grid item container padding={"0rem 1rem 0rem 1rem"} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+                  <Grid container padding={"0rem 1rem 0rem 1rem"} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
 
                     <Grid item xs={6} >
                       <Typography textAlign={"left"}>
@@ -303,7 +299,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario }: Props) => {
               }
               {/* Adicionar Passageiros */}
               {passo === 1 &&
-                <Grid item container >
+                <Grid container >
                   <Grid item xs={12} padding={"0rem 1rem 0rem 1rem"} width={"100%"} >
                     {ListaPassageiros()}
                   </Grid>

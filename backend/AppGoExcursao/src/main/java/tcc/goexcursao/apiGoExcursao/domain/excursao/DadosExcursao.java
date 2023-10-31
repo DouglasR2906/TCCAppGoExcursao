@@ -40,7 +40,6 @@ public record DadosExcursao(
         Boolean canceladaExcursao,
         @NotBlank
         String localEmbarqueExcursao,
-        @NotBlank
         String urlImagensExcursao
 
 ) {

@@ -14,5 +14,4 @@ export interface Excursao {
   canceladaExcursao: boolean;
   urlImagensExcursao: string;
   localEmbarqueExcursao: string;
-  selecionado: boolean | undefined;
 }

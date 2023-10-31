@@ -6,35 +6,35 @@ import http from "http/http";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Excursao } from "types/excursao";
-import ExcursoesLista from "../componentes/Excursoes/ListaExcursoes/listaExcursoes";
+import ExcursoesLista from "../Excursoes/ListaExcursoes/listaExcursoes";
 dayjs.locale("pt-br");
-
 
 function Inicio() {
   const navigate = useNavigate();
   const [excursoes, setExcursoes] = useState<Excursao[]>([]);
 
-  const [selecionada, setSelecionada] = useState<Excursao>({
-    idExcursao: 0,
-    idUsuarioExcursao: 0,
-    tituloExcursao: "",
-    descricaoExcursao: "",
-    valorExcursao: 0,
-    cidadeOrigemExcursao: "",
-    cidadeDestinoExcursao: "",
-    dataIdaExcursao: "",
-    dataVoltaExcursao: "",
-    horaIdaExcursao: "",
-    horaVoltaExcursao: "",
-    idCategoriaExcursao: 0,
-    canceladaExcursao: false,
-    urlImagensExcursao: "",
-    localEmbarqueExcursao: "",
-    selecionado: false
-  });
+  // const [selecionada, setSelecionada] = useState<ExcursaoSelecionada>({
+  //   idExcursao: 0,
+  //   idUsuarioExcursao: 0,
+  //   tituloExcursao: "",
+  //   descricaoExcursao: "",
+  //   valorExcursao: 0,
+  //   cidadeOrigemExcursao: "",
+  //   cidadeDestinoExcursao: "",
+  //   dataIdaExcursao: "",
+  //   dataVoltaExcursao: "",
+  //   horaIdaExcursao: "",
+  //   horaVoltaExcursao: "",
+  //   idCategoriaExcursao: 0,
+  //   canceladaExcursao: false,
+  //   urlImagensExcursao: "",
+  //   localEmbarqueExcursao: "",
+  //   selecionada: false
+  // });
   const [busca, setBusca] = useState({ busca: "", dataIda: dayjs(), dataVolta: dayjs() });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     http.get<Excursao[]>("excursao")
       .then(resposta => {
         setExcursoes(resposta.data);
@@ -44,22 +44,20 @@ function Inicio() {
       });
   }, []);
 
-  useEffect(() => {
-    if (selecionada && selecionada.selecionado) {
-      selecionarExcursao(selecionada);
-    }
-  }, [selecionada]);
+  // useEffect(() => {
+  //   if (selecionada && selecionada.selecionada) {
+  //     selecionarExcursao(selecionada);
+  //   }
+  // }, [selecionada]);
 
   const adicionaBusca = (busca: string, dataIda: Dayjs | null, dataVolta: Dayjs | null) => {
     if (dataIda && dataVolta) setBusca({ busca: busca, dataIda: dataIda, dataVolta: dataVolta });
   };
 
-  function selecionarExcursao(excursaoSelecionada: Excursao) {
-    excursaoSelecionada.selecionado = !excursaoSelecionada.selecionado;
-    setSelecionada(excursaoSelecionada);
+  function selecionarExcursao(idSelecionada: number) {
 
-    if (excursaoSelecionada.selecionado) {
-      navigate(`/excursaoPage/${excursaoSelecionada.idExcursao}`);
+    if (idSelecionada) {
+      navigate(`/excursaoPage/${idSelecionada}`);
     }
 
   }
@@ -67,7 +65,7 @@ function Inicio() {
   return (
     <div>
       <Banner />
-      <Formulario adicionaBusca={adicionaBusca} excursaoSelecionada={selecionada} />
+      <Formulario adicionaBusca={adicionaBusca} />
       <ExcursoesLista excursoes={excursoes} selecionarExcursao={selecionarExcursao} />
     </div>
   );

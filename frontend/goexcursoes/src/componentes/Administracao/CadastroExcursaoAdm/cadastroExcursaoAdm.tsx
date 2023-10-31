@@ -1,15 +1,21 @@
 import { Button, FormControl, FormGroup, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import categorias from "data/categorias.json";
+import CampoTextoMui from "componentes/Genericos/CampoTexto/campoTextoMui";
+import CampoValor from "componentes/Genericos/CampoTexto/campoValor";
+import ListaChip from "componentes/Genericos/ListaChip/listaChip";
+import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
+import UploadImagens from "componentes/Genericos/UploadImagens/uploadImagens";
 import dayjs from "dayjs";
 import http from "http/http";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Categorias } from "types/categorias";
 import { Excursao } from "types/excursao";
+import { FormaPagamento, FormaPagamentoExcursao } from "types/formaPagamento";
+import { TipoSnack } from "types/tipoSnack";
 
 export default function CadastroExcursaoAdm() {
   const params = useParams();
-
   const [excursao, setExcursao] = useState<Excursao>({
     idExcursao: 0,
     idUsuarioExcursao: 0,
@@ -18,29 +24,81 @@ export default function CadastroExcursaoAdm() {
     valorExcursao: 0,
     cidadeOrigemExcursao: "",
     cidadeDestinoExcursao: "",
-    dataIdaExcursao: "",
-    dataVoltaExcursao: "",
-    horaIdaExcursao: "",
-    horaVoltaExcursao: "",
+    dataIdaExcursao: dayjs().format("YYYY-MM-DD"),
+    dataVoltaExcursao: dayjs().format("YYYY-MM-DD"),
+    horaIdaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
+    horaVoltaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
     idCategoriaExcursao: 0,
     canceladaExcursao: false,
     urlImagensExcursao: "",
-    localEmbarqueExcursao: "",
-    selecionado: undefined
+    localEmbarqueExcursao: ""
   });
+  const [mensagem, setMensagem] = useState("");
+  const [tipoSnack, setTipoSnack] = useState<TipoSnack>("success");
+  const [openSnack, setOpenSnack] = useState(false);
+  const [categorias, setCategorias] = useState<Categorias[]>([]);
+  const [formasPagamentoSelecionadas, setFormasPagamentoSelecionadas] = useState<string[]>([""]);
+  const [formasPagamentoLista, setFormasPagamentoLista] = useState<FormaPagamento[]>([]);
+  const [formasPagamentoExcursao, setFormasPagamentoExcursao] = useState<FormaPagamentoExcursao[]>([]);
+  const [idUsuario, setIdUsuario] = useState<string | number>(0);
+  const [titutlo, setTitutloExcursao] = useState<string | number>("");
+  const [descricao, setDescricao] = useState<string | number>("");
+  const [cidadeOrigem, setCidadeOrigem] = useState<string | number>("");
+  const [cidadeDestino, setCidadeDestino] = useState<string | number>("");
+  const [dataIda, setDataIda] = useState(dayjs());
+  const [dataVolta, setDataVolta] = useState(dayjs());
+  const [horaIda, setHoraIda] = useState<string | number>("");
+  const [horaVolta, setHoraVolta] = useState<string | number>("");
+  const [localEmbarque, setLocalEmbarque] = useState<string | number>("");
   const [categoria, setCategoria] = useState(0);
+  const [valorTotal, setValorTotal] = useState({ valor: "0" });
+  const [imagens, setImagens] = useState<File[]>([]);
 
   useEffect(() => {
-    if (params.id) {
+    http.get("categoria")
+      .then((resposta) => {
+        setCategorias(resposta.data);
+      })
+      .catch(erro => {
+        setMensagem("Erro ao buscar categorias!");
+        setTipoSnack("error");
+        setOpenSnack(true);
+        console.log(erro);
+      })
+      .finally();
+
+    http.get("formaPagamento")
+      .then((resposta) => {
+        setFormasPagamentoLista(resposta.data);
+      })
+      .catch(() => {
+        setMensagem("Erro ao buscar formas de pagamento!");
+        setTipoSnack("error");
+        setOpenSnack(true);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (params.id && parseInt(params.id) > 0) {
       http.get<Excursao>(`excursao/${params.id}`)
         .then(resposta => {
           setExcursao(resposta.data);
-          console.log(excursao);
-
         })
         .catch(erro => {
           console.log(erro);
-        });
+        }).finally();
+
+      http.get(`excursao/${params.id}/formasPagtoExcursao`)
+        .then((resposta) => {
+          setFormasPagamentoExcursao(resposta.data);
+        })
+        .catch(erro => {
+          setMensagem("Erro ao buscar formas Pagamento!");
+          setTipoSnack("error");
+          setOpenSnack(true);
+          console.log(erro);
+        }).finally();
+
     } else {
       setExcursao({
         idExcursao: 0,
@@ -50,182 +108,276 @@ export default function CadastroExcursaoAdm() {
         valorExcursao: 0,
         cidadeOrigemExcursao: "",
         cidadeDestinoExcursao: "",
-        dataIdaExcursao: "",
-        dataVoltaExcursao: "",
-        horaIdaExcursao: "",
-        horaVoltaExcursao: "",
+        dataIdaExcursao: dayjs().format("YYYY-MM-DD"),
+        dataVoltaExcursao: dayjs().format("YYYY-MM-DD"),
+        horaIdaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
+        horaVoltaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
         idCategoriaExcursao: 0,
         canceladaExcursao: false,
         urlImagensExcursao: "",
-        localEmbarqueExcursao: "",
-        selecionado: undefined
+        localEmbarqueExcursao: ""
+      });
+      setImagens([]);
+      setFormasPagamentoExcursao([]);
+      setFormasPagamentoSelecionadas([]);
+    }
+  }, [params.id]);
+
+  useEffect(() => {
+    setIdUsuario(excursao.idUsuarioExcursao);
+    setTitutloExcursao(excursao.tituloExcursao);
+    setDescricao(excursao.descricaoExcursao);
+    setCidadeOrigem(excursao.cidadeOrigemExcursao);
+    setCidadeDestino(excursao.cidadeDestinoExcursao);
+    setLocalEmbarque(excursao.localEmbarqueExcursao);
+    setValorTotal({ valor: excursao.valorExcursao.toString() });
+    setCategoria(excursao.idCategoriaExcursao);
+    setDataIda(dayjs(excursao.dataIdaExcursao));
+    setDataVolta(dayjs(excursao.dataVoltaExcursao));
+    setHoraIda(excursao.horaIdaExcursao);
+    setHoraVolta(excursao.horaVoltaExcursao);
+  }, [excursao]);
+
+  useEffect(() => {
+    const formasPagto: string[] = [];
+    formasPagamentoExcursao.map((item) => {
+      formasPagto.push(item.descricaoFormaPagamento);
+    });
+    setFormasPagamentoSelecionadas(formasPagto);
+  }, [formasPagamentoExcursao]);
+
+  useEffect(() => {
+    if (imagens.length > 0 && excursao.idExcursao > 0) {
+      imagens.map((imagem) => {
+        EnviarImagens(imagem, excursao.idExcursao);
       });
     }
+  }, [imagens]);
 
-  }, [params]);
+  const adicionaNovasFormas = () => {
+    const novasFormas: FormaPagamentoExcursao[] = [];
+
+    formasPagamentoSelecionadas.forEach((item) => {
+      const formaSelecioanda = formasPagamentoLista.find(forma => forma.descricaoFormaPagamento === item);
+      if (formaSelecioanda) {
+        novasFormas.push({
+          idFormaPagto: formaSelecioanda.idFormaPagamento,
+          idExcursao: excursao.idExcursao,
+          descricaoFormaPagamento: formaSelecioanda.descricaoFormaPagamento
+        });
+      }
+    });
+
+    novasFormas.map((item) => {
+      http.post("excursao/addFormaPagtoExcursao", item)
+        .then()
+        .catch(erro => console.log("erro ao adicionar forma pagamento", erro));
+    });
+    setFormasPagamentoExcursao(novasFormas);
+  };
 
   const SalvarExcursao = () => {
-    http.post("/excursao");
+    const excursaoAtualizada: Excursao = {
+      idExcursao: excursao.idExcursao > 0 ? excursao.idExcursao : 0,
+      idUsuarioExcursao: Number(idUsuario),
+      tituloExcursao: titutlo.toString(),
+      descricaoExcursao: descricao.toString(),
+      cidadeOrigemExcursao: cidadeOrigem.toString(),
+      cidadeDestinoExcursao: cidadeDestino.toString(),
+      localEmbarqueExcursao: localEmbarque.toString(),
+      valorExcursao: parseFloat(valorTotal.valor),
+      idCategoriaExcursao: categoria,
+      dataIdaExcursao: dataIda.format("YYYY-MM-DD"),
+      horaIdaExcursao: horaIda.toString(),
+      dataVoltaExcursao: dataVolta.format("YYYY-MM-DD"),
+      horaVoltaExcursao: horaVolta.toString(),
+      urlImagensExcursao: excursao.idExcursao > 0 ? excursao.urlImagensExcursao : "",
+      canceladaExcursao: false
+    };
+    if (params.id) {
+      http.put("/excursao", excursaoAtualizada)
+        .then(resposta => {
+          setExcursao(resposta.data);
+          adicionaNovasFormas();
+          setTipoSnack("success");
+          setMensagem("Excursao atualizada com sucesso!");
+          setOpenSnack(true);
+        })
+        .catch(erro => {
+          setTipoSnack("error");
+          setMensagem("Erro ao atualizar excursao!");
+          setOpenSnack(true);
+          console.log(erro);
+        });
+    } else {
+      http.post("/excursao", excursaoAtualizada)
+        .then(resposta => {
+          setExcursao(resposta.data);
+          setTipoSnack("success");
+          setMensagem("Excursao cadastrada com sucesso!");
+          setOpenSnack(true);
+        })
+        .catch(erro => {
+          setTipoSnack("error");
+          setMensagem("Erro ao cadastrar excursao!");
+          setOpenSnack(true);
+          console.log(erro);
+        });
+    }
   };
 
   const ExcluirExcursao = () => {
     if (params.id) http.delete(`/excursao/${excursao.idExcursao}`);
   };
 
-  // useEffect(() => {
-  //   const categoriaSelecionada = categorias.find(iten => iten.descricao === categoria);
-  //   // if (categoriaSelecionada) 
-  // }, [categoria]);
-
   return (
 
     <FormGroup onSubmit={SalvarExcursao}>
       <Typography variant="h6" color="initial">Dados Excursão:</Typography>
-      <Grid container display={"flex"} flexDirection={"row"} overflow={"auto"} maxHeight={"90vh"}>
+      <Grid container display={"flex"} flexDirection={"row"} overflow={"auto"} maxHeight={"70vh"}>
         <Grid item xs={12}>
-          <TextField margin="dense" fullWidth
-            label="Id Usuario:"
-            value={excursao?.idUsuarioExcursao.toString()}
-            onChange={(event) => {
-              const valor = event.target.value;
-              setExcursao({ ...excursao, idUsuarioExcursao: parseInt(valor) });
-            }}
-          />
+          <CampoTextoMui label="Id Usuario" valor={idUsuario} setValor={setIdUsuario} tipoDeDado="numerico" />
         </Grid>
         <Grid item xs={12}>
-          <TextField margin="dense" fullWidth
-            label="Titulo:"
-            value={excursao?.tituloExcursao}
-            onChange={(event) => {
-              const valor = event.target.value;
-              setExcursao({ ...excursao, tituloExcursao: valor });
-            }}
-          />
+          <CampoTextoMui label="Titulo:" valor={titutlo} setValor={setTitutloExcursao} tipoDeDado="string" />
         </Grid>
         <Grid item xs={12}>
           <TextField margin="dense" fullWidth
             label="Descrição:"
+            size="small"
             multiline
             rows={2}
-            value={excursao?.descricaoExcursao}
+            value={descricao}
             onChange={(event) => {
               const valor = event.target.value;
-              setExcursao({ ...excursao, descricaoExcursao: valor });
+              setDescricao(valor);
             }}
           />
         </Grid>
-        <Grid container justifyContent={"space-between"}>
+        <Grid container >
           <Grid item xs={6} paddingRight={1}>
-            <TextField margin="dense" fullWidth
-              label="Cidade Origem:"
-              value={excursao?.cidadeOrigemExcursao}
-              onChange={(event) => {
-                const valor = event.target.value;
-                setExcursao({ ...excursao, cidadeOrigemExcursao: valor });
-              }}
+            <CampoTextoMui label="Cidade Origem:" valor={cidadeOrigem} setValor={setCidadeOrigem} tipoDeDado="string"
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField margin="dense" fullWidth
-              label="Cidade Destino:"
-              value={excursao?.cidadeDestinoExcursao}
-              onChange={(event) => {
-                const valor = event.target.value;
-                setExcursao({ ...excursao, cidadeDestinoExcursao: valor });
-              }}
+            <CampoTextoMui label="Cidade Destino:" valor={cidadeDestino} setValor={setCidadeDestino} tipoDeDado="string"
             />
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <TextField margin="dense" fullWidth
-            label="Valor Total:"
-            type=""
-            value={excursao?.valorExcursao.toFixed(2).toString()}
-            onChange={(event) => {
-              const valor = Number(parseFloat(event.target.value).toFixed(2));
-              if (!isNaN(valor)) {
-                setExcursao({ ...excursao, valorExcursao: Number(valor) });
-              } else {
-                setExcursao({ ...excursao, valorExcursao: 0 });
-              }
-            }}
-          />
+        <Grid container>
+          <Grid item xs={12} sm={6} paddingRight={{ sm: 1 }}>
+            <CampoTextoMui label="Local de embarque:" valor={localEmbarque} setValor={setLocalEmbarque} tipoDeDado="string" />
+          </Grid>
+          <Grid item xs={12} sm={6} sx={{ margin: "0.5rem 0rem 0.5rem 0" }}>
+            <CampoValor label="Valor Total:" valor={valorTotal} setValor={setValorTotal} />
+          </Grid>
         </Grid>
-        <FormControl margin="dense" fullWidth>
-          <InputLabel id="labelCategoria">Categoria</InputLabel>
-          <Select
-            label="Categoria"
-            labelId="labelCategoria"
-            id="selectCategoria"
-            required
-            value={categoria}
-            onChange={(evento) => {
-              const valor = evento.target.value;
-              setCategoria(Number(valor));
-            }}>
-            <MenuItem><em>{""}</em></MenuItem>
-            {categorias.map((categoria) =>
-              <MenuItem key={categoria.id} value={categoria.id}>
-                {categoria.descricao}
-              </MenuItem>)
-            }
-          </Select>
-        </FormControl>
-        <Grid container xs={12} >
-          <Grid item xs={4} alignItems={"center"} paddingRight={1}>
+        <Grid item container alignItems={"center"}>
+          <Grid item xs={12} sm={6} paddingRight={{ sm: 1 }}>
+            <FormControl margin="dense" fullWidth>
+              <InputLabel id="labelCategoria">Categoria</InputLabel>
+              <Select
+                size="small"
+                label="Categoria"
+                labelId="labelCategoria"
+                id="selectCategoria"
+                required
+                value={categoria}
+                onChange={(evento) => {
+                  const valor = evento.target.value;
+                  setCategoria(Number(valor));
+                }}>
+                <MenuItem><em>{""}</em></MenuItem>
+                {categorias.map((categoria) =>
+                  <MenuItem key={categoria.idCategoria} value={categoria.idCategoria}>
+                    {categoria.descricaoCategoria}
+                  </MenuItem>)
+                }
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <ListaChip
+              valor={formasPagamentoSelecionadas}
+              setValor={setFormasPagamentoSelecionadas}
+            />
+          </Grid>
+        </Grid>
+        <Grid container >
+          <Grid item xs={12} sm={3} md={3} alignItems={"center"} >
             <DatePicker sx={{ margin: "0.5rem 0.5rem 0.5rem 0", width: "100%" }}
               label="Data e hora saída:"
-              value={dayjs(excursao?.dataIdaExcursao)}
+              value={dataIda}
+              slotProps={{ textField: { size: "small" } }}
               onChange={(event) => {
                 const valor = event;
-                if (valor) setExcursao({ ...excursao, dataIdaExcursao: valor.format("YYYY-MM-DD") });
+                console.log(valor);
+                if (valor) setDataIda(valor);
               }}
             />
           </Grid>
-          <Grid item xs={2} >
-            <TextField fullWidth sx={{ padding: "0.5rem 0.5rem 0.5rem 0" }}
+          <Grid item xs={12} sm={3} md={3} paddingRight={{ sm: 1 }}>
+            <TextField fullWidth sx={{ padding: { xs: "0rem 0rem 0.5rem 0rem", sm: "0.5rem 0rem 0.5rem 0.5rem" } }}
+              size="small"
               type="time"
-              value={excursao?.horaIdaExcursao}
+              value={horaIda}
               onChange={(event) => {
                 const valor = event.target.value;
-                setExcursao({ ...excursao, horaIdaExcursao: valor });
+                setHoraIda(valor);
               }}
             />
           </Grid>
-          <Grid item xs={4} alignItems={"center"} paddingRight={1}>
+          <Grid item xs={12} sm={3} md={3} alignItems={"center"}>
             <DatePicker sx={{ margin: "0.5rem 0rem", width: "100%" }}
-              label="Data e hora saída:"
-              value={dayjs(excursao?.dataVoltaExcursao)}
+              label="Data e hora Volta:"
+              value={dataVolta}
+              slotProps={{ textField: { size: "small" } }}
               onChange={(event) => {
                 const valor = event;
-                if (valor) setExcursao({ ...excursao, dataVoltaExcursao: valor.format("YYYY-MM-DD") });
+                if (valor) setDataVolta(valor);
               }}
             />
           </Grid>
-          <Grid item xs={2} >
-            <TextField fullWidth sx={{ padding: "0.5rem 0rem 0.5rem 0.5rem" }}
-              aria-label="Hora Saída:"
+          <Grid item xs={12} sm={3} md={3} >
+            <TextField fullWidth sx={{ padding: { xs: "0rem 0rem 0.5rem 0rem", sm: "0.5rem 0rem 0.5rem 0.5rem" } }}
+              size="small"
               type="time"
-              hiddenLabel={true}
-              value={excursao?.horaVoltaExcursao}
+              value={horaVolta}
               onChange={(event) => {
                 const valor = event.target.value;
-                setExcursao({ ...excursao, horaVoltaExcursao: valor });
+                setHoraVolta(valor);
               }}
             />
           </Grid>
         </Grid>
+        <Grid item container justifyContent={"space-between"}>
+          <UploadImagens imagens={imagens} setImagens={setImagens} />
+        </Grid>
       </Grid>
-      <Grid container display={"flex"} justifyContent={"space-between"} marginTop={1} alignItems={"end"}>
-        <Grid item xs={1} >
+      <Grid container display={"flex"} marginTop={1} justifyContent={"space-between"}>
+        <Grid item xs={2}>
           {excursao.idExcursao ?
-            <Button variant="outlined" type="button" onClick={ExcluirExcursao}>Excluir</Button> : ""
+            <Button fullWidth variant="outlined" type="button" onClick={ExcluirExcursao}>Excluir</Button> : ""
           }
         </Grid>
-        <Grid item xs={1}>
-          <Button variant="outlined" type="submit" onClick={ExcluirExcursao}>Gravar</Button>
+        <Grid item xs={2}>
+          <Button fullWidth variant="outlined" type="submit" onClick={SalvarExcursao}>Gravar</Button>
         </Grid>
       </Grid>
+      <SnackALert open={openSnack} setOpen={setOpenSnack} mensagem={mensagem} tipoSnack={tipoSnack} />
     </FormGroup >
   );
+}
+
+export async function EnviarImagens(imagem: File, idExcursao: number) {
+  const formData = new FormData();
+  formData.append("imagem", imagem);
+  console.log(formData.getAll("imagem"));
+  http.post(`excursao/upload/imagens/${idExcursao}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  })
+    .then()
+    .catch(erro => console.log(erro));
 }

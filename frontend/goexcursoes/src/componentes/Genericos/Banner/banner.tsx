@@ -1,10 +1,8 @@
-import Cabecalho from "../Cabecalho/cabecalho";
 import style from "./Banner.module.scss";
 
 function Banner() {
   return (
     <div className={style.imgBanner}>
-      {/* <Cabecalho bgColor="transparent" posicao="static" /> */}
       <img src='/assets/img/Banner.png' alt='Imagem do banner' />
       <svg
         className={style.wave}

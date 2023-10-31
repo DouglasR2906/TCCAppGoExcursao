@@ -1,9 +1,9 @@
 import CadastroExcursaoAdm from "componentes/Administracao/CadastroExcursaoAdm/cadastroExcursaoAdm";
 import ListagemExcursaoAdm from "componentes/Administracao/ListagemExcursaoAdm/listagemExcursaoAdm";
-import PaginaPadraoAdm from "componentes/Administracao/PaginaPadraoAdm/paginaPadraoAdm";
-import ExcursaoPage from "componentes/Excursoes/excursaoPage";
-import Inicio from "pages/inicio";
-import PaginaPadrao from "pages/paginaPadrao";
+import Inicio from "componentes/Home/inicio";
+import ExcursaoPage from "pages/ExcursaoPage/excursaoPage";
+import PaginaPadraoAdm from "pages/PaginaPadraoAdm/paginaPadraoAdm";
+import PaginaPadrao from "pages/PaginaPadraoExcursao/paginaPadrao";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 export default function AppRoutes() {

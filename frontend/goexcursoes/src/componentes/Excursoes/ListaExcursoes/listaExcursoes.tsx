@@ -1,26 +1,15 @@
 import { Grid } from "@mui/material";
-import http from "http/http";
-import { useEffect, useState } from "react";
-import { Excursao } from "../../../types/excursao";
+import { useState } from "react";
+import { Excursao } from "types/excursao";
 import CardExcursao from "../Card/cardExcursao";
 import Filtros from "../Filtros/filtros";
 
 interface Props {
   excursoes: Excursao[]
-  selecionarExcursao: (excursaoSelecionada: Excursao) => void
+  selecionarExcursao: (idSelecionada: number) => void
 }
 function ExcursoesLista({ excursoes, selecionarExcursao }: Props) {
   const [filtro, setFiltro] = useState<number | null>(null);
-
-  useEffect(() => {
-    http.get("excursao/listarTodas")
-      .then(reposta => {
-        console.log(reposta);
-      })
-      .catch(erro => {
-        console.log(erro);
-      });
-  }, []);
 
   return (
     <>

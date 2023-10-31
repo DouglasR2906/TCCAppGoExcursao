@@ -32,13 +32,13 @@ export default function ExcursaoPage() {
     idCategoriaExcursao: 0,
     canceladaExcursao: false,
     urlImagensExcursao: "",
-    localEmbarqueExcursao: "",
-    selecionado: false
+    localEmbarqueExcursao: ""
   });
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     http.get<Excursao>(`excursao/${id}`)
       .then(resposta => {
         setExcursao(resposta.data);
@@ -87,7 +87,7 @@ export default function ExcursaoPage() {
   };
 
   return (
-    <Grid marginTop={5} >
+    <Grid >
       <Grid container spacing={2} sx={{
         bgcolor: "background.paper",
         // boxShadow: 1,
@@ -108,8 +108,8 @@ export default function ExcursaoPage() {
             <GrClose size={20} />
           </Button>
         </Grid>
-        <Grid item container xs={12} sm={12} md={6} spacing={2}>
-          <Grid item xs={12} >
+        <Grid item container spacing={2} md={6}>
+          <Grid item xs={12}>
             <Card sx={{ height: "100%" }} >
               <CardContent>
                 <Typography>{excursao.descricaoExcursao}</Typography>
@@ -121,12 +121,16 @@ export default function ExcursaoPage() {
               <CardContent>
                 <Typography variant="h6">Origem: {excursao.cidadeOrigemExcursao}</Typography>
                 <Typography variant="h6">Destino: {excursao.cidadeDestinoExcursao}</Typography>
-                <Typography variant="h6">Saída: {dataIda?.format("DD/MM/YYYY")}</Typography>
-                <Typography variant="h6">Volta: {dataVolta?.format("DD/MM/YYYY")}</Typography>
+                <Typography variant="h6">
+                  Saída: {dataIda?.format("DD/MM/YYYY")} às {excursao.horaIdaExcursao}
+                </Typography>
+                <Typography variant="h6">
+                  Volta: {dataVolta?.format("DD/MM/YYYY")} às {excursao.horaVoltaExcursao}
+                </Typography>
 
                 <List color='black'>
                   <Typography> Formas de Pagamento:</Typography>
-                  <Grid container xs={12} sm={12} >
+                  <Grid container>
                     {formasPagamento.map((item) => (
                       <Grid item key={item.id} xs={12} sm={12} md={6}>
                         <ListItem><BiDollarCircle size={20} />{item.descricao}</ListItem>
@@ -139,7 +143,7 @@ export default function ExcursaoPage() {
             </Card>
           </Grid>
         </Grid>
-        <Grid item container xs={12} sm={12} md={6} spacing={2} >
+        <Grid item container md={6} spacing={2}>
           <Grid item xs={12}>
             <Card sx={{ height: "100%" }}>
               <CardMedia
@@ -150,7 +154,7 @@ export default function ExcursaoPage() {
               />
             </Card>
           </Grid>
-          <Grid item xs={12} >
+          <Grid item xs={12}>
             <Card sx={{ height: "100%" }}>
               <CardContent>
                 <Typography variant="h6">Divulgador</Typography>

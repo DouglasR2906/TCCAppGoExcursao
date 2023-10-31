@@ -2,15 +2,13 @@ import { Container } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useState } from "react";
 import { GrSearch } from "react-icons/gr";
-import { Excursao } from "../../../types/excursao";
-import Botao from "../../Genericos/Botao/botao";
+import Botao from "../../Genericos/Botoes/botao";
 import CampoData from "../../Genericos/CampoData/campoData";
 import CampoTexto from "../../Genericos/CampoTexto/campoTexto";
 import style from "./Formulario.module.scss";
 
 interface Props {
   adicionaBusca: (busca: string, dataIda: Dayjs | null, dataVolta: Dayjs | null) => void
-  excursaoSelecionada: Excursao | undefined
 }
 
 function Formulario({ adicionaBusca }: Props) {

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { Excursao } from "types/excursao";
 interface Props {
   excursao: Excursao,
-  selecionarExcursao: (excursaoSelecionada: Excursao) => void,
+  selecionarExcursao: (idSelecionada: number) => void,
 }
 
 function CardExcursao({ excursao, selecionarExcursao }: Props) {
@@ -23,7 +23,7 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
 
   return (
     <Card sx={{ maxWidth: 400 }}>
-      <CardActionArea onClick={() => selecionarExcursao(excursao)}>
+      <CardActionArea onClick={() => selecionarExcursao(excursao.idExcursao)}>
         <CardMedia
           component="img"
           height="140"

@@ -8,7 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
@@ -30,14 +30,29 @@ function Cabecalho({ posicao, exibirUsuario }: Props) {
     if (pagina === "Administração") {
       navigate("/admin");
     }
+    setAnchorElUser(null);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (anchorElUser && !anchorElUser.contains(event.target as Node)) {
+        setAnchorElUser(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [anchorElUser]);
 
   return (
     <AppBar position={posicao} sx={{
       background: "#e1e1e4",
     }}>
       <Container maxWidth="xl" sx={{ opacity: 1 }}>
-        <Toolbar disableGutters>
+        <Toolbar >
           <Link to={"/"}>
             <Avatar
               sx={{ borderRadius: 0, width: "7rem", height: "3rem", display: { xs: "flex", md: "flex" }, mr: 1 }}

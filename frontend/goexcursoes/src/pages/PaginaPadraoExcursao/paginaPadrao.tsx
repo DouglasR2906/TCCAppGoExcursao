@@ -4,16 +4,12 @@ import { Outlet } from "react-router-dom";
 
 export default function PaginaPadrao() {
   return (
-    <>
-      <div>
-        <Cabecalho posicao="fixed" exibirUsuario={true} />
-      </div>
-      <div>
+    <div style={{ height: "100vh" }}>
+      <Cabecalho posicao="fixed" exibirUsuario={true} />
+      <div style={{ paddingTop: "64px" }}>
         <Outlet />
-      </div>
-      <div>
         <Rodape />
       </div>
-    </>
+    </div>
   );
 }

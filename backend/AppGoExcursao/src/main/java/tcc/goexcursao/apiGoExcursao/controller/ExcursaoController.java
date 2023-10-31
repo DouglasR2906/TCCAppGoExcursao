@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.categoria.CategoriaRepository;
 import tcc.goexcursao.apiGoExcursao.domain.excursao.*;
@@ -19,6 +22,10 @@ import tcc.goexcursao.apiGoExcursao.domain.usuario.UsuarioRepository;
 import tcc.goexcursao.apiGoExcursao.infra.exception.TradorDeErros;
 import tcc.goexcursao.apiGoExcursao.infra.exception.ValidacaoException;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +42,8 @@ public class ExcursaoController {
     private CategoriaRepository categoriaRepository;
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
-
+    @Autowired
+    private ExcursaoService excursaoService;
     @Autowired
     TradorDeErros tradorDeErros;
     @PostMapping
@@ -57,8 +65,25 @@ public class ExcursaoController {
         excursao.setCategoria(categoria);
         excrusaoRepository.save(excursao);
 
+        excursao = excrusaoRepository.getReferenceById(excursao.getIdExcursao());
+        excursao.setUrlImagensExcursao("http://localhost/GoExcursoes/Imagens/" + excursao.getIdExcursao() + "/" );
+
         var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(excursao.getIdExcursao()).toUri();
         return ResponseEntity.created(uri).body(new DadosExcursaoListagem(excursao));
+    }
+
+    @PostMapping(value = "/upload/imagens/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadImage(@RequestPart MultipartFile imagem, @PathVariable Long id) {
+        var excursao = excrusaoRepository.getReferenceById(id);
+        if (excursao != null){
+            try {
+                excursaoService.UploadImagem(imagem, excursao.getIdExcursao());
+                return ResponseEntity.ok("Imagem enviada com sucesso.");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao fazer o upload da imagem.");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Excursao não encontrada.");
     }
 
     @GetMapping
@@ -128,18 +153,13 @@ public class ExcursaoController {
     @GetMapping("/{id}/formasPagtoExcursao")
     public ResponseEntity<List<DadosFormaPagtoExcursaoListagem>> listarFormasPagto(@PathVariable Long id){
         var excursao = excrusaoRepository.findById(id).orElse(null);
-
         if (excursao == null){
             throw new ValidacaoException("Excursão não encontrada!");
         }
-
         List<DadosFormaPagtoExcursaoListagem> formasPagto = excursao.getFormasPagamento()
                 .stream()
                 .map(formaPagamento -> new DadosFormaPagtoExcursaoListagem(excursao, formaPagamento))
                 .collect(Collectors.toList());
-
-        System.out.println(formasPagto);
-
         return ResponseEntity.ok(formasPagto);
     }
 

@@ -22,7 +22,7 @@ function ListaSuspensa({ obrigatorio, label, itens, valor, aoAlterado }: Props) 
     <div className={styel.lista}>
       <label>{label}</label>
       <select onChange={aoSelecionado} required={obrigatorio} value={valor}>
-        {itens.map((item) => <option key={item.id} className="option" value={item.descricao}>{item.descricao}</option>)}
+        {itens.map((item) => <option key={item.idCategoria} className="option" value={item.descricaoCategoria}>{item.descricaoCategoria}</option>)}
       </select>
     </div>
   );

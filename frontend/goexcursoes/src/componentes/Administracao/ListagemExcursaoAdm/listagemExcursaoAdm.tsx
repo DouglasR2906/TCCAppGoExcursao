@@ -49,10 +49,10 @@ export default function ListagemExcursaoAdm() {
         <TableHead>
           <TableRow>
             <TableCell>Titulo</TableCell>
-            <TableCell align="right">Destino</TableCell>
-            <TableCell align="right">Origem</TableCell>
+            <TableCell align="center">Origem</TableCell>
+            <TableCell align="center">Destino</TableCell>
             <TableCell align="right">Valor Total</TableCell>
-            <TableCell align="right">Editar</TableCell>
+            <TableCell align="center">Editar</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -62,10 +62,10 @@ export default function ListagemExcursaoAdm() {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">{excursao.tituloExcursao}</TableCell>
-              <TableCell align="right">{excursao.cidadeDestinoExcursao}</TableCell>
-              <TableCell align="right">{excursao.cidadeOrigemExcursao}</TableCell>
+              <TableCell align="center">{excursao.cidadeOrigemExcursao}</TableCell>
+              <TableCell align="center">{excursao.cidadeDestinoExcursao}</TableCell>
               <TableCell align="right">R${excursao.valorExcursao.toFixed(2)}</TableCell>
-              <TableCell align="right">
+              <TableCell align="center">
                 <Button variant="text" sx={{ borderRadius: "50%" }} onClick={() => navigate(`novo/${excursao.idExcursao}`)}>
                   <EditIcon />
                 </Button>

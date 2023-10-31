@@ -12,9 +12,6 @@ function Botao({ children, type }: Props) {
     <button className={style.botao} type={type} >
       {children}
     </button>
-    // <Button variant='contained' className={style.botao} >
-    //   {props.children}
-    // </Button>
   );
 }
 
