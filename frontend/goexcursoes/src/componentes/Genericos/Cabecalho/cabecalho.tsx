@@ -133,7 +133,7 @@ function Cabecalho({ posicao, exibirUsuario }: Props) {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Menu de opções">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
-                  <Avatar alt="Douglas Rodriges" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Michelly" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu

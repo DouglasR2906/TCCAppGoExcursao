@@ -5,13 +5,13 @@ import "dayjs/locale/pt-br";
 import http from "http/http";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Excursao } from "types/excursao";
+import { IExcursao } from "types/excursao";
 import ExcursoesLista from "../Excursoes/ListaExcursoes/listaExcursoes";
 dayjs.locale("pt-br");
 
 function Inicio() {
   const navigate = useNavigate();
-  const [excursoes, setExcursoes] = useState<Excursao[]>([]);
+  const [excursoes, setExcursoes] = useState<IExcursao[]>([]);
 
   // const [selecionada, setSelecionada] = useState<ExcursaoSelecionada>({
   //   idExcursao: 0,
@@ -35,7 +35,7 @@ function Inicio() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    http.get<Excursao[]>("excursao")
+    http.get<IExcursao[]>("excursao")
       .then(resposta => {
         setExcursoes(resposta.data);
       })

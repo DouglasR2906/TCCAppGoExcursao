@@ -37,9 +37,7 @@ public class DadosCadastrais {
     @Column(name = "email_dadoscadastrais")
     private String emailDadosCadastrais;
     @Column(name = "telefone_1_dadoscadastrais")
-    private String telefone1DadosCadastrais;
-    @Column(name = "telefone_2_dadoscadastrais")
-    private String telefone2DadosCadastrais;
+    private String telefoneDadosCadastrais;
     @Enumerated(EnumType.STRING)
     @Column(name = "sexo_dadoscadastrais")
     private SexoDadosCadastrais sexoDadosCadastrais;
@@ -52,8 +50,7 @@ public class DadosCadastrais {
         this.cidadeDadosCadastrais = dadosCadastro.cidadeDadosCadastrais();
         this.ufDadosCadastrais = dadosCadastro.ufDadosCadastrais();
         this.emailDadosCadastrais = dadosCadastro.emailDadosCadastrais();
-        this.telefone1DadosCadastrais = dadosCadastro.telefone1DadosCadastrais();
-        this.telefone2DadosCadastrais = dadosCadastro.telefone2DadosCadastrais();
+        this.telefoneDadosCadastrais = dadosCadastro.telefoneDadosCadastrais();
         this.sexoDadosCadastrais = dadosCadastro.sexoDadosCadastrais();
     }
 
@@ -79,13 +76,8 @@ public class DadosCadastrais {
         if (dadosDadosCadastrais.emailDadosCadastrais() != null){
             this.emailDadosCadastrais = dadosDadosCadastrais.emailDadosCadastrais();
         }
-        if (dadosDadosCadastrais.telefone1DadosCadastrais() != null){
-            this.telefone1DadosCadastrais = dadosDadosCadastrais.telefone1DadosCadastrais();
-        }
-        if (dadosDadosCadastrais.telefone2DadosCadastrais() == null){
-            this.telefone2DadosCadastrais = " ";
-        }else {
-            this.telefone2DadosCadastrais = dadosDadosCadastrais.telefone2DadosCadastrais();
+        if (dadosDadosCadastrais.telefoneDadosCadastrais() != null){
+            this.telefoneDadosCadastrais = dadosDadosCadastrais.telefoneDadosCadastrais();
         }
         if (dadosDadosCadastrais.sexoDadosCadastrais() != null){
             this.sexoDadosCadastrais = dadosDadosCadastrais.sexoDadosCadastrais();

@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import http from "http/http";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Excursao } from "types/excursao";
+import { IExcursao } from "types/excursao";
 
 function createData(
   name: string,
@@ -33,9 +33,9 @@ const rows = [
 
 export default function ListagemExcursaoAdm() {
   const navigate = useNavigate();
-  const [excursoes, setExcursoes] = useState<Excursao[]>([]);
+  const [excursoes, setExcursoes] = useState<IExcursao[]>([]);
   useEffect(() => {
-    http.get<Excursao[]>("excursao")
+    http.get<IExcursao[]>("excursao")
       .then(resposta => {
         setExcursoes(resposta.data);
       })

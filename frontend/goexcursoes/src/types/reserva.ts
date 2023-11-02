@@ -1,7 +1,8 @@
-export interface Reserva {
-  id: number;
-  idExcursao: number;
-  idUsuario: number;
-  qtdViajantes: number;
-  formaPagamento: number;
+export interface IReserva {
+  idReserva: number;
+  idUsuarioReserva: number;
+  idExcursaoReserva: number;
+  qtdViajantesReserva: number;
+  valorTotalReserva: number;
+  formaPagtoReserva: number;
 }

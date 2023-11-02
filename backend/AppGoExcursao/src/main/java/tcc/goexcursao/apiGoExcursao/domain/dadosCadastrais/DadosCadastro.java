@@ -37,10 +37,7 @@ public record DadosCadastro(
 
     @NotBlank
     @Pattern(regexp = "\\d{10,11}") 
-    String telefone1DadosCadastrais,
-    
-    @Pattern (regexp = "(?:\\d{10,11})?")
-    String telefone2DadosCadastrais,
+    String telefoneDadosCadastrais,
     @NotNull
     SexoDadosCadastrais sexoDadosCadastrais,
 

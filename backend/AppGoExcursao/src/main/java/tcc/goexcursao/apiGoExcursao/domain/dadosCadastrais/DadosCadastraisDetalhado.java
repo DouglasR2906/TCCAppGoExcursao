@@ -12,8 +12,7 @@ public record DadosCadastraisDetalhado(
     String cidadeDadosCadastrais,
     String ufDadosCadastrais,
     String emailDadosCadastrais,
-    String telefone1DadosCadastrais,
-    String telefone2DadosCadastrais,
+    String telefoneDadosCadastrais,
     SexoDadosCadastrais sexoDadosCadastrais
      ) {
     public DadosCadastraisDetalhado(DadosCadastrais dadosCadastrais){
@@ -26,8 +25,7 @@ public record DadosCadastraisDetalhado(
         dadosCadastrais.getCidadeDadosCadastrais(),
         dadosCadastrais.getUfDadosCadastrais(),
         dadosCadastrais.getEmailDadosCadastrais(),
-        dadosCadastrais.getTelefone1DadosCadastrais(),
-        dadosCadastrais.getTelefone2DadosCadastrais(),
+        dadosCadastrais.getTelefoneDadosCadastrais(),
         dadosCadastrais.getSexoDadosCadastrais());
     }
 }

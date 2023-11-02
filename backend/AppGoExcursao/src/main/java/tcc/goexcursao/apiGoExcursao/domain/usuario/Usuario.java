@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "idUsuario")
 public class Usuario implements UserDetails {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuarios")
@@ -31,7 +32,11 @@ public class Usuario implements UserDetails {
     @Column(name = "ativo_usuarios")
     private Boolean ativoUsuario;
 
-    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario")
+    private TipoUsuario tipoUsuario;
+
+
     public Usuario(DadosUsuario dadosUsuario){
         this.loginUsuario = dadosUsuario.loginUsuario();
         this.senhaUsuario = dadosUsuario.senhaUsuario();
@@ -67,16 +72,6 @@ public class Usuario implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         /*List<GrantedAuthority> authorities = new ArrayList<>();
-        Caso eu queira utilizar uma validação de permissão por tipo de perfil
-        e utilizar uma enum para o tipo de usuario
-        public enum TipoUsuario {
-            ADMIN,
-            CLIENTE,
-            DIVULGADOR
-        }
-        @Enumerated(EnumType.STRING)
-        @Column(name = "tipoUsuario", length = 20) // Defina o tamanho adequado para o seu caso
-        private TipoUsuario tipoUsuario;
 
         switch (tipoUsuario) {
             case ADMIN:
@@ -85,13 +80,15 @@ public class Usuario implements UserDetails {
             case CLIENTE:
                 authorities.add(new SimpleGrantedAuthority("ROLE_CLIENTE"));
                 break;
-            case DIVULGADOR:
-                authorities.add(new SimpleGrantedAuthority("ROLE_DIVULGADOR"));
+            case ORGANIZADOR:
+                authorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZADOR"));
                 break;
             default:
-                authorities.add(new SimpleGrantedAuthority("ROLE_USUARIO"));
+                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 break;
-        }*/
+        }
+
+        return  authorities;*/
     }
 
     @Override

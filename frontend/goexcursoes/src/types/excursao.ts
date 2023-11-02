@@ -1,4 +1,4 @@
-export interface Excursao {
+export interface IExcursao {
   idExcursao: number;
   idUsuarioExcursao: number;
   tituloExcursao: string;
@@ -14,4 +14,8 @@ export interface Excursao {
   canceladaExcursao: boolean;
   urlImagensExcursao: string;
   localEmbarqueExcursao: string;
+}
+
+export interface IExcursaoSelecionada extends IExcursao {
+  selecionada: boolean;
 }

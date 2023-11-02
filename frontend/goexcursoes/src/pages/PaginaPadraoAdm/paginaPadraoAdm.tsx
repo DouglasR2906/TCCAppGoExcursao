@@ -50,11 +50,11 @@ const menu =
       value: "Reservas",
       to: "reservas"
     },
-    {
-      id: 4,
-      value: "Relatorios",
-      to: "relatorios"
-    },
+    // {
+    //   id: 4,
+    //   value: "Relatorios",
+    //   to: "relatorios"
+    // },
     {
       id: 5,
       value: "Sair",

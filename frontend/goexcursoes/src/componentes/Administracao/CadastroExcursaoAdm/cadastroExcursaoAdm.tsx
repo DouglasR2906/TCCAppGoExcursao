@@ -9,14 +9,14 @@ import dayjs from "dayjs";
 import http from "http/http";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Categorias } from "types/categorias";
-import { Excursao } from "types/excursao";
-import { FormaPagamento, FormaPagamentoExcursao } from "types/formaPagamento";
+import { ICategoria } from "types/categoria";
+import { IExcursao } from "types/excursao";
+import { IFormaPagamento, IFormaPagamentoExcursao } from "types/formaPagamento";
 import { TipoSnack } from "types/tipoSnack";
 
 export default function CadastroExcursaoAdm() {
   const params = useParams();
-  const [excursao, setExcursao] = useState<Excursao>({
+  const [excursao, setExcursao] = useState<IExcursao>({
     idExcursao: 0,
     idUsuarioExcursao: 0,
     tituloExcursao: "",
@@ -36,10 +36,10 @@ export default function CadastroExcursaoAdm() {
   const [mensagem, setMensagem] = useState("");
   const [tipoSnack, setTipoSnack] = useState<TipoSnack>("success");
   const [openSnack, setOpenSnack] = useState(false);
-  const [categorias, setCategorias] = useState<Categorias[]>([]);
+  const [categorias, setCategorias] = useState<ICategoria[]>([]);
   const [formasPagamentoSelecionadas, setFormasPagamentoSelecionadas] = useState<string[]>([""]);
-  const [formasPagamentoLista, setFormasPagamentoLista] = useState<FormaPagamento[]>([]);
-  const [formasPagamentoExcursao, setFormasPagamentoExcursao] = useState<FormaPagamentoExcursao[]>([]);
+  const [formasPagamentoLista, setFormasPagamentoLista] = useState<IFormaPagamento[]>([]);
+  const [formasPagamentoExcursao, setFormasPagamentoExcursao] = useState<IFormaPagamentoExcursao[]>([]);
   const [idUsuario, setIdUsuario] = useState<string | number>(0);
   const [titutlo, setTitutloExcursao] = useState<string | number>("");
   const [descricao, setDescricao] = useState<string | number>("");
@@ -80,7 +80,7 @@ export default function CadastroExcursaoAdm() {
 
   useEffect(() => {
     if (params.id && parseInt(params.id) > 0) {
-      http.get<Excursao>(`excursao/${params.id}`)
+      http.get<IExcursao>(`excursao/${params.id}`)
         .then(resposta => {
           setExcursao(resposta.data);
         })
@@ -155,7 +155,7 @@ export default function CadastroExcursaoAdm() {
   }, [imagens]);
 
   const adicionaNovasFormas = () => {
-    const novasFormas: FormaPagamentoExcursao[] = [];
+    const novasFormas: IFormaPagamentoExcursao[] = [];
 
     formasPagamentoSelecionadas.forEach((item) => {
       const formaSelecioanda = formasPagamentoLista.find(forma => forma.descricaoFormaPagamento === item);
@@ -177,7 +177,7 @@ export default function CadastroExcursaoAdm() {
   };
 
   const SalvarExcursao = () => {
-    const excursaoAtualizada: Excursao = {
+    const excursaoAtualizada: IExcursao = {
       idExcursao: excursao.idExcursao > 0 ? excursao.idExcursao : 0,
       idUsuarioExcursao: Number(idUsuario),
       tituloExcursao: titutlo.toString(),

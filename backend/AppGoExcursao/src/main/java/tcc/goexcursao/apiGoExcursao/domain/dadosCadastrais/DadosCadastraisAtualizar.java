@@ -22,9 +22,7 @@ public record DadosCadastraisAtualizar(
     @Email(message = "{email.invalido}")
     String emailDadosCadastrais,
     @Pattern(regexp = "(?:\\d{10,11})?")
-    String telefone1DadosCadastrais,
-    @Pattern (regexp = "(?:\\d{10,11})?")
-    String telefone2DadosCadastrais,
+    String telefoneDadosCadastrais,
     SexoDadosCadastrais sexoDadosCadastrais
      ) {   
 }

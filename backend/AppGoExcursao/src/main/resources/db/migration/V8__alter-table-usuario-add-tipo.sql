@@ -1,8 +1,8 @@
 SET @dbname = DATABASE();
 
 /*--------------------------- ALTERANDO USUARIO --------------------------*/
-SET @tablename = 'usuario';
-SET @columnname = 'tipoUsuario';
+SET @tablename = 'usuarios';
+SET @columnname = 'tipo_usuario';
 
 SET @preparedStatement = (SELECT IF(
   (

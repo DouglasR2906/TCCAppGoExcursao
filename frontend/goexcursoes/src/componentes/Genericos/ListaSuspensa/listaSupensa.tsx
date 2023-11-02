@@ -1,11 +1,11 @@
 import React from "react";
-import { Categorias } from "types/categorias";
+import { ICategoria } from "types/categoria";
 import styel from "./ListaSuspensa.module.scss";
 
 interface Props {
   obrigatorio: boolean,
   label: string,
-  itens: Categorias[],
+  itens: ICategoria[],
   valor: string,
   aoAlterado: React.Dispatch<React.SetStateAction<string>>
 }

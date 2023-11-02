@@ -1,6 +1,7 @@
 import CadastroExcursaoAdm from "componentes/Administracao/CadastroExcursaoAdm/cadastroExcursaoAdm";
 import ListagemExcursaoAdm from "componentes/Administracao/ListagemExcursaoAdm/listagemExcursaoAdm";
 import Inicio from "componentes/Home/inicio";
+import Login from "componentes/Usuario/Login/login";
 import ExcursaoPage from "pages/ExcursaoPage/excursaoPage";
 import PaginaPadraoAdm from "pages/PaginaPadraoAdm/paginaPadraoAdm";
 import PaginaPadrao from "pages/PaginaPadraoExcursao/paginaPadrao";
@@ -19,7 +20,7 @@ export default function AppRoutes() {
           <Route path="/admin/novo" element={<CadastroExcursaoAdm />} />
           <Route path="/admin/novo/:id" element={<CadastroExcursaoAdm />} />
         </Route>
-
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

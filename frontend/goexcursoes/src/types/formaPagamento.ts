@@ -1,9 +1,9 @@
-export interface FormaPagamento {
+export interface IFormaPagamento {
   idFormaPagamento: number;
   descricaoFormaPagamento: string;
 }
 
-export interface FormaPagamentoExcursao {
+export interface IFormaPagamentoExcursao {
   idExcursao: number;
   idFormaPagto: number;
   descricaoFormaPagamento: string;

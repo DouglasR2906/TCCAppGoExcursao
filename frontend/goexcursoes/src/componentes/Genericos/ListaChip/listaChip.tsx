@@ -7,11 +7,11 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Theme, useTheme } from "@mui/material/styles";
 import http from "http/http";
 import { useEffect, useState } from "react";
-import { FormaPagamento } from "types/formaPagamento";
+import { IFormaPagamento } from "types/formaPagamento";
 import { TipoSnack } from "types/tipoSnack";
 import SnackALert from "../SnackAlert/snackAlert";
 
-function getStyles(descricao: FormaPagamento, formasPagamento: readonly FormaPagamento[], theme: Theme) {
+function getStyles(descricao: IFormaPagamento, formasPagamento: readonly IFormaPagamento[], theme: Theme) {
   return {
     fontWeight:
       formasPagamento.indexOf(descricao) === -1
@@ -30,7 +30,7 @@ export default function ListaChip({ valor, setValor }: Props) {
   const [mensagem, setMensagem] = useState("");
   const [tipoSnack, setTipoSnack] = useState<TipoSnack>("success");
   const [openSnack, setOpenSnack] = useState(false);
-  const [formasPagamento, setFormasPagamento] = useState<FormaPagamento[]>([]);
+  const [formasPagamento, setFormasPagamento] = useState<IFormaPagamento[]>([]);
 
   useEffect(() => {
     http.get("formaPagamento")

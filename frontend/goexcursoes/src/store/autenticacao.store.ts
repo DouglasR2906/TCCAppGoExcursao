@@ -1,12 +1,5 @@
 import { action, makeObservable, observable } from "mobx";
-
-interface IUsuarioLogado {
-  idUsuario: number;
-  loginUsuario: string;
-  tokenUsuario: string;
-  tipoUsuario: string;
-}
-
+import { IUsuarioLogado } from "types/usuario";
 class AutenticacaoStore {
   estaAutenticado = false;
   usuario: IUsuarioLogado = {

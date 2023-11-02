@@ -1,23 +1,29 @@
 import { Button, Card, CardContent, CardMedia, Grid, List, ListItem, Typography } from "@mui/material";
 import ModalReserva from "componentes/Excursoes/ModalReserva/modalReserva";
-import formasPagamento from "data/formasPagamento.json";
+import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
 import dayjs, { Dayjs } from "dayjs";
 import http from "http/http";
 import { useEffect, useState } from "react";
 import { BiDollarCircle } from "react-icons/bi";
 import { GrClose, GrStar } from "react-icons/gr";
 import { useNavigate, useParams } from "react-router-dom";
-import { Excursao } from "types/excursao";
-import { Usuario } from "types/usuario";
+import { IExcursao } from "types/excursao";
+import { IFormaPagamentoExcursao } from "types/formaPagamento";
+import { TipoSnack } from "types/tipoSnack";
+import { IUsuario } from "types/usuario";
 
-const usuario: Usuario = { id: "1", login: "douglasr.comp@hotmail.com", senha: "26122015", ativo: true };
+const usuario: IUsuario = { idUsuario: 1, loginUsuario: "douglasr.comp@hotmail.com", ativoUsario: true, tipoUsuario: "ADMIN" };
 
 export default function ExcursaoPage() {
   const { id } = useParams();
+  const [mensagem, setMensagem] = useState("");
+  const [tipoSnack, setTipoSnack] = useState<TipoSnack>("success");
+  const [openSnack, setOpenSnack] = useState(false);
   const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
   const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
+  const [formasPagamento, setFormasPagamento] = useState<IFormaPagamentoExcursao[]>([]);
 
-  const [excursao, setExcursao] = useState<Excursao>({
+  const [excursao, setExcursao] = useState<IExcursao>({
     idExcursao: 0,
     idUsuarioExcursao: 0,
     tituloExcursao: "",
@@ -39,7 +45,7 @@ export default function ExcursaoPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    http.get<Excursao>(`excursao/${id}`)
+    http.get<IExcursao>(`excursao/${id}`)
       .then(resposta => {
         setExcursao(resposta.data);
       })
@@ -49,6 +55,18 @@ export default function ExcursaoPage() {
   }, []);
 
   useEffect(() => {
+    if (excursao.idExcursao > 0) {
+      http.get(`excursao/${excursao.idExcursao}/formasPagtoExcursao`)
+        .then((resposta) => {
+          setFormasPagamento(resposta.data);
+        })
+        .catch(erro => {
+          setMensagem("Erro ao buscar formas Pagamento!");
+          setTipoSnack("error");
+          setOpenSnack(true);
+          console.log(erro);
+        }).finally();
+    }
     setDataIda(dayjs(excursao.dataIdaExcursao));
     setDataVolta(dayjs(excursao.dataVoltaExcursao));
   }, [excursao]);
@@ -132,8 +150,8 @@ export default function ExcursaoPage() {
                   <Typography> Formas de Pagamento:</Typography>
                   <Grid container>
                     {formasPagamento.map((item) => (
-                      <Grid item key={item.id} xs={12} sm={12} md={6}>
-                        <ListItem><BiDollarCircle size={20} />{item.descricao}</ListItem>
+                      <Grid item key={item.idFormaPagto} xs={12} sm={12} md={6}>
+                        <ListItem><BiDollarCircle size={20} />{item.descricaoFormaPagamento}</ListItem>
                       </Grid>
                     ))}
                   </Grid>
@@ -166,7 +184,8 @@ export default function ExcursaoPage() {
           </Grid>
         </Grid>
       </Grid>
-      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} usuario={usuario} />
+      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} usuario={usuario} formasPagamento={formasPagamento} />
+      <SnackALert open={openSnack} setOpen={setOpenSnack} mensagem={mensagem} tipoSnack={tipoSnack} />
     </Grid>
   );
 }

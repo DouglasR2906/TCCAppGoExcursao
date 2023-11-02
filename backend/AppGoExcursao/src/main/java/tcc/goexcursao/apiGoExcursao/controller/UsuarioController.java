@@ -43,8 +43,8 @@ public class UsuarioController {
     }
 
     //Consulta todos dados de uma unica vez sem nenhum filtro nem paginação
-    @GetMapping
     //@Secured("ROLE_ADMIN") Caso queira utilizar autorização por perfil de usuarios
+    @GetMapping
     public ResponseEntity<List<DadosUsuarioListagem>> listar(){
         var usuario = repository.findAll().stream().map(DadosUsuarioListagem::new).toList();
         return ResponseEntity.ok(usuario);
