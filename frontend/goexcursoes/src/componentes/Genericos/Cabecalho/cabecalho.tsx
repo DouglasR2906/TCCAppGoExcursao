@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -10,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import autenticacaoStore from "store/autenticacao.store";
 
 interface Props {
   posicao: "fixed" | "absolute" | "sticky" | "static" | "relative" | undefined;
@@ -22,6 +24,10 @@ function Cabecalho({ posicao, exibirUsuario }: Props) {
   const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
+  const abrirLogin = () => {
+    navigate("/login");
+  };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -30,6 +36,10 @@ function Cabecalho({ posicao, exibirUsuario }: Props) {
     if (pagina === "Administração") {
       navigate("/admin");
     }
+    if (pagina === "Sair") {
+      autenticacaoStore.logout;
+    }
+
     setAnchorElUser(null);
   };
 
@@ -132,9 +142,16 @@ function Cabecalho({ posicao, exibirUsuario }: Props) {
           {exibirUsuario &&
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Menu de opções">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
-                  <Avatar alt="Michelly" src="/static/images/avatar/2.jpg" />
-                </IconButton>
+                {autenticacaoStore.estaAutenticado ?
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
+                    <Avatar alt={autenticacaoStore.usuario.nomeUsuario} src="/static/images/avatar/2.jpg" />
+                  </IconButton>
+                  :
+                  <Button variant="contained" onClick={abrirLogin}>
+                    Entrar
+                  </Button>
+                }
+
               </Tooltip>
               <Menu
                 sx={{ mt: "45px" }}

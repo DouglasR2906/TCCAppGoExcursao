@@ -16,7 +16,6 @@ public record DadosCadastraisAtualizar(
     String documentoDadosCadastrais,
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate dataNascimentoDadosCadastrais,
-    String paisDadosCadastrais,
     String cidadeDadosCadastrais,
     String ufDadosCadastrais,
     @Email(message = "{email.invalido}")

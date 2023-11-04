@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material";
 import Formulario from "componentes/Excursoes/Formulario/formulario";
 import Banner from "componentes/Genericos/Banner/banner";
 import dayjs, { Dayjs } from "dayjs";
@@ -6,31 +7,12 @@ import http from "http/http";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IExcursao } from "types/excursao";
-import ExcursoesLista from "../Excursoes/ListaExcursoes/listaExcursoes";
+import ExcursoesLista from "../../componentes/Excursoes/ListaExcursoes/listaExcursoes";
 dayjs.locale("pt-br");
 
 function Inicio() {
   const navigate = useNavigate();
   const [excursoes, setExcursoes] = useState<IExcursao[]>([]);
-
-  // const [selecionada, setSelecionada] = useState<ExcursaoSelecionada>({
-  //   idExcursao: 0,
-  //   idUsuarioExcursao: 0,
-  //   tituloExcursao: "",
-  //   descricaoExcursao: "",
-  //   valorExcursao: 0,
-  //   cidadeOrigemExcursao: "",
-  //   cidadeDestinoExcursao: "",
-  //   dataIdaExcursao: "",
-  //   dataVoltaExcursao: "",
-  //   horaIdaExcursao: "",
-  //   horaVoltaExcursao: "",
-  //   idCategoriaExcursao: 0,
-  //   canceladaExcursao: false,
-  //   urlImagensExcursao: "",
-  //   localEmbarqueExcursao: "",
-  //   selecionada: false
-  // });
   const [busca, setBusca] = useState({ busca: "", dataIda: dayjs(), dataVolta: dayjs() });
 
   useEffect(() => {
@@ -43,12 +25,6 @@ function Inicio() {
         console.log(erro);
       });
   }, []);
-
-  // useEffect(() => {
-  //   if (selecionada && selecionada.selecionada) {
-  //     selecionarExcursao(selecionada);
-  //   }
-  // }, [selecionada]);
 
   const adicionaBusca = (busca: string, dataIda: Dayjs | null, dataVolta: Dayjs | null) => {
     if (dataIda && dataVolta) setBusca({ busca: busca, dataIda: dataIda, dataVolta: dataVolta });
@@ -63,11 +39,11 @@ function Inicio() {
   }
 
   return (
-    <div>
+    <Grid height="100%">
       <Banner />
       <Formulario adicionaBusca={adicionaBusca} />
       <ExcursoesLista excursoes={excursoes} selecionarExcursao={selecionarExcursao} />
-    </div>
+    </Grid>
   );
 }
 

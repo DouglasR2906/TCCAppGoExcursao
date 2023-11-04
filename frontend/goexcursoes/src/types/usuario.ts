@@ -10,4 +10,5 @@ export interface IUsuarioLogado {
   loginUsuario: string;
   tokenUsuario: string;
   tipoUsuario: string;
+  nomeUsuario: string;
 }

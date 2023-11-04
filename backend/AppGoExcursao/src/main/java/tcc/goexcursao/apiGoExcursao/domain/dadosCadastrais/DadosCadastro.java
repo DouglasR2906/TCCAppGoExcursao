@@ -23,9 +23,6 @@ public record DadosCadastro(
     LocalDate dataNascimentoDadosCadastrais,
     
     @NotBlank
-    String paisDadosCadastrais,
-    
-    @NotBlank
     String cidadeDadosCadastrais,
     
     @NotBlank

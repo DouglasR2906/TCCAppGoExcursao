@@ -70,8 +70,8 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        /*List<GrantedAuthority> authorities = new ArrayList<>();
+        //return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
         switch (tipoUsuario) {
             case ADMIN:
@@ -84,11 +84,11 @@ public class Usuario implements UserDetails {
                 authorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZADOR"));
                 break;
             default:
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
                 break;
         }
 
-        return  authorities;*/
+        return  authorities;
     }
 
     @Override

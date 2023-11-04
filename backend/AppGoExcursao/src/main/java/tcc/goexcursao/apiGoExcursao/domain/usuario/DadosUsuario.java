@@ -8,10 +8,13 @@ public record DadosUsuario(
     String loginUsuario,
     @NotBlank
     String senhaUsuario,
+
+    @NotBlank
+    TipoUsuario tipoUsuario,
     @NotNull
     Boolean ativoUsuario
      ) {
     public DadosUsuario(Usuario usuario){
-        this(usuario.getLoginUsuario(), usuario.getSenhaUsuario(), usuario.getAtivoUsuario());
+        this(usuario.getLoginUsuario(), usuario.getSenhaUsuario(), usuario.getTipoUsuario(), usuario.getAtivoUsuario());
     }
 }

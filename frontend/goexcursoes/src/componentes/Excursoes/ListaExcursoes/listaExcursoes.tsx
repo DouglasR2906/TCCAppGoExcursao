@@ -12,9 +12,9 @@ function ExcursoesLista({ excursoes, selecionarExcursao }: Props) {
   const [filtro, setFiltro] = useState<number | null>(null);
 
   return (
-    <>
+    <div>
       <Filtros filtro={filtro} setFiltro={setFiltro} />
-      <Grid container spacing={2} style={{ marginTop: "0.5rem", padding: "1.5rem", justifyContent: "center" }}>
+      <Grid container spacing={2} sx={{ marginTop: "0.5rem", padding: "1.5rem", justifyContent: "center" }}>
         {excursoes.map((excursao) => {
 
           return (
@@ -24,7 +24,7 @@ function ExcursoesLista({ excursoes, selecionarExcursao }: Props) {
           );
         })}
       </Grid>
-    </>
+    </div>
   );
 }
 

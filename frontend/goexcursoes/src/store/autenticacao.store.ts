@@ -7,6 +7,7 @@ class AutenticacaoStore {
     loginUsuario: "",
     tokenUsuario: "",
     tipoUsuario: "",
+    nomeUsuario: "",
   };
 
   constructor() {
@@ -30,6 +31,7 @@ class AutenticacaoStore {
       loginUsuario: "",
       tokenUsuario: "",
       tipoUsuario: "",
+      nomeUsuario: "",
     };
   }
 }

@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import http from "http/http";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import autenticacaoStore from "store/autenticacao.store";
 import { ICategoria } from "types/categoria";
 import { IExcursao } from "types/excursao";
 import { IFormaPagamento, IFormaPagamentoExcursao } from "types/formaPagamento";
@@ -179,7 +180,7 @@ export default function CadastroExcursaoAdm() {
   const SalvarExcursao = () => {
     const excursaoAtualizada: IExcursao = {
       idExcursao: excursao.idExcursao > 0 ? excursao.idExcursao : 0,
-      idUsuarioExcursao: Number(idUsuario),
+      idUsuarioExcursao: Number(autenticacaoStore.usuario.idUsuario),
       tituloExcursao: titutlo.toString(),
       descricaoExcursao: descricao.toString(),
       cidadeOrigemExcursao: cidadeOrigem.toString(),

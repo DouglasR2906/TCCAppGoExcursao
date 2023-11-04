@@ -1,13 +1,15 @@
 import CadastroExcursaoAdm from "componentes/Administracao/CadastroExcursaoAdm/cadastroExcursaoAdm";
 import ListagemExcursaoAdm from "componentes/Administracao/ListagemExcursaoAdm/listagemExcursaoAdm";
-import Inicio from "componentes/Home/inicio";
+import CadastroUsuario from "componentes/Usuario/CadastroUsuario/cadastroUsuario";
 import Login from "componentes/Usuario/Login/login";
 import ExcursaoPage from "pages/ExcursaoPage/excursaoPage";
+import Inicio from "pages/Home/inicio";
 import PaginaPadraoAdm from "pages/PaginaPadraoAdm/paginaPadraoAdm";
 import PaginaPadrao from "pages/PaginaPadraoExcursao/paginaPadrao";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 export default function AppRoutes() {
+
   return (
     <Router>
       <Routes>
@@ -21,6 +23,7 @@ export default function AppRoutes() {
           <Route path="/admin/novo/:id" element={<CadastroExcursaoAdm />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/cadastroUsuario" element={<CadastroUsuario />} />
       </Routes>
     </Router>
   );

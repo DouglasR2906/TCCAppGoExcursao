@@ -28,8 +28,6 @@ public class DadosCadastrais {
     private String documentoDadosCadastrais;
     @Column(name = "data_nascimento_dadoscadastrais")
     LocalDate dataNascimentoDadosCadastrais;
-    @Column(name = "pais_dadoscadastrais")
-    private String paisDadosCadastrais;
     @Column(name = "cidade_dadoscadastrais")
     private String cidadeDadosCadastrais;
     @Column(name = "uf_dadoscadastrais")
@@ -46,7 +44,6 @@ public class DadosCadastrais {
         this.nomeDadosCadastrais = dadosCadastro.nomeDadosCadastrais();
         this.documentoDadosCadastrais = dadosCadastro.documentoDadosCadastrais();
         this.dataNascimentoDadosCadastrais = dadosCadastro.dataNascimentoDadosCadastrais();
-        this.paisDadosCadastrais = dadosCadastro.paisDadosCadastrais();
         this.cidadeDadosCadastrais = dadosCadastro.cidadeDadosCadastrais();
         this.ufDadosCadastrais = dadosCadastro.ufDadosCadastrais();
         this.emailDadosCadastrais = dadosCadastro.emailDadosCadastrais();
@@ -63,9 +60,6 @@ public class DadosCadastrais {
         }
         if (dadosDadosCadastrais.dataNascimentoDadosCadastrais() != null){
             this.dataNascimentoDadosCadastrais = dadosDadosCadastrais.dataNascimentoDadosCadastrais();
-        }
-        if (dadosDadosCadastrais.paisDadosCadastrais() != null){
-            this.paisDadosCadastrais = dadosDadosCadastrais.paisDadosCadastrais();
         }
         if (dadosDadosCadastrais.cidadeDadosCadastrais() != null){
             this.cidadeDadosCadastrais = dadosDadosCadastrais.cidadeDadosCadastrais();

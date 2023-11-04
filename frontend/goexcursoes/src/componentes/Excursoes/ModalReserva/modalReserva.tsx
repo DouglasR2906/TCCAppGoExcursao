@@ -14,13 +14,13 @@ import { IExcursao } from "types/excursao";
 import { IFormaPagamentoExcursao } from "types/formaPagamento";
 import { IReserva } from "types/reserva";
 import { TipoSnack } from "types/tipoSnack";
-import { IUsuario } from "types/usuario";
+import { IUsuarioLogado } from "types/usuario";
 import { IViajante } from "types/viajantes";
 import DadosExcursaoReserva from "./dadosExcursaoReserva";
 import FormugalarioViajantes from "./formularioPassageiros";
 
 interface Props {
-  usuario: IUsuario;
+  usuario: IUsuarioLogado;
   excursao: IExcursao;
   formasPagamento: IFormaPagamentoExcursao[];
   open: boolean;
@@ -108,7 +108,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
       return;
     }
 
-    if (!usuario || !usuario.ativoUsario) {
+    if (!usuario) {
       setMensagem("Favor realizar login - Favor Verificar");
       setTipoSnack("error");
       setOpenSnack(true);

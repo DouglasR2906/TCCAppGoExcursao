@@ -32,7 +32,7 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
   }, []);
 
   return (
-    <Card sx={{ maxWidth: 400 }}>
+    <Card sx={{ maxWidth: 400, height: "100%" }}>
       <CardActionArea onClick={() => selecionarExcursao(excursao.idExcursao)}>
         <CardMedia
           component="img"

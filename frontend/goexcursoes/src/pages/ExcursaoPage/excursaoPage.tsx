@@ -7,12 +7,10 @@ import { useEffect, useState } from "react";
 import { BiDollarCircle } from "react-icons/bi";
 import { GrClose, GrStar } from "react-icons/gr";
 import { useNavigate, useParams } from "react-router-dom";
+import autenticacaoStore from "store/autenticacao.store";
 import { IExcursao } from "types/excursao";
 import { IFormaPagamentoExcursao } from "types/formaPagamento";
 import { TipoSnack } from "types/tipoSnack";
-import { IUsuario } from "types/usuario";
-
-const usuario: IUsuario = { idUsuario: 1, loginUsuario: "douglasr.comp@hotmail.com", ativoUsario: true, tipoUsuario: "ADMIN" };
 
 export default function ExcursaoPage() {
   const { id } = useParams();
@@ -22,6 +20,7 @@ export default function ExcursaoPage() {
   const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
   const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
   const [formasPagamento, setFormasPagamento] = useState<IFormaPagamentoExcursao[]>([]);
+  const [open, setOpen] = useState(false);
 
   const [excursao, setExcursao] = useState<IExcursao>({
     idExcursao: 0,
@@ -73,7 +72,6 @@ export default function ExcursaoPage() {
 
   if (!excursao) return null;
 
-  const [open, setOpen] = useState(false);
 
 
   function Avaliacao(mediaAvaliacao: number) {
@@ -97,6 +95,12 @@ export default function ExcursaoPage() {
   }
 
   const abrirModal = () => {
+    if (!autenticacaoStore.estaAutenticado) {
+      setMensagem("Favor realizar login!");
+      setTipoSnack("error");
+      setOpenSnack(true);
+      return;
+    }
     setOpen(true);
   };
 
@@ -105,7 +109,7 @@ export default function ExcursaoPage() {
   };
 
   return (
-    <Grid >
+    <Grid height="100vh">
       <Grid container spacing={2} sx={{
         bgcolor: "background.paper",
         // boxShadow: 1,
@@ -184,7 +188,7 @@ export default function ExcursaoPage() {
           </Grid>
         </Grid>
       </Grid>
-      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} usuario={usuario} formasPagamento={formasPagamento} />
+      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} usuario={autenticacaoStore.usuario} formasPagamento={formasPagamento} />
       <SnackALert open={openSnack} setOpen={setOpenSnack} mensagem={mensagem} tipoSnack={tipoSnack} />
     </Grid>
   );
