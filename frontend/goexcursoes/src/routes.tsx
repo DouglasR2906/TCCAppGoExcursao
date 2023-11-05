@@ -1,11 +1,13 @@
 import CadastroExcursaoAdm from "componentes/Administracao/CadastroExcursaoAdm/cadastroExcursaoAdm";
 import ListagemExcursaoAdm from "componentes/Administracao/ListagemExcursaoAdm/listagemExcursaoAdm";
-import CadastroUsuario from "componentes/Usuario/CadastroUsuario/cadastroUsuario";
+import CadastrarUsuario from "componentes/Usuario/CadastrarUsuario/cadastrarUsuario";
+import DadosCadastro from "componentes/Usuario/DadosCadastrais/dadoCadastrais";
 import Login from "componentes/Usuario/Login/login";
 import ExcursaoPage from "pages/ExcursaoPage/excursaoPage";
 import Inicio from "pages/Home/inicio";
 import PaginaPadraoAdm from "pages/PaginaPadraoAdm/paginaPadraoAdm";
 import PaginaPadrao from "pages/PaginaPadraoExcursao/paginaPadrao";
+import PaginaPadraoUser from "pages/PaginaPadraoUsuario/paginaPadraoUser";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 export default function AppRoutes() {
@@ -22,8 +24,12 @@ export default function AppRoutes() {
           <Route path="/admin/novo" element={<CadastroExcursaoAdm />} />
           <Route path="/admin/novo/:id" element={<CadastroExcursaoAdm />} />
         </Route>
+        <Route path="/usuario" element={<PaginaPadraoUser />}>
+          <Route path="/usuario/" element={<DadosCadastro />} />
+          <Route path="/usuario/reservas" element={<CadastroExcursaoAdm />} />
+        </Route>
         <Route path="/login" element={<Login />} />
-        <Route path="/cadastroUsuario" element={<CadastroUsuario />} />
+        <Route path="/cadastroUsuario" element={<CadastrarUsuario />} />
       </Routes>
     </Router>
   );

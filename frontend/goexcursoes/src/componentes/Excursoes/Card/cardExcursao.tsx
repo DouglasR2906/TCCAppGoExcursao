@@ -4,9 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import dayjs, { Dayjs } from "dayjs";
-import http from "http/http";
-import { useEffect, useState } from "react";
-import { ICategoria } from "types/categoria";
+import { useState } from "react";
 import { IExcursao } from "types/excursao";
 interface Props {
   excursao: IExcursao,
@@ -16,20 +14,6 @@ interface Props {
 function CardExcursao({ excursao, selecionarExcursao }: Props) {
   const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
   const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
-  const [categoria, setCategoria] = useState<ICategoria>({ idCategoria: 0, descricaoCategoria: "" });
-
-
-  useEffect(() => {
-    http.get(`categoria/${excursao.idCategoriaExcursao}`)
-      .then((resposta) => {
-        setCategoria(resposta.data);
-      })
-      .catch(erro => {
-        console.log(erro);
-      });
-    setDataIda(dayjs(excursao.dataIdaExcursao));
-    setDataVolta(dayjs(excursao.dataVoltaExcursao));
-  }, []);
 
   return (
     <Card sx={{ maxWidth: 400, height: "100%" }}>
@@ -51,7 +35,7 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
             Data Volta: {dataVolta?.format("DD/MM/YYYY")}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Categoria: {categoria.descricaoCategoria}
+            Categoria: {excursao.categoriaExcursao}
           </Typography>
           <Typography variant="h6" color="text.secondary">
             A partir: {excursao.valorExcursao?.toFixed(2)}

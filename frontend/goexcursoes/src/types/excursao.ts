@@ -10,7 +10,7 @@ export interface IExcursao {
   dataVoltaExcursao: string;
   horaIdaExcursao: string;
   horaVoltaExcursao: string;
-  idCategoriaExcursao: number;
+  categoriaExcursao: number | string;
   canceladaExcursao: boolean;
   urlImagensExcursao: string;
   localEmbarqueExcursao: string;

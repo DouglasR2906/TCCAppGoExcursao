@@ -1,5 +1,7 @@
 package tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDate;
 
 public record DadosCadastraisDetalhado(
@@ -10,7 +12,10 @@ public record DadosCadastraisDetalhado(
     LocalDate dataNascimentoDadosCadastrais,
     String cidadeDadosCadastrais,
     String ufDadosCadastrais,
-    String emailDadosCadastrais,
+    String logradouroDadosCadastrais,
+    Integer numeroDadosCadastrais,
+    String bairroDadosCadastrais,
+    String cepDadosCadastrais,
     String telefoneDadosCadastrais,
     SexoDadosCadastrais sexoDadosCadastrais
      ) {
@@ -22,7 +27,10 @@ public record DadosCadastraisDetalhado(
         dadosCadastrais.getDataNascimentoDadosCadastrais(),
         dadosCadastrais.getCidadeDadosCadastrais(),
         dadosCadastrais.getUfDadosCadastrais(),
-        dadosCadastrais.getEmailDadosCadastrais(),
+        dadosCadastrais.getLogradouroDadosCadastrais(),
+        dadosCadastrais.getNumeroDadosCadastrais(),
+        dadosCadastrais.getBairroDadosCadastrais(),
+        dadosCadastrais.getCepDadosCadastrais(),
         dadosCadastrais.getTelefoneDadosCadastrais(),
         dadosCadastrais.getSexoDadosCadastrais());
     }

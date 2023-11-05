@@ -32,8 +32,14 @@ public class DadosCadastrais {
     private String cidadeDadosCadastrais;
     @Column(name = "uf_dadoscadastrais")
     private String ufDadosCadastrais;
-    @Column(name = "email_dadoscadastrais")
-    private String emailDadosCadastrais;
+    @Column(name = "logradouro_dadoscadastrais")
+    private String logradouroDadosCadastrais;
+    @Column(name = "numero_dadoscadastrais")
+    private Integer numeroDadosCadastrais;
+    @Column(name = "bairro_dadoscadastrais")
+    private String bairroDadosCadastrais;
+    @Column(name = "cep_dadoscadastrais")
+    private String cepDadosCadastrais;
     @Column(name = "telefone_1_dadoscadastrais")
     private String telefoneDadosCadastrais;
     @Enumerated(EnumType.STRING)
@@ -46,7 +52,10 @@ public class DadosCadastrais {
         this.dataNascimentoDadosCadastrais = dadosCadastro.dataNascimentoDadosCadastrais();
         this.cidadeDadosCadastrais = dadosCadastro.cidadeDadosCadastrais();
         this.ufDadosCadastrais = dadosCadastro.ufDadosCadastrais();
-        this.emailDadosCadastrais = dadosCadastro.emailDadosCadastrais();
+        this.logradouroDadosCadastrais = dadosCadastro.logradouroDadosCadastrais();
+        this.numeroDadosCadastrais = dadosCadastro.numeroDadosCadastrais();
+        this.bairroDadosCadastrais = dadosCadastro.bairroDadosCadastrais();
+        this.cepDadosCadastrais = dadosCadastro.cepDadosCadastrais();
         this.telefoneDadosCadastrais = dadosCadastro.telefoneDadosCadastrais();
         this.sexoDadosCadastrais = dadosCadastro.sexoDadosCadastrais();
     }
@@ -67,8 +76,17 @@ public class DadosCadastrais {
         if (dadosDadosCadastrais.ufDadosCadastrais() != null){
             this.ufDadosCadastrais = dadosDadosCadastrais.ufDadosCadastrais();
         }
-        if (dadosDadosCadastrais.emailDadosCadastrais() != null){
-            this.emailDadosCadastrais = dadosDadosCadastrais.emailDadosCadastrais();
+        if (dadosDadosCadastrais.logradouroDadosCadastrais() != null){
+            this.logradouroDadosCadastrais = dadosDadosCadastrais.logradouroDadosCadastrais();
+        }
+        if (dadosDadosCadastrais.numeroDadosCadastrais() != null){
+            this.numeroDadosCadastrais = dadosDadosCadastrais.numeroDadosCadastrais();
+        }
+        if (dadosDadosCadastrais.bairroDadosCadastrais() != null){
+            this.bairroDadosCadastrais = dadosDadosCadastrais.bairroDadosCadastrais();
+        }
+        if (dadosDadosCadastrais.cepDadosCadastrais() != null){
+            this.cepDadosCadastrais = dadosDadosCadastrais.cepDadosCadastrais();
         }
         if (dadosDadosCadastrais.telefoneDadosCadastrais() != null){
             this.telefoneDadosCadastrais = dadosDadosCadastrais.telefoneDadosCadastrais();

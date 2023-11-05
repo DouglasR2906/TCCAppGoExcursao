@@ -36,7 +36,7 @@ public class UsuarioController {
         if (usuarioExiste){
             throw new ValidacaoException("Login de usuário já cadastrado, favor verificar!");
         }
-        var usuario = new Usuario(dadosUsuario.loginUsuario(), senhaCodificada, dadosUsuario.ativoUsuario());
+        var usuario = new Usuario(dadosUsuario.loginUsuario(), senhaCodificada, dadosUsuario.ativoUsuario(), dadosUsuario.tipoUsuario());
        repository.save(usuario);
         var uri = uriBuilder.path("/Usuario/{login}").buildAndExpand(usuario.getLoginUsuario()).toUri();
         return ResponseEntity.created(uri).body(new DadosUsuarioListagem(usuario));
@@ -77,6 +77,16 @@ public class UsuarioController {
     public ResponseEntity<DadosUsuarioListagem> findById(@PathVariable Long id){
         var usuario = repository.getReferenceById(id);
         return ResponseEntity.ok(new DadosUsuarioListagem(usuario));
+    }
+
+    @GetMapping("/login/{login}")
+    public ResponseEntity<DadosUsuarioListagem> findById(@PathVariable String login){
+        var usuario = (Usuario) repository.findByLoginUsuario(login);
+        if (usuario == null){
+            return ResponseEntity.notFound().build();
+        }else {
+            return ResponseEntity.ok(new DadosUsuarioListagem(usuario));
+        }
     }
 
     @PutMapping

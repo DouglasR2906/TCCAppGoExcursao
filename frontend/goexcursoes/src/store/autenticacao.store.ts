@@ -17,11 +17,17 @@ class AutenticacaoStore {
       login: action,
       logout: action,
     });
+
+    const usuarioLocalStorage = localStorage.getItem("usuario");
+    if (usuarioLocalStorage) {
+      this.login(JSON.parse(usuarioLocalStorage));
+    }
   }
 
   login(usuario: IUsuarioLogado) {
     this.estaAutenticado = true;
     this.usuario = usuario;
+    localStorage.setItem("usuario", JSON.stringify(usuario));
   }
 
   logout() {
@@ -33,6 +39,8 @@ class AutenticacaoStore {
       tipoUsuario: "",
       nomeUsuario: "",
     };
+
+    localStorage.removeItem("usuario");
   }
 }
 

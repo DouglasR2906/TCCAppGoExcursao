@@ -50,7 +50,7 @@ public class ExcursaoController {
     @Transactional
     public ResponseEntity<DadosExcursaoListagem> cadastrar(@RequestBody @Valid DadosExcursao dadosExcursao, UriComponentsBuilder uriBuilder) {
         var usuario = usuarioRepository.findById(dadosExcursao.idUsuarioExcursao()).orElse(null);
-        var categoria = categoriaRepository.findById(dadosExcursao.idCategoriaExcursao()).orElse(null);
+        var categoria = categoriaRepository.findById(dadosExcursao.categoriaExcursao()).orElse(null);
 
         if (usuario == null && !usuario.getAtivoUsuario()) {
             throw new ValidacaoException("Usuário informado não encontrado ou inativo!");
@@ -92,6 +92,11 @@ public class ExcursaoController {
         return ResponseEntity.ok(excursoes);
     }
 
+    @GetMapping("/usuario/id")
+    public ResponseEntity<Page<DadosExcursaoListagem>> listarByUsuario(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
+        var pageExcursoes = excrusaoRepository.findAll(paginacao).map(DadosExcursaoListagem::new);
+        return ResponseEntity.ok(pageExcursoes);
+    }
     @GetMapping("/listarTodas")
     public ResponseEntity<Page<DadosExcursaoListagem>> listar(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
         var pageExcursoes = excrusaoRepository.findAll(paginacao).map(DadosExcursaoListagem::new);

@@ -50,8 +50,8 @@ public class SecurityConfigurations {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .authorizeHttpRequests(req ->{
-                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
-                    req.requestMatchers(HttpMethod.GET, "/usuario", "/usuario/*", "/excursao","/excursao/**").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/login", "/dadosCadastrais", "/usuario").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/usuario/login", "/excursao","/excursao/**").permitAll();
                     req.requestMatchers("/v3/api-docs/**","/swagger-ui.html","/swagger-ui/**").permitAll();
                     //req.requestMatchers(HttpMethod.DELETE "/usuario").hasRole("ADMIN"); Autorizacao por perfil de usuario
                     //req.anyRequest().permitAll();

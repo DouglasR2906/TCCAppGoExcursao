@@ -41,12 +41,14 @@ public class Usuario implements UserDetails {
         this.loginUsuario = dadosUsuario.loginUsuario();
         this.senhaUsuario = dadosUsuario.senhaUsuario();
         this.ativoUsuario = dadosUsuario.ativoUsuario();
+        this.tipoUsuario = dadosUsuario.tipoUsuario();
     }
 
-    public Usuario(String loginUsuario, String senhaCodificada, Boolean ativoUsuario) {
+    public Usuario(String loginUsuario, String senhaCodificada, Boolean ativoUsuario, TipoUsuario tipoUsuario) {
         this.loginUsuario = loginUsuario;
         this.senhaUsuario = senhaCodificada;
         this.ativoUsuario = ativoUsuario;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public void atualizarInformacoes(DadosUsuarioAtualizar dadosUsuario) {
@@ -55,6 +57,9 @@ public class Usuario implements UserDetails {
         }
         if (dadosUsuario.ativoUsuario() != null){
             this.ativoUsuario = dadosUsuario.ativoUsuario();
+        }
+        if (dadosUsuario.tipoUsuario() != null){
+            this.tipoUsuario = dadosUsuario.tipoUsuario();
         }
     }
 

@@ -4,6 +4,7 @@ import http from "http/http";
 interface ResponseData<T> {
   success: boolean;
   data: T | null;
+  status: number;
   error: string | null;
 }
 
@@ -11,16 +12,21 @@ interface ResponseData<T> {
 async function usePost<T>({
   url,
   dados,
+  token,
 }: {
   url: string;
   dados: T;
+  token?: string;
 }): Promise<ResponseData<T>> {
   try {
-    const response = await http.post(url, dados);
+    const response = await (token !== ""
+      ? http.post(url, dados, { headers: { Authorization: `Bearer ${token}` } })
+      : http.post(url, dados));
     // Se a requisição for bem-sucedida, retornamos os dados com sucesso
     return {
       success: true,
       data: response.data,
+      status: response.status,
       error: null,
     };
   } catch (error: any) {
@@ -29,6 +35,7 @@ async function usePost<T>({
       return {
         success: false,
         data: null,
+        status: error.response.status,
         error: error.response.data.error || "Erro executar post",
       };
     } else if (error.request) {
@@ -36,6 +43,7 @@ async function usePost<T>({
       return {
         success: false,
         data: null,
+        status: error.request.status,
         error: "Não foi possível se conectar à API",
       };
     } else {
@@ -43,6 +51,7 @@ async function usePost<T>({
       return {
         success: false,
         data: null,
+        status: 999,
         error: "Erro inesperado",
       };
     }
@@ -50,19 +59,3 @@ async function usePost<T>({
 }
 
 export default usePost;
-
-// Exemplo de uso:
-const exemploDados = { nome: "Exemplo", idade: 30 };
-const urlExemplo = "https://exemplo.com/api/endpoint";
-
-usePost({ url: urlExemplo, dados: exemploDados })
-  .then((response) => {
-    if (response.success) {
-      console.log("Requisição bem-sucedida. Dados recebidos:", response.data);
-    } else {
-      console.error("Erro na requisição:", response.error);
-    }
-  })
-  .catch((error) => {
-    console.error("Erro ao fazer a requisição:", error);
-  });

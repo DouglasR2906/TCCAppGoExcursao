@@ -19,7 +19,7 @@ public record DadosExcursaoListagem(
         LocalDate dataVoltaExcursao,
         LocalTime horaIdaExcursao,
         LocalTime horaVoltaExcursao,
-        Long idCategoriaExcursao,
+        String categoriaExcursao,
         Boolean canceladaExcursao,
         String localEmbarqueExcursao,
         String urlImagensExcursao
@@ -36,7 +36,7 @@ public record DadosExcursaoListagem(
                 excursao.getDataVoltaExcursao(),
                 excursao.getHoraIdaExcursao(),
                 excursao.getHoraVoltaExcursao(),
-                excursao. getCategoria().getIdCategoria(),
+                excursao. getCategoria().getDescricaoCategoria(),
                 excursao.getCanceladaExcursao(),
                 excursao.getLocalEmbarqueExcursao(),
                 excursao.getUrlImagensExcursao()

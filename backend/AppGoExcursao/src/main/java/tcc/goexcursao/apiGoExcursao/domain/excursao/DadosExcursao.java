@@ -35,7 +35,7 @@ public record DadosExcursao(
         @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
         LocalTime horaVoltaExcursao,
         @NotNull
-        Long idCategoriaExcursao,
+        Long categoriaExcursao,
         @NotNull
         Boolean canceladaExcursao,
         @NotBlank

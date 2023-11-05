@@ -29,7 +29,7 @@ export default function CadastroExcursaoAdm() {
     dataVoltaExcursao: dayjs().format("YYYY-MM-DD"),
     horaIdaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
     horaVoltaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
-    idCategoriaExcursao: 0,
+    categoriaExcursao: 0,
     canceladaExcursao: false,
     urlImagensExcursao: "",
     localEmbarqueExcursao: ""
@@ -113,7 +113,7 @@ export default function CadastroExcursaoAdm() {
         dataVoltaExcursao: dayjs().format("YYYY-MM-DD"),
         horaIdaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
         horaVoltaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
-        idCategoriaExcursao: 0,
+        categoriaExcursao: 0,
         canceladaExcursao: false,
         urlImagensExcursao: "",
         localEmbarqueExcursao: ""
@@ -132,7 +132,7 @@ export default function CadastroExcursaoAdm() {
     setCidadeDestino(excursao.cidadeDestinoExcursao);
     setLocalEmbarque(excursao.localEmbarqueExcursao);
     setValorTotal({ valor: excursao.valorExcursao.toString() });
-    setCategoria(excursao.idCategoriaExcursao);
+    setCategoria(Number(excursao.categoriaExcursao));
     setDataIda(dayjs(excursao.dataIdaExcursao));
     setDataVolta(dayjs(excursao.dataVoltaExcursao));
     setHoraIda(excursao.horaIdaExcursao);
@@ -187,7 +187,7 @@ export default function CadastroExcursaoAdm() {
       cidadeDestinoExcursao: cidadeDestino.toString(),
       localEmbarqueExcursao: localEmbarque.toString(),
       valorExcursao: parseFloat(valorTotal.valor),
-      idCategoriaExcursao: categoria,
+      categoriaExcursao: categoria,
       dataIdaExcursao: dataIda.format("YYYY-MM-DD"),
       horaIdaExcursao: horaIda.toString(),
       dataVoltaExcursao: dataVolta.format("YYYY-MM-DD"),

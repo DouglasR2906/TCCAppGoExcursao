@@ -8,26 +8,27 @@ interface ResponseData<T> {
   error: string | null;
 }
 
-// Função genérica para fazer uma requisição GET
-async function useGet<T>({
+// Função genérica para fazer uma requisição POST
+async function usePut<T>({
   url,
+  dados,
   token,
 }: {
   url: string;
+  dados: T;
   token?: string;
 }): Promise<ResponseData<T>> {
   try {
     const response = await (token
-      ? http.get(url, { headers: { Authorization: `Bearer ${token}` } })
-      : http.get(url));
+      ? http.put(url, dados, { headers: { Authorization: `Bearer ${token}` } })
+      : http.put(url, dados));
+    // Se a requisição for bem-sucedida, retornamos os dados com sucesso
     return {
       success: true,
       data: response.data,
       status: response.status,
       error: null,
     };
-
-    // Se a requisição for bem-sucedida, retornamos os dados com sucesso
   } catch (error: any) {
     if (error.response) {
       // Se a API retornar um erro, você pode tratar aqui
@@ -35,7 +36,7 @@ async function useGet<T>({
         success: false,
         data: null,
         status: error.response.status,
-        error: error.response.status || "Erro executar get",
+        error: error.response.data.error || "Erro executar put",
       };
     } else if (error.request) {
       // Se a requisição não puder ser feita, por exemplo, por falta de conexão
@@ -57,4 +58,4 @@ async function useGet<T>({
   }
 }
 
-export default useGet;
+export default usePut;

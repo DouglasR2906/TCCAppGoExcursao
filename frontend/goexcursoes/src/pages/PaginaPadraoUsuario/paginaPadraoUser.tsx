@@ -1,9 +1,7 @@
-import AddIcon from "@mui/icons-material/Add";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LuggageIcon from "@mui/icons-material/Luggage";
 import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -38,32 +36,22 @@ const menu =
   [
     {
       id: 1,
-      value: "Nova Excursao",
-      to: "novo"
+      value: "Dados Cadastrais",
+      to: "/usuario"
     },
     {
       id: 2,
-      value: "Excursoes",
-      to: "admin"
-    },
-    {
-      id: 3,
       value: "Reservas",
       to: "reservas"
     },
-    // {
-    //   id: 4,
-    //   value: "Relatorios",
-    //   to: "relatorios"
-    // },
     {
-      id: 5,
+      id: 3,
       value: "Home",
       to: "/"
     }
   ];
 
-export default function PaginaPadraoAdm(props: Props) {
+export default function PaginaPadraoUser(props: Props) {
   const { window } = props;
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -86,11 +74,9 @@ export default function PaginaPadraoAdm(props: Props) {
           <ListItem key={itemMenu.id} disablePadding>
             <ListItemButton onClick={() => selecionarMenu(itemMenu.to)}>
               <ListItemIcon>
-                {itemMenu.id === 1 && <AddIcon />}
+                {itemMenu.id === 1 && <PersonIcon />}
                 {itemMenu.id === 2 && <CardTravelIcon />}
-                {itemMenu.id === 3 && <LuggageIcon />}
-                {itemMenu.id === 4 && <FormatListBulletedIcon />}
-                {itemMenu.id === 5 && <LogoutIcon />}
+                {itemMenu.id === 3 && <LogoutIcon />}
               </ListItemIcon>
               <ListItemText primary={itemMenu.value} />
             </ListItemButton>
@@ -124,7 +110,7 @@ export default function PaginaPadraoAdm(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" color={"#237871"}>
-            Administração
+            Dados da Conta
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center" }} />
           <MenuCabecalho />

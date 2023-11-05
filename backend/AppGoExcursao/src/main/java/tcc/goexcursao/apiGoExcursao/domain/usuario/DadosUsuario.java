@@ -8,8 +8,6 @@ public record DadosUsuario(
     String loginUsuario,
     @NotBlank
     String senhaUsuario,
-
-    @NotBlank
     TipoUsuario tipoUsuario,
     @NotNull
     Boolean ativoUsuario

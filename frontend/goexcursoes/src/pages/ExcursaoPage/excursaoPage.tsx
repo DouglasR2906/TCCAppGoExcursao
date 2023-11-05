@@ -1,4 +1,5 @@
 import { Button, Card, CardContent, CardMedia, Grid, List, ListItem, Typography } from "@mui/material";
+import useGet from "Api/useGet";
 import ModalReserva from "componentes/Excursoes/ModalReserva/modalReserva";
 import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
 import dayjs, { Dayjs } from "dayjs";
@@ -34,7 +35,7 @@ export default function ExcursaoPage() {
     dataVoltaExcursao: "",
     horaIdaExcursao: "",
     horaVoltaExcursao: "",
-    idCategoriaExcursao: 0,
+    categoriaExcursao: "",
     canceladaExcursao: false,
     urlImagensExcursao: "",
     localEmbarqueExcursao: ""
@@ -55,9 +56,9 @@ export default function ExcursaoPage() {
 
   useEffect(() => {
     if (excursao.idExcursao > 0) {
-      http.get(`excursao/${excursao.idExcursao}/formasPagtoExcursao`)
+      useGet({ url: `excursao/${excursao.idExcursao}/formasPagtoExcursao`, token: autenticacaoStore.usuario.tokenUsuario })
         .then((resposta) => {
-          setFormasPagamento(resposta.data);
+          setFormasPagamento(resposta.data as IFormaPagamentoExcursao[]);
         })
         .catch(erro => {
           setMensagem("Erro ao buscar formas Pagamento!");
