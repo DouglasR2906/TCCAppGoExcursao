@@ -1,5 +1,5 @@
 
-import EditIcon from "@mui/icons-material/Edit";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -12,8 +12,8 @@ import useGet from "Api/useGet";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import autenticacaoStore from "store/autenticacao.store";
-import { IExcursao } from "types/excursao";
 import { IPaginacao } from "types/paginacao";
+import { IReservaListagem, statusReserva } from "types/reserva";
 
 function createData(
   name: string,
@@ -33,14 +33,14 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function ListagemExcursaoAdm() {
+export default function ListagemReservasUser() {
   const navigate = useNavigate();
-  const [excursoes, setExcursoes] = useState<IExcursao[]>([]);
+  const [reservas, setReservas] = useState<IReservaListagem[]>([]);
   useEffect(() => {
-    useGet<IPaginacao<IExcursao>>({ url: `excursao/usuario/${autenticacaoStore.usuario.idUsuario}`, token: autenticacaoStore.usuario.tokenUsuario })
+    useGet<IPaginacao<IReservaListagem>>({ url: `reserva/usuario/${autenticacaoStore.usuario.idUsuario}`, token: autenticacaoStore.usuario.tokenUsuario })
       .then(resposta => {
         if (resposta.data) {
-          setExcursoes(resposta.data.content);
+          setReservas(resposta.data.content);
         }
       })
       .catch(erro => {
@@ -52,32 +52,39 @@ export default function ListagemExcursaoAdm() {
       <Table sx={{ width: "100%" }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Titulo</TableCell>
-            <TableCell align="center">Origem</TableCell>
-            <TableCell align="center">Destino</TableCell>
+            <TableCell>Excursão</TableCell>
+            <TableCell align="left">Destino</TableCell>
+            <TableCell align="center">Quantidade Viajantes</TableCell>
             <TableCell align="right">Valor Total</TableCell>
-            <TableCell align="center">Editar</TableCell>
+            <TableCell align="center">Forma de Pagamento</TableCell>
+            <TableCell align="center">Status</TableCell>
+            <TableCell align="center">Detalhes</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {excursoes.map((excursao) => (
+          {reservas.map((reserva) => (
             <TableRow
-              key={excursao.idExcursao}
+              key={reserva.idReserva}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">{excursao.tituloExcursao}</TableCell>
-              <TableCell align="center">{excursao.cidadeOrigemExcursao}</TableCell>
-              <TableCell align="center">{excursao.cidadeDestinoExcursao}</TableCell>
-              <TableCell align="right">R${excursao.valorExcursao.toFixed(2)}</TableCell>
+              <TableCell component="th" scope="row">{reserva.tituloExcursaoReserva}</TableCell>
+              <TableCell align="left">{reserva.destinoExcursaoReserva}</TableCell>
+              <TableCell align="center">{reserva.qtdViajantesReserva}</TableCell>
+              <TableCell align="right">R${reserva.valorTotalReserva.toFixed(2)}</TableCell>
+              <TableCell align="center">{reserva.formaPagtoReserva}</TableCell>
+              <TableCell align="center"
+                sx={{ color: reserva.statusReserva === 0 ? "orange" : reserva.statusReserva === 1 ? "red" : "green", fontWeight: "50px" }}>
+                {statusReserva[reserva.statusReserva]}
+              </TableCell>
               <TableCell align="center">
-                <Button variant="text" onClick={() => navigate(`novo/${excursao.idExcursao}`)}>
-                  <EditIcon />
+                <Button variant="text" onClick={() => navigate(`reserva/${reserva.idReserva}`)}>
+                  <FormatListBulletedIcon />
                 </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </TableContainer >
   );
 }

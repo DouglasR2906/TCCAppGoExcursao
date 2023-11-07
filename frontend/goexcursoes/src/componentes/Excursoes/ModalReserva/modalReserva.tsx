@@ -40,12 +40,12 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
 
 
   const [reserva, setReserva] = useState<IReserva>({
-    idReserva: 0,
     idExcursaoReserva: 0,
     idUsuarioReserva: 0,
     qtdViajantesReserva: 0,
     valorTotalReserva: 0,
-    formaPagtoReserva: 0
+    formaPagtoReserva: 0,
+    viajantes: [],
   });
   const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
   const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
@@ -59,10 +59,15 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
 
   useEffect(() => {
     if (reserva.valorTotalReserva > 0) {
-      usePost<IReserva>({ url: "viajantes", dados: reserva, token: autenticacaoStore.usuario.tokenUsuario })
+      usePost<IReserva>({ url: "reserva", dados: reserva, token: autenticacaoStore.usuario.tokenUsuario })
         .then((resposta) => {
           if (resposta.data) {
-            addViajantes(resposta.data.idReserva);
+            setMensagem("Reserva concluida com sucesso!");
+            setTipoSnack("success");
+            setOpenSnack(true);
+            setTimeout(() => {
+              onClose();
+            }, 2000);
           }
         })
         .catch(erro => {
@@ -73,32 +78,6 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
         }).finally();
     }
   }, [reserva]);
-
-  const addViajantes = (idReserva: number) => {
-    const novosViajantes = { ...viajantes, idReserva: idReserva };
-    console.log("Viajantes: ", viajantes);
-    usePost<IViajante>({ url: "reserva", dados: novosViajantes, token: autenticacaoStore.usuario.tokenUsuario })
-      .then((resposta) => {
-        if (resposta.data) {
-          setMensagem("Reserva concluída com sucesso!");
-          setTipoSnack("success");
-          setOpenSnack(true);
-          setTimeout(() => {
-            onClose();
-          }, 2000);
-        } else {
-          setMensagem("Erro ao eftuar reserva!");
-          setTipoSnack("error");
-          setOpenSnack(true);
-        }
-      })
-      .catch(erro => {
-        setMensagem("Erro ao eftuar reserva!");
-        setTipoSnack("error");
-        setOpenSnack(true);
-        console.log(erro);
-      });
-  };
 
   const ConfirmaRererva = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -138,12 +117,12 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
     }
 
     setReserva({
-      ...reserva,
       idUsuarioReserva: usuario.idUsuario,
       idExcursaoReserva: excursao.idExcursao,
       qtdViajantesReserva: qtde,
       valorTotalReserva: totalGeral,
-      formaPagtoReserva: formaPagtoReserva
+      formaPagtoReserva: formaPagtoReserva,
+      viajantes: viajantes
     });
 
     return;

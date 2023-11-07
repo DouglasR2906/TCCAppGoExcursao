@@ -3,6 +3,7 @@ package tcc.goexcursao.apiGoExcursao.domain.reserva;
 import jakarta.persistence.*;
 import lombok.*;
 import tcc.goexcursao.apiGoExcursao.domain.excursao.Excursao;
+import tcc.goexcursao.apiGoExcursao.domain.formaPagamento.FormaPagamento;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.Usuario;
 
 import java.math.BigDecimal;
@@ -34,13 +35,15 @@ public class Reserva {
     @Column(name = "valor_total_reserva", precision = 10, scale = 2)
     private BigDecimal valorTotalReserva;
 
-    @Column(name = "forma_pagto_reserva")
-    private int formaPagtoReserva;
+    @ManyToOne
+    @JoinColumn(name = "forma_pagto_reserva")
+    private FormaPagamento formaPagtoReserva;
 
+    @Column(name = "status_reserva")
+    private int statusReserva;
     public Reserva(DadosReserva reserva){
         this.qtdViajantesReserva = reserva.qtdViajantesReserva();
         this.valorTotalReserva = reserva.valorTotalReserva();
-        this.formaPagtoReserva = reserva.formaPagtoReserva();
     }
 
     public void atualizarReserva(DadosReservaAtualizar reserva){
@@ -50,10 +53,9 @@ public class Reserva {
         if (reserva.valorTotalReserva() != null){
             this.valorTotalReserva = reserva.valorTotalReserva();
         }
+    }
 
-        if (reserva.formaPagtoReserva() != 0){
-            this.formaPagtoReserva = reserva.formaPagtoReserva();
-        }
-
+    public void atualizarStatus(DadosReservaAtualizar reserva){
+        this.statusReserva = reserva.statusReserva();
     }
 }

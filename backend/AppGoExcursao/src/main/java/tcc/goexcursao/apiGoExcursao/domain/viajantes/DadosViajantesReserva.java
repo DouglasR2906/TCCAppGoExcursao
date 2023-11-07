@@ -4,9 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record DadosViajantes(
-        @NotNull
-        Long idReservaViajantes,
+public record DadosViajantesReserva(
         @NotBlank
         String nomeViajantes,
         @NotBlank

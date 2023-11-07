@@ -4,18 +4,20 @@ import java.math.BigDecimal;
 
 public record DadosReservaListagem(
         Long idReserva,
-        //Long idUsuarioReserva,
-        Long idExcursaoReserva,
+        String tituloExcursaoReserva,
+        String destinoExcursaoReserva,
         int qtdViajantesReserva,
         BigDecimal valorTotalReserva,
-        int formaPagtoReserva
+        String formaPagtoReserva,
+        int statusReserva
 ) {
     public DadosReservaListagem(Reserva reserva) {
         this(reserva.getIdReserva(),
-                //reserva.getDivulgador().getIdUsuario(),
-                reserva.getExcursao().getIdExcursao(),
-                reserva.getQtdViajantesReserva(),
-                reserva.getValorTotalReserva(),
-                reserva.getFormaPagtoReserva());
+            reserva.getExcursao().getTituloExcursao(),
+            reserva.getExcursao().getCidadeDestinoExcursao(),
+            reserva.getQtdViajantesReserva(),
+            reserva.getValorTotalReserva(),
+            reserva.getFormaPagtoReserva().getDescricaoFormaPagamento(),
+            reserva.getStatusReserva());
     }
 }

@@ -13,6 +13,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.excursao.*;
 import tcc.goexcursao.apiGoExcursao.domain.reserva.*;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.UsuarioRepository;
+import tcc.goexcursao.apiGoExcursao.domain.viajantes.DadosViajantesReserva;
+import tcc.goexcursao.apiGoExcursao.domain.viajantes.Viajantes;
+import tcc.goexcursao.apiGoExcursao.domain.viajantes.ViajantesRepository;
 import tcc.goexcursao.apiGoExcursao.infra.exception.TradorDeErros;
 import tcc.goexcursao.apiGoExcursao.infra.exception.ValidacaoException;
 
@@ -32,6 +35,9 @@ public class ReservaController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private ViajantesRepository viajantesRepository;
+
+    @Autowired
     TradorDeErros tradorDeErros;
     @PostMapping
     @Transactional
@@ -47,10 +53,20 @@ public class ReservaController {
             throw new ValidacaoException("Excursão informada não encontrada!");
         }
 
+        if (dadosReserva.viajantes() == null){
+            throw new ValidacaoException("Viajantes não informados!");
+        }
+
         var reserva = new Reserva(dadosReserva);
         reserva.setDivulgador(usuario);
         reserva.setExcursao(excursao);
         reservaRepository.save(reserva);
+
+        for (DadosViajantesReserva viajante: dadosReserva.viajantes()) {
+            var newViajante =  new Viajantes(viajante);
+            newViajante.setReserva(reserva);
+            viajantesRepository.save(newViajante);
+        }
 
         var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(reserva.getIdReserva()).toUri();
         return ResponseEntity.created(uri).body(new DadosReservaListagem(reserva));
@@ -63,7 +79,7 @@ public class ReservaController {
     }
 
     @GetMapping("/listarTodas")
-    public ResponseEntity<Page<DadosReservaListagem>> listar(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
+    public ResponseEntity<Page<DadosReservaListagem>> listar(@PageableDefault(size  =10, sort = {"idReserva"}) Pageable paginacao){
         var pageReservas = reservaRepository.findAll(paginacao).map(DadosReservaListagem::new);
         return ResponseEntity.ok(pageReservas);
     }
@@ -73,11 +89,25 @@ public class ReservaController {
         var reserva = reservaRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosReservaListagem(reserva));
     }
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<Page<DadosReservaListagem>> listarByUsuario(@PathVariable Long id, @PageableDefault(size  =10, sort = {"idReserva"}) Pageable paginacao){
+        var divulgador = usuarioRepository.getReferenceById(id);
+        var pageReservas = reservaRepository.findAllByDivulgador(divulgador, paginacao).map(DadosReservaListagem::new);
+        return ResponseEntity.ok(pageReservas);
+    }
     @PutMapping
     @Transactional
     public ResponseEntity<DadosReservaListagem> atualizar(@RequestBody @Valid DadosReservaAtualizar dadosReserva){
         var reserva = reservaRepository.getReferenceById(dadosReserva.idReserva());
         reserva.atualizarReserva(dadosReserva);
+        return ResponseEntity.ok(new DadosReservaListagem(reserva));
+    }
+
+    @PutMapping("/atualizarStatus/{id}")
+    @Transactional
+    public ResponseEntity<DadosReservaListagem> atualizarStatus(@RequestBody @Valid DadosReservaAtualizar dadosReserva){
+        var reserva = reservaRepository.getReferenceById(dadosReserva.idReserva());
+        reserva.atualizarStatus(dadosReserva);
         return ResponseEntity.ok(new DadosReservaListagem(reserva));
     }
 

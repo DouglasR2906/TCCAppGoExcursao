@@ -1,5 +1,3 @@
-import { Paginacao } from "./paginacao";
-
 export interface IExcursao {
   idExcursao: number;
   idUsuarioExcursao: number;
@@ -16,10 +14,6 @@ export interface IExcursao {
   canceladaExcursao: boolean;
   urlImagensExcursao: string;
   localEmbarqueExcursao: string;
-}
-
-export interface IExcursaoPage extends Paginacao {
-  content: IExcursao[];
 }
 
 export interface IExcursaoSelecionada extends IExcursao {

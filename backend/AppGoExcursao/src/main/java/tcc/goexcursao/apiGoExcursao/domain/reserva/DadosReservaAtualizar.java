@@ -13,6 +13,7 @@ public record DadosReservaAtualizar(
         Long idExcursaoReserva,
         int qtdViajantesReserva,
         BigDecimal valorTotalReserva,
-        int formaPagtoReserva
+        Long formaPagtoReserva,
+        int statusReserva
 ) {
 }

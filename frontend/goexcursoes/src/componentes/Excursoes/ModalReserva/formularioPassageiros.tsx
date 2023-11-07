@@ -18,7 +18,7 @@ function FormugalarioViajantes({ viajantes, setViajantes, qtde }: Props) {
 
   const atualizarDocumentoViajante = (index: number, documento: string) => {
     const novosViajantes = [...viajantes];
-    novosViajantes[index] = { ...novosViajantes[index], documentoViajantes: documento };
+    novosViajantes[index] = { ...novosViajantes[index], documentoViajantes: documento.replace(/\D/g, "") };
     setViajantes(novosViajantes);
   };
 

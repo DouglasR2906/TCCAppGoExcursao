@@ -1,5 +1,5 @@
-import CardTravelIcon from "@mui/icons-material/CardTravel";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LuggageIcon from "@mui/icons-material/Luggage";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import AppBar from "@mui/material/AppBar";
@@ -75,7 +75,7 @@ export default function PaginaPadraoUser(props: Props) {
             <ListItemButton onClick={() => selecionarMenu(itemMenu.to)}>
               <ListItemIcon>
                 {itemMenu.id === 1 && <PersonIcon />}
-                {itemMenu.id === 2 && <CardTravelIcon />}
+                {itemMenu.id === 2 && <LuggageIcon />}
                 {itemMenu.id === 3 && <LogoutIcon />}
               </ListItemIcon>
               <ListItemText primary={itemMenu.value} />

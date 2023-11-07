@@ -1,6 +1,6 @@
 import { Button, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import PassosCadastro from "./passosCadastro";
+import PassosCadastro from "./passosCadastroUser";
 
 function CadastrarUsuario() {
   const navigate = useNavigate();

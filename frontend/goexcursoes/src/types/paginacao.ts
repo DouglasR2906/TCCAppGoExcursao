@@ -1,4 +1,5 @@
-export interface Paginacao {
+export interface IPaginacao<T> {
+  content: T[];
   pageable: {
     sort: {
       empty: boolean;

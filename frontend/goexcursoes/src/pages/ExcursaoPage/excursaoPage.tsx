@@ -72,8 +72,6 @@ export default function ExcursaoPage() {
 
   if (!excursao) return null;
 
-
-
   function Avaliacao(mediaAvaliacao: number) {
     const mediaRounded = Math.round(mediaAvaliacao);
 

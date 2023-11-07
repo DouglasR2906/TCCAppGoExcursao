@@ -1,8 +1,8 @@
 SET @dbname = DATABASE();
 
-/*--------------------------- ALTERANDO DADOSCADASTRAIS --------------------------*/
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'telefone_2_dadoscadastrais';
+/*--------------------------- ALTERANDO RESERVA --------------------------*/
+SET @tablename = 'reserva';
+SET @columnname = 'status_reserva';
 
 SET @preparedStatement = (SELECT IF(
   (
@@ -11,131 +11,34 @@ SET @preparedStatement = (SELECT IF(
       (table_name = @tablename)
       AND (table_schema = @dbname)
       AND (column_name = @columnname)
-  ) > 0, CONCAT("ALTER TABLE ", @tablename, " DROP COLUMN ", @columnname, ";"),
+  ) > 0, "SELECT 1", CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " INT NULL DEFAULT 0 AFTER `forma_pagto_reserva`;")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+
+SET @tablename = 'reserva';
+SET @columnname = 'forma_pagto_reserva';
+
+SET @preparedStatement = (SELECT IF(
+  (
+    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE
+      (table_name = @tablename)
+      AND (table_schema = @dbname)
+      AND (column_name = @columnname)
+  ) > 0, CONCAT("ALTER TABLE ", @tablename, " CHANGE COLUMN ", @columnname, " " , @columnname, " BIGINT NULL DEFAULT NULL ;"),
   "SELECT 1"
 ));
 PREPARE alterIfNotExists FROM @preparedStatement;
 EXECUTE alterIfNotExists;
 
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'email_dadoscadastrais';
+ALTER TABLE `reserva` ADD INDEX `fk_reserva_formaPagamento1_idx` (`forma_pagto_reserva` ASC) VISIBLE;
 
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-  ) > 0, CONCAT("ALTER TABLE ", @tablename, " DROP COLUMN ", @columnname, ";"),
-  "SELECT 1"
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
+ALTER TABLE `reserva`
+ADD CONSTRAINT `fk_reserva_formaPagamento1`
+  FOREIGN KEY (`forma_pagto_reserva`)
+  REFERENCES `forma_pagamento` (`id_forma_pagamento`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
 
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'pais_dadoscadastrais';
-
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-  ) > 0, CONCAT("ALTER TABLE ", @tablename, " DROP COLUMN ", @columnname, ";"),
-  "SELECT 1"
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'logradouro_dadoscadastrais';
-
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-  ) > 0, "SELECT 1",CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " VARCHAR(60) NOT NULL DEFAULT ' ' AFTER `uf_dadoscadastrais`;")
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'numero_dadoscadastrais';
-
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-  ) > 0, "SELECT 1",CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " INT NOT NULL DEFAULT 0 AFTER `logradouro_dadoscadastrais`;")
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'bairro_dadoscadastrais';
-
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-  ) > 0, "SELECT 1",CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " VARCHAR(50) NOT NULL DEFAULT ' ' AFTER `numero_dadoscadastrais`;")
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'cep_dadoscadastrais';
-
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-  ) > 0, "SELECT 1",CONCAT("ALTER TABLE ", @tablename, " ADD COLUMN ", @columnname, " VARCHAR(8) NOT NULL DEFAULT '00000000' AFTER `bairro_dadoscadastrais`;")
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'cidade_dadoscadastrais';
-
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-) > 0, "SELECT 1",CONCAT("ALTER TABLE ", @tablename, " CHANGE COLUMN ", @columnname, " ", @columnname, "  VARCHAR(45) NOT NULL DEFAULT ' ';")
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-
-SET @tablename = 'dadoscadastrais';
-SET @columnname = 'uf_dadoscadastrais';
-
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-) > 0, "SELECT 1",CONCAT("ALTER TABLE ", @tablename, " CHANGE COLUMN ", @columnname, " ", @columnname, "  VARCHAR(2) NOT NULL DEFAULT ' ';")
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-/*--------------------------- ALTERANDO DADOSCADASTRAIS --------------------------*/
+/*--------------------------- ALTERANDO RESERVA --------------------------*/

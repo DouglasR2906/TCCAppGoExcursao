@@ -19,7 +19,7 @@ async function usePost<T>({
   token?: string;
 }): Promise<ResponseData<T>> {
   try {
-    const response = await (token !== ""
+    const response = await (token
       ? http.post(url, dados, { headers: { Authorization: `Bearer ${token}` } })
       : http.post(url, dados));
     // Se a requisição for bem-sucedida, retornamos os dados com sucesso

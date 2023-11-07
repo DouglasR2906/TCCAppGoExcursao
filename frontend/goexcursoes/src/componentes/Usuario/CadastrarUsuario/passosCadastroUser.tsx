@@ -14,8 +14,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TipoSnack } from "types/tipoSnack";
 import { IDadosCadastro, IDadosLogin, IDadosPessoais, IUsuario } from "types/usuario";
-import DadosLogin from "./dadosLogin";
-import DadosPessoais from "./dadosPessoais";
+import DadosLogin from "./dadosLoginUser";
+import DadosPessoais from "./dadosPessoaisUser";
 
 const passos = ["Dados Login", "Dados Pessoais"];
 
