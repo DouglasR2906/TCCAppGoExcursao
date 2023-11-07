@@ -1,4 +1,5 @@
 import { Container, Grid, TextField, Typography } from "@mui/material";
+import ReactInputMask from "react-input-mask";
 import { IViajante } from "types/viajantes";
 
 
@@ -11,13 +12,13 @@ interface Props {
 function FormugalarioViajantes({ viajantes, setViajantes, qtde }: Props) {
   const atualizarNomeViajante = (index: number, nome: string) => {
     const novosViajantes = [...viajantes];
-    novosViajantes[index] = { ...novosViajantes[index], nomeViajante: nome };
+    novosViajantes[index] = { ...novosViajantes[index], nomeViajantes: nome };
     setViajantes(novosViajantes);
   };
 
   const atualizarDocumentoViajante = (index: number, documento: string) => {
     const novosViajantes = [...viajantes];
-    novosViajantes[index] = { ...novosViajantes[index], documentoViajante: documento };
+    novosViajantes[index] = { ...novosViajantes[index], documentoViajantes: documento };
     setViajantes(novosViajantes);
   };
 
@@ -39,16 +40,21 @@ function FormugalarioViajantes({ viajantes, setViajantes, qtde }: Props) {
               size="small"
               required
               label="Nome Completo"
-              value={viajantes[i]?.nomeViajante || ""}
+              value={viajantes[i]?.nomeViajantes || ""}
               onChange={(e) => atualizarNomeViajante(i, e.target.value)} fullWidth />
           </Grid>
           <Grid item xs={3}>
-            <TextField
-              size="small"
-              required
-              label="Documento"
-              value={viajantes[i]?.documentoViajante || ""}
-              onChange={(e) => atualizarDocumentoViajante(i, e.target.value)} />
+            <ReactInputMask
+              mask="999.999.999-99"
+              value={viajantes[i]?.documentoViajantes || ""}
+              onChange={(event) => atualizarDocumentoViajante(i, event.target.value)}
+            >
+              <TextField
+                size="small"
+                required
+                label="Documento"
+              />
+            </ReactInputMask>
           </Grid>
         </Grid>
       ))

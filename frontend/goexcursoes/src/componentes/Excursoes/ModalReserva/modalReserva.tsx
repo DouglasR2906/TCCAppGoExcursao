@@ -5,11 +5,12 @@ import {
   Modal,
   Typography
 } from "@mui/material";
+import usePost from "Api/usePost";
 import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
 import dayjs, { Dayjs } from "dayjs";
-import http from "http/http";
 import { useEffect, useState } from "react";
 import { GrClose, GrFormNext, GrFormPrevious, GrSend } from "react-icons/gr";
+import autenticacaoStore from "store/autenticacao.store";
 import { IExcursao } from "types/excursao";
 import { IFormaPagamentoExcursao } from "types/formaPagamento";
 import { IReserva } from "types/reserva";
@@ -58,25 +59,46 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
 
   useEffect(() => {
     if (reserva.valorTotalReserva > 0) {
-      http.post("reserva", reserva).then(() => {
-        setMensagem("Reserva concluída com sucesso!");
-        setTipoSnack("success");
-        setOpenSnack(true);
-        setTimeout(() => {
-          onClose();
-        }, 2000);
-      })
+      usePost<IReserva>({ url: "viajantes", dados: reserva, token: autenticacaoStore.usuario.tokenUsuario })
+        .then((resposta) => {
+          if (resposta.data) {
+            addViajantes(resposta.data.idReserva);
+          }
+        })
         .catch(erro => {
           setMensagem("Erro ao eftuar reserva!");
           setTipoSnack("error");
           setOpenSnack(true);
+          console.log(erro);
+        }).finally();
+    }
+  }, [reserva]);
+
+  const addViajantes = (idReserva: number) => {
+    const novosViajantes = { ...viajantes, idReserva: idReserva };
+    console.log("Viajantes: ", viajantes);
+    usePost<IViajante>({ url: "reserva", dados: novosViajantes, token: autenticacaoStore.usuario.tokenUsuario })
+      .then((resposta) => {
+        if (resposta.data) {
+          setMensagem("Reserva concluída com sucesso!");
+          setTipoSnack("success");
+          setOpenSnack(true);
           setTimeout(() => {
             onClose();
           }, 2000);
-          console.log(erro);
-        });
-    }
-  }, [reserva]);
+        } else {
+          setMensagem("Erro ao eftuar reserva!");
+          setTipoSnack("error");
+          setOpenSnack(true);
+        }
+      })
+      .catch(erro => {
+        setMensagem("Erro ao eftuar reserva!");
+        setTipoSnack("error");
+        setOpenSnack(true);
+        console.log(erro);
+      });
+  };
 
   const ConfirmaRererva = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -188,8 +210,8 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
                     <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"left"}>
                       <Typography variant="h6" textAlign={"left"}>Viajantes: </Typography>
                       {viajantes.map((viajante) => (
-                        <Typography key={viajante.nomeViajante} textAlign={"left"}>
-                          {viajante.nomeViajante}  - {viajante.documentoViajante}
+                        <Typography key={viajante.nomeViajantes} textAlign={"left"}>
+                          {viajante.nomeViajantes}  - {viajante.documentoViajantes}
                         </Typography>
                       ))}
                     </Grid>

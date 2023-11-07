@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
+import useGet from "Api/useGet";
 import Formulario from "componentes/Excursoes/Formulario/formulario";
 import Banner from "componentes/Genericos/Banner/banner";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/pt-br";
-import http from "http/http";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IExcursao } from "types/excursao";
@@ -17,9 +17,9 @@ function Inicio() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    http.get<IExcursao[]>("excursao")
+    useGet<IExcursao[]>({ url: "excursao" })
       .then(resposta => {
-        setExcursoes(resposta.data);
+        setExcursoes(resposta.data as IExcursao[]);
       })
       .catch(erro => {
         console.log(erro);

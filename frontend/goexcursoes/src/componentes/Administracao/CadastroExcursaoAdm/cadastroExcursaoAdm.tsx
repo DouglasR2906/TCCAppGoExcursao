@@ -1,5 +1,8 @@
 import { Button, FormControl, FormGroup, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import useGet from "Api/useGet";
+import usePost from "Api/usePost";
+import usePut from "Api/usePut";
 import CampoTextoMui from "componentes/Genericos/CampoTexto/campoTextoMui";
 import CampoValor from "componentes/Genericos/CampoTexto/campoValor";
 import ListaChip from "componentes/Genericos/ListaChip/listaChip";
@@ -56,9 +59,9 @@ export default function CadastroExcursaoAdm() {
   const [imagens, setImagens] = useState<File[]>([]);
 
   useEffect(() => {
-    http.get("categoria")
+    useGet({ url: "categoria", token: autenticacaoStore.usuario.tokenUsuario })
       .then((resposta) => {
-        setCategorias(resposta.data);
+        setCategorias(resposta.data as ICategoria[]);
       })
       .catch(erro => {
         setMensagem("Erro ao buscar categorias!");
@@ -67,31 +70,30 @@ export default function CadastroExcursaoAdm() {
         console.log(erro);
       })
       .finally();
-
-    http.get("formaPagamento")
+    useGet({ url: "formaPagamento", token: autenticacaoStore.usuario.tokenUsuario })
       .then((resposta) => {
-        setFormasPagamentoLista(resposta.data);
+        setFormasPagamentoLista(resposta.data as IFormaPagamento[]);
       })
-      .catch(() => {
+      .catch((erro) => {
         setMensagem("Erro ao buscar formas de pagamento!");
         setTipoSnack("error");
         setOpenSnack(true);
+        console.log(erro);
       });
   }, []);
 
   useEffect(() => {
     if (params.id && parseInt(params.id) > 0) {
-      http.get<IExcursao>(`excursao/${params.id}`)
+      useGet<IExcursao>({ url: `excursao/${params.id}`, token: autenticacaoStore.usuario.tokenUsuario })
         .then(resposta => {
-          setExcursao(resposta.data);
+          setExcursao(resposta.data as IExcursao);
         })
         .catch(erro => {
           console.log(erro);
         }).finally();
-
-      http.get(`excursao/${params.id}/formasPagtoExcursao`)
+      useGet({ url: `excursao/${params.id}/formasPagtoExcursao`, token: autenticacaoStore.usuario.tokenUsuario })
         .then((resposta) => {
-          setFormasPagamentoExcursao(resposta.data);
+          setFormasPagamentoExcursao(resposta.data as IFormaPagamentoExcursao[]);
         })
         .catch(erro => {
           setMensagem("Erro ao buscar formas Pagamento!");
@@ -170,7 +172,7 @@ export default function CadastroExcursaoAdm() {
     });
 
     novasFormas.map((item) => {
-      http.post("excursao/addFormaPagtoExcursao", item)
+      usePost({ url: "excursao/addFormaPagtoExcursao", dados: item, token: autenticacaoStore.usuario.tokenUsuario })
         .then()
         .catch(erro => console.log("erro ao adicionar forma pagamento", erro));
     });
@@ -196,9 +198,9 @@ export default function CadastroExcursaoAdm() {
       canceladaExcursao: false
     };
     if (params.id) {
-      http.put("/excursao", excursaoAtualizada)
+      usePut({ url: "/excursao", dados: excursaoAtualizada, token: autenticacaoStore.usuario.tokenUsuario })
         .then(resposta => {
-          setExcursao(resposta.data);
+          setExcursao(resposta.data as IExcursao);
           adicionaNovasFormas();
           setTipoSnack("success");
           setMensagem("Excursao atualizada com sucesso!");
@@ -211,9 +213,9 @@ export default function CadastroExcursaoAdm() {
           console.log(erro);
         });
     } else {
-      http.post("/excursao", excursaoAtualizada)
+      usePost({ url: "/excursao", dados: excursaoAtualizada, token: autenticacaoStore.usuario.tokenUsuario })
         .then(resposta => {
-          setExcursao(resposta.data);
+          setExcursao(resposta.data as IExcursao);
           setTipoSnack("success");
           setMensagem("Excursao cadastrada com sucesso!");
           setOpenSnack(true);
@@ -288,7 +290,6 @@ export default function CadastroExcursaoAdm() {
                   const valor = evento.target.value;
                   setCategoria(Number(valor));
                 }}>
-                <MenuItem><em>{""}</em></MenuItem>
                 {categorias.map((categoria) =>
                   <MenuItem key={categoria.idCategoria} value={categoria.idCategoria}>
                     {categoria.descricaoCategoria}
@@ -376,6 +377,7 @@ export async function EnviarImagens(imagem: File, idExcursao: number) {
   console.log(formData.getAll("imagem"));
   http.post(`excursao/upload/imagens/${idExcursao}`, formData, {
     headers: {
+      "Authorization": `Bearer ${autenticacaoStore.usuario.tokenUsuario}`,
       "Content-Type": "multipart/form-data"
     }
   })

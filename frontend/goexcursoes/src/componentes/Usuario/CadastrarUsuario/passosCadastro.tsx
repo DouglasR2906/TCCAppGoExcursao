@@ -156,7 +156,7 @@ function PassosCadastro() {
         tipoUsuario: dadosLogin.tipoUsuario
       };
       console.log("Novos Dados:", newCadastroUsuario);
-      const resposta = usePost({ url: "usuario", dados: newCadastroUsuario })
+      usePost<IUsuario>({ url: "usuario", dados: newCadastroUsuario })
         .then((response) => {
           if (response.data) {
             setCadastroUsuario(response.data as IUsuario);
@@ -189,7 +189,7 @@ function PassosCadastro() {
       telefoneDadosCadastrais: dadosPessoais.telefone.replace(/\D/g, ""),
       sexoDadosCadastrais: dadosPessoais.sexo,
     };
-    const resposta = usePost({ url: "dadosCadastrais", dados: newDadosCadastrais })
+    usePost<IDadosCadastro>({ url: "dadosCadastrais", dados: newDadosCadastrais })
       .then((response) => {
         if (response.data) {
           setDadosCadastro(response.data as IDadosCadastro);

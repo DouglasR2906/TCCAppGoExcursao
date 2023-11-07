@@ -8,10 +8,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import http from "http/http";
+import useGet from "Api/useGet";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IExcursao } from "types/excursao";
+import autenticacaoStore from "store/autenticacao.store";
+import { IExcursao, IExcursaoPage } from "types/excursao";
 
 function createData(
   name: string,
@@ -35,9 +36,11 @@ export default function ListagemExcursaoAdm() {
   const navigate = useNavigate();
   const [excursoes, setExcursoes] = useState<IExcursao[]>([]);
   useEffect(() => {
-    http.get<IExcursao[]>("excursao")
+    useGet<IExcursaoPage>({ url: `excursao/usuario/${autenticacaoStore.usuario.idUsuario}`, token: autenticacaoStore.usuario.tokenUsuario })
       .then(resposta => {
-        setExcursoes(resposta.data);
+        if (resposta.data) {
+          setExcursoes(resposta.data.content);
+        }
       })
       .catch(erro => {
         console.log(erro);
@@ -56,7 +59,7 @@ export default function ListagemExcursaoAdm() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {excursoes.map((excursao) => (
+          {excursoes.map((excursao, index) => (
             <TableRow
               key={excursao.idExcursao}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

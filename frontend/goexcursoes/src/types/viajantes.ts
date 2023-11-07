@@ -1,5 +1,5 @@
 export interface IViajante {
-  idReserva: number;
-  nomeViajante: string;
-  documentoViajante: string;
+  idReservaViajantes: number;
+  nomeViajantes: string;
+  documentoViajantes: string;
 }

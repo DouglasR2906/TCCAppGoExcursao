@@ -5,8 +5,9 @@ import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { Theme, useTheme } from "@mui/material/styles";
-import http from "http/http";
+import useGet from "Api/useGet";
 import { useEffect, useState } from "react";
+import autenticacaoStore from "store/autenticacao.store";
 import { IFormaPagamento } from "types/formaPagamento";
 import { TipoSnack } from "types/tipoSnack";
 import SnackALert from "../SnackAlert/snackAlert";
@@ -33,9 +34,9 @@ export default function ListaChip({ valor, setValor }: Props) {
   const [formasPagamento, setFormasPagamento] = useState<IFormaPagamento[]>([]);
 
   useEffect(() => {
-    http.get("formaPagamento")
+    useGet({ url: "formaPagamento", token: autenticacaoStore.usuario.tokenUsuario })
       .then((resposta) => {
-        setFormasPagamento(resposta.data);
+        setFormasPagamento(resposta.data as IFormaPagamento[]);
       })
       .catch(() => {
         setMensagem("Erro ao buscar formas de pagamento!");
@@ -71,7 +72,6 @@ export default function ListaChip({ valor, setValor }: Props) {
           </Box>
         )}
       >
-        <MenuItem><em>{""}</em></MenuItem>
         {formasPagamento.map((itens) => (
           <MenuItem
             key={itens.idFormaPagamento}

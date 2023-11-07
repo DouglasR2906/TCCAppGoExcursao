@@ -92,9 +92,10 @@ public class ExcursaoController {
         return ResponseEntity.ok(excursoes);
     }
 
-    @GetMapping("/usuario/id")
-    public ResponseEntity<Page<DadosExcursaoListagem>> listarByUsuario(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
-        var pageExcursoes = excrusaoRepository.findAll(paginacao).map(DadosExcursaoListagem::new);
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<Page<DadosExcursaoListagem>> listarByUsuario(@PathVariable Long id, @PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
+        var usuario = usuarioRepository.getReferenceById(id);
+        var pageExcursoes = excrusaoRepository.findAllByUsuario(usuario, paginacao).map(DadosExcursaoListagem::new);
         return ResponseEntity.ok(pageExcursoes);
     }
     @GetMapping("/listarTodas")

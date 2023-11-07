@@ -44,7 +44,7 @@ const menu =
     {
       id: 2,
       value: "Excursoes",
-      to: "admin"
+      to: "/admin"
     },
     {
       id: 3,

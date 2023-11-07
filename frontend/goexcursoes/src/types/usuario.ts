@@ -6,6 +6,11 @@ export interface IUsuario {
   tipoUsuario: "ADMIN" | "CLIENTE" | "ORGANIZADOR";
 }
 
+export interface ILogin {
+  login: string;
+  senha: string;
+}
+
 export interface IUsuarioLogado {
   idUsuario: number;
   loginUsuario: string;

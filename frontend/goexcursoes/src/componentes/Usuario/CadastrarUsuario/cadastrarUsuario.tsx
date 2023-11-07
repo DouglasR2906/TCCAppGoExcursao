@@ -5,26 +5,6 @@ import PassosCadastro from "./passosCadastro";
 function CadastrarUsuario() {
   const navigate = useNavigate();
 
-  const efetuarLogin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    // http.post("login", { login: login, senha: senha })
-    //   .then(resposta => {
-    //     autenticacaoStore.login(resposta.data);
-    //     setMensagem("Login Efetuado com sucesso!");
-    //     setTipoSnack("success");
-    //     setOpenSnack(true);
-    //     setTimeout(() => {
-    //       navigate(-1);
-    //     }, 2000);
-    //   })
-    //   .catch(erro => {
-    //     setMensagem("Erro ao efetuar login! Usuário ou senha inválido.");
-    //     setTipoSnack("error");
-    //     setOpenSnack(true);
-    //     console.log(erro);
-    //   });
-  };
-
   return (
     <Container maxWidth="xl"
       sx={{

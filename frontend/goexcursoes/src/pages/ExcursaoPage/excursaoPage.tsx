@@ -3,7 +3,6 @@ import useGet from "Api/useGet";
 import ModalReserva from "componentes/Excursoes/ModalReserva/modalReserva";
 import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
 import dayjs, { Dayjs } from "dayjs";
-import http from "http/http";
 import { useEffect, useState } from "react";
 import { BiDollarCircle } from "react-icons/bi";
 import { GrClose, GrStar } from "react-icons/gr";
@@ -45,9 +44,9 @@ export default function ExcursaoPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    http.get<IExcursao>(`excursao/${id}`)
+    useGet<IExcursao>({ url: `excursao/${id}`, token: autenticacaoStore.usuario.tokenUsuario })
       .then(resposta => {
-        setExcursao(resposta.data);
+        setExcursao(resposta.data as IExcursao);
       })
       .catch(erro => {
         console.log(erro);
