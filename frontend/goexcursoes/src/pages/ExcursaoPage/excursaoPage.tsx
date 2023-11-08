@@ -174,13 +174,7 @@ export default function ExcursaoPage() {
         <Grid item container md={6} spacing={2}>
           <Grid item xs={12}>
             <Card sx={{ height: "100%" }}>
-              {/* <CardMedia
-                component="img"
-                alt="Destination Image"
-                height="100%"
-              // image={excursao.urlImagensExcursao}
-              /> */}
-              <CardContent>
+              <CardContent sx={{ padding: "0.5rem" }}>
                 <Galeria imagens={imagens} />
               </CardContent>
             </Card>

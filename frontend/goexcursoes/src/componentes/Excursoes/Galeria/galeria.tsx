@@ -1,36 +1,33 @@
-import Slider from "react-slick";
+import { A11y, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
-
+import "swiper/scss";
+import "swiper/scss/navigation";
+import "swiper/scss/pagination";
 interface Props {
   imagens: string[];
 }
 
 function Galeria({ imagens }: Props) {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   return (
-    <div className="image-slider" style={{ height: 300 }}>
-      <Slider {...settings}>
-        {imagens.map((imagem, index) => (
-          <div key={index}>
-            <img src={imagem} alt={`Imagem ${index}`} style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }} />
-          </div>
-        ))}
-      </Slider>
-    </div>
+    <Swiper
+      modules={[Navigation, Pagination, A11y]}
+      navigation
+      pagination={{ clickable: true }}
+      height={100}
+      loop
+    >
+      {imagens.map((imagem, index) => (
+        <SwiperSlide key={index} >
+          <img src={imagem} alt={`Imagem ${index}`} style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }} />
+        </SwiperSlide >
+      ))}
+    </Swiper>
   );
 }
 
-export default Galeria; 
+export default Galeria;
