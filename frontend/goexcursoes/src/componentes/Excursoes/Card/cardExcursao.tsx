@@ -1,10 +1,11 @@
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, CardMedia } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import useGet from "Api/useGet";
 import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import autenticacaoStore from "store/autenticacao.store";
 import { IExcursao } from "types/excursao";
 interface Props {
   excursao: IExcursao,
@@ -14,6 +15,17 @@ interface Props {
 function CardExcursao({ excursao, selecionarExcursao }: Props) {
   const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
   const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
+  const [imagens, setImagens] = useState<string[]>([]);
+
+  useEffect(() => {
+    useGet<string[]>({ url: `excursao/imagens/${excursao.idExcursao}`, token: autenticacaoStore.usuario.tokenUsuario })
+      .then((response) => {
+        if (response.data) {
+          setImagens(response.data);
+        }
+      }).catch(erro => console.log(erro));
+  }, []);
+
 
   return (
     <Card sx={{ maxWidth: 400, height: "100%" }}>
@@ -21,7 +33,7 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
         <CardMedia
           component="img"
           height="140"
-          image={excursao.urlImagensExcursao}
+          image={imagens[0]}
           alt="Cidade Destino Excursão"
         />
         <CardContent>

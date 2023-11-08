@@ -1,5 +1,6 @@
-import { Button, Card, CardContent, CardMedia, Grid, List, ListItem, Typography } from "@mui/material";
+import { Button, Card, CardContent, Grid, List, ListItem, Typography } from "@mui/material";
 import useGet from "Api/useGet";
+import Galeria from "componentes/Excursoes/Galeria/galeria";
 import ModalReserva from "componentes/Excursoes/ModalReserva/modalReserva";
 import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
 import dayjs, { Dayjs } from "dayjs";
@@ -21,6 +22,7 @@ export default function ExcursaoPage() {
   const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
   const [formasPagamento, setFormasPagamento] = useState<IFormaPagamentoExcursao[]>([]);
   const [open, setOpen] = useState(false);
+  const [imagens, setImagens] = useState<string[]>([]);
 
   const [excursao, setExcursao] = useState<IExcursao>({
     idExcursao: 0,
@@ -51,6 +53,12 @@ export default function ExcursaoPage() {
       .catch(erro => {
         console.log(erro);
       });
+    useGet<string[]>({ url: `excursao/imagens/${id}`, token: autenticacaoStore.usuario.tokenUsuario })
+      .then((response) => {
+        if (response.data) {
+          setImagens(response.data);
+        }
+      }).catch(erro => console.log(erro));
   }, []);
 
   useEffect(() => {
@@ -166,12 +174,15 @@ export default function ExcursaoPage() {
         <Grid item container md={6} spacing={2}>
           <Grid item xs={12}>
             <Card sx={{ height: "100%" }}>
-              <CardMedia
+              {/* <CardMedia
                 component="img"
                 alt="Destination Image"
                 height="100%"
-                image={excursao.urlImagensExcursao}
-              />
+              // image={excursao.urlImagensExcursao}
+              /> */}
+              <CardContent>
+                <Galeria imagens={imagens} />
+              </CardContent>
             </Card>
           </Grid>
           <Grid item xs={12}>

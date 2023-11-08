@@ -6,7 +6,7 @@ export interface IReserva {
   idExcursaoReserva: number;
   qtdViajantesReserva: number;
   valorTotalReserva: number;
-  formaPagtoReserva: number;
+  idFormaPagtoReserva: number;
   viajantes: IViajante[];
 }
 
@@ -16,7 +16,7 @@ export interface IReservaListagem {
   destinoExcursaoReserva: string;
   qtdViajantesReserva: number;
   valorTotalReserva: number;
-  formaPagtoReserva: number;
+  formaPagtoReserva: string;
   statusReserva: number;
 }
 

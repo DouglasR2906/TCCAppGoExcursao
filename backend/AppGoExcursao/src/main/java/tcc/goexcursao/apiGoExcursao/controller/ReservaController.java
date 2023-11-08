@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.excursao.*;
+import tcc.goexcursao.apiGoExcursao.domain.formaPagamento.FormaPagamentoRepository;
 import tcc.goexcursao.apiGoExcursao.domain.reserva.*;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.UsuarioRepository;
 import tcc.goexcursao.apiGoExcursao.domain.viajantes.DadosViajantesReserva;
@@ -30,13 +31,12 @@ public class ReservaController {
     private ReservaRepository reservaRepository;
     @Autowired
     private ExcrusaoRepository excrusaoRepository;
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private ViajantesRepository viajantesRepository;
-
+    @Autowired
+    private FormaPagamentoRepository formaPagamentoRepository;
     @Autowired
     TradorDeErros tradorDeErros;
     @PostMapping
@@ -44,7 +44,7 @@ public class ReservaController {
     public ResponseEntity<DadosReservaListagem> cadastrar(@RequestBody @Valid DadosReserva dadosReserva, UriComponentsBuilder uriBuilder) {
         var usuario = usuarioRepository.findById(dadosReserva.idUsuarioReserva()).orElse(null);
         var excursao = excrusaoRepository.findById(dadosReserva.idExcursaoReserva()).orElse(null);
-
+        var formaPagamento = formaPagamentoRepository.findById(dadosReserva.idFormaPagtoReserva()).orElse(null);
         if (usuario == null){
             throw new ValidacaoException("Usuário informado não encontrado!");
         }
@@ -60,6 +60,7 @@ public class ReservaController {
         var reserva = new Reserva(dadosReserva);
         reserva.setDivulgador(usuario);
         reserva.setExcursao(excursao);
+        reserva.setFormaPagtoReserva(formaPagamento);
         reservaRepository.save(reserva);
 
         for (DadosViajantesReserva viajante: dadosReserva.viajantes()) {

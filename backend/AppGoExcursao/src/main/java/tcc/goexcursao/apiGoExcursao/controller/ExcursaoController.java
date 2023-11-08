@@ -86,6 +86,20 @@ public class ExcursaoController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Excursao não encontrada.");
     }
 
+    @GetMapping("/imagens/{id}")
+    public ResponseEntity<Object> listaImagens(@PathVariable Long id) {
+        var excursao = excrusaoRepository.getReferenceById(id);
+        if (excursao != null){
+            try {
+                var listaImagens = excursaoService.listaImagens(excursao);
+                return ResponseEntity.ok(listaImagens);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao fazer o upload da imagem.");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Excursao não encontrada.");
+    }
+
     @GetMapping
     public ResponseEntity<List<DadosExcursaoListagem>> listar(){
         var excursoes = excrusaoRepository.findAll().stream().map(DadosExcursaoListagem::new).toList();

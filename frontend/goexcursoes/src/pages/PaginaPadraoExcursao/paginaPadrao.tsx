@@ -8,8 +8,8 @@ export default function PaginaPadrao() {
       <Cabecalho posicao="fixed" exibirUsuario={true} />
       <div style={{ paddingTop: "64px" }}>
         <Outlet />
-        <Rodape />
       </div>
+      <Rodape />
     </div>
   );
 }

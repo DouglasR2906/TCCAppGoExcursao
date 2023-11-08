@@ -1,6 +1,7 @@
 package tcc.goexcursao.apiGoExcursao.domain.reserva;
 
 import jakarta.validation.constraints.NotNull;
+import tcc.goexcursao.apiGoExcursao.domain.formaPagamento.FormaPagamento;
 import tcc.goexcursao.apiGoExcursao.domain.viajantes.DadosViajantes;
 import tcc.goexcursao.apiGoExcursao.domain.viajantes.DadosViajantesReserva;
 import tcc.goexcursao.apiGoExcursao.domain.viajantes.Viajantes;
@@ -15,7 +16,7 @@ public record DadosReserva(
         Long idExcursaoReserva,
         int qtdViajantesReserva,
         BigDecimal valorTotalReserva,
-        Long formaPagtoReserva,
+        Long idFormaPagtoReserva,
         @NotNull
         List<DadosViajantesReserva> viajantes
 ) {

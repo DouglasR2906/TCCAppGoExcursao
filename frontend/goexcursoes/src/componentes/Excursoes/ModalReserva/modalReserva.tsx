@@ -38,13 +38,12 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
   const [totalGeral, setTotalGeral] = useState(0);
   const [passo, setPasso] = useState(0);
 
-
   const [reserva, setReserva] = useState<IReserva>({
     idExcursaoReserva: 0,
     idUsuarioReserva: 0,
     qtdViajantesReserva: 0,
     valorTotalReserva: 0,
-    formaPagtoReserva: 0,
+    idFormaPagtoReserva: 0,
     viajantes: [],
   });
   const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
@@ -121,7 +120,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
       idExcursaoReserva: excursao.idExcursao,
       qtdViajantesReserva: qtde,
       valorTotalReserva: totalGeral,
-      formaPagtoReserva: formaPagtoReserva,
+      idFormaPagtoReserva: formaPagtoReserva,
       viajantes: viajantes
     });
 
@@ -227,10 +226,6 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
                 <Button variant="contained" onClick={() => setPasso(passo - 1)} sx={{ marginRight: "auto" }}>
                   <GrFormPrevious size={20} /><span style={{ marginLeft: "5px" }}>Voltar</span>
                 </Button>
-                /* <Button variant="contained" onClick={() => setPasso(passo + 1)} >
-                <span style={{ marginRight: "5px" }}>Avançar</span>
-                <GrFormNext size={20} />
-                </Button> */
               }
               {passo > 1 &&
                 <Button variant="contained" type="submit" onClick={(event) => ConfirmaRererva(event)}>
