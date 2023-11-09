@@ -28,15 +28,15 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
 
 
   return (
-    <Card sx={{ maxWidth: 400, height: "100%" }}>
+    <Card sx={{ maxWidth: 400, height: 380 }}>
       <CardActionArea onClick={() => selecionarExcursao(excursao.idExcursao)}>
         <CardMedia
           component="img"
-          height="140"
+          height="180"
           image={imagens[0]}
           alt="Cidade Destino Excursão"
         />
-        <CardContent>
+        <CardContent >
           <Typography gutterBottom variant="h5" component="div">
             {excursao.tituloExcursao}
           </Typography>

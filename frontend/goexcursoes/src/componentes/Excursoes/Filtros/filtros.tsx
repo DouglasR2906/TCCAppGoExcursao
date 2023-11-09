@@ -1,5 +1,4 @@
-import styles from "./Filtros.module.scss";
-import { Box, Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Filtro } from "types/filtro";
 
 interface Props {
@@ -10,23 +9,45 @@ interface Props {
 const pages: Filtro[] = [{ id: 1, nome: "Lazer" }, { id: 2, nome: "Shows" }, { id: 3, nome: "Eventos" }, { id: 4, nome: "Concursos" }];
 function Filtros({ filtro, setFiltro }: Props) {
 
-  function selecionar(filtro: Filtro) {
-    if (filtro.id) setFiltro(filtro.id);
+  function selecionar(filtroSecionado: Filtro) {
+    if (filtro === filtroSecionado.id) {
+      setFiltro(0);
+    } else {
+      setFiltro(filtroSecionado.id);
+    }
   }
 
   return (
-    <Box className={styles.filtros}>
+    <Grid container
+      width="100%"
+      height="3rem"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      marginTop="2rem"
+      boxShadow="rgb(99, 99, 99, 0.5) 0px 0px 25px 0px"
+      sx={{ backgroundColor: "#e1e1e4" }}
+    >
       {pages.map((page) => (
-        <button
-          className={`${styles.filtros__botao} ${filtro === page.id ? styles.filtros__botao : ""}`}
-          key={page.id}
-          onClick={() => selecionar(page)}
-        >
-          {page.nome}
-        </button>
+        <Grid item key={page.id} xs={6} md={3} >
+          <Button
+            sx={{
+              backgroundColor: filtro === page.id ? "#eb540f" : "transparent",
+              margin: "0 1rem",
+              color: "#287881",
+              display: "block",
+              border: "none",
+              fontWeight: "700",
+              fontSize: "24px",
+            }}
+            onClick={() => selecionar(page)}
+          >
+            {page.nome}
+          </Button>
+        </Grid>
       ))
       }
-    </Box >
+    </Grid >
   );
 }
 

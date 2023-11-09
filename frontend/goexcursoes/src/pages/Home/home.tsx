@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import useGet from "Api/useGet";
-import Formulario from "componentes/Excursoes/Formulario/formulario";
+import Filtros from "componentes/Excursoes/Filtros/filtros";
 import Banner from "componentes/Genericos/Banner/banner";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/pt-br";
@@ -14,7 +14,7 @@ function Inicio() {
   const navigate = useNavigate();
   const [excursoes, setExcursoes] = useState<IExcursao[]>([]);
   const [busca, setBusca] = useState({ busca: "", dataIda: dayjs(), dataVolta: dayjs() });
-
+  const [filtro, setFiltro] = useState<number | null>(null);
   useEffect(() => {
     window.scrollTo(0, 0);
     useGet<IExcursao[]>({ url: "excursao" })
@@ -39,9 +39,10 @@ function Inicio() {
   }
 
   return (
-    <Grid height="100%">
+    <Grid >
       <Banner />
-      <Formulario adicionaBusca={adicionaBusca} />
+      {/* <Formulario adicionaBusca={adicionaBusca} /> */}
+      <Filtros filtro={filtro} setFiltro={setFiltro} />
       <ExcursoesLista excursoes={excursoes} selecionarExcursao={selecionarExcursao} />
     </Grid>
   );

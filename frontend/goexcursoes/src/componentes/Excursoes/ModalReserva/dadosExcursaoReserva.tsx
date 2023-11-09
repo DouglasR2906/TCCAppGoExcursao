@@ -114,17 +114,20 @@ function DadosExcursaoReserva(props: Props) {
                   setFormaPagtoReserva(valor);
                 }}
               >
-                {formasPagamento.map((formaPagamento) => (
-                  <Grid item key={formaPagamento.idFormaPagto} xs={6} height={"fit-content"}>
-                    <FormControlLabel
-                      sx={{ height: "10px", fontSize: "small" }}
-                      key={formaPagamento.idFormaPagto}
-                      control={<Radio />}
-                      label={formaPagamento.descricaoFormaPagamento}
-                      value={formaPagamento.idFormaPagto.toString()}
-                    />
-                  </Grid>
-                ))}
+                <Grid container>
+
+                  {formasPagamento.map((formaPagamento) => (
+                    <Grid item key={formaPagamento.idFormaPagto} xs={12} sm={6} height={"fit-content"}>
+                      <FormControlLabel
+                        sx={{ height: "10px", fontSize: "small" }}
+                        key={formaPagamento.idFormaPagto}
+                        control={<Radio />}
+                        label={formaPagamento.descricaoFormaPagamento}
+                        value={formaPagamento.idFormaPagto.toString()}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
               </RadioGroup>
             </FormControl>
           </Grid>

@@ -46,11 +46,11 @@ const menu =
       value: "Excursoes",
       to: "/admin"
     },
-    {
-      id: 3,
-      value: "Reservas",
-      to: "reservas"
-    },
+    // {
+    //   id: 3,
+    //   value: "Reservas",
+    //   to: "reservas"
+    // },
     // {
     //   id: 4,
     //   value: "Relatorios",
@@ -126,7 +126,7 @@ export default function PaginaPadraoAdm(props: Props) {
           <Typography variant="h6" noWrap component="div" color={"#237871"}>
             Administração
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center" }} />
+          <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }} />
           <MenuCabecalho />
         </Toolbar>
       </AppBar>

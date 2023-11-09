@@ -1,15 +1,40 @@
+import { Box, CssBaseline } from "@mui/material";
 import Cabecalho from "componentes/Genericos/Cabecalho/cabecalho";
 import Rodape from "componentes/Genericos/Rodape/rodape";
 import { Outlet } from "react-router-dom";
 
 export default function PaginaPadrao() {
   return (
-    <div >
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <CssBaseline />
       <Cabecalho posicao="fixed" exibirUsuario={true} />
-      <div style={{ paddingTop: "64px" }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, width: "100", marginTop: 9 }}
+      >
         <Outlet />
+      </Box>
+      <Box
+        component="footer"
+        sx={{ flexGrow: 1, width: "100%", height: "100%" }}
+      >
         <Rodape />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
+
+
+
+
+
+
+// export default function PaginaPadrao() {
+//   return (
+//     <div >
+//       <Cabecalho posicao="fixed" exibirUsuario={true} />
+//       <Outlet />
+//       <Rodape />
+//     </div>
+//   );
+// }

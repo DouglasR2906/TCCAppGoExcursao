@@ -82,7 +82,8 @@ function PassosCadastro() {
     return passoAtivo === totalPassos() - 1;
   };
 
-  const proximo = () => {
+  const proximo = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!dadosLogin.login || !dadosLogin.senha || !dadosLogin.confirmaSenha || !dadosLogin.tipoUsuario) {
       setMensagem("Por favor, preencha todos os campos obrigatórios.");
       setTipoSnack("error");
@@ -130,7 +131,7 @@ function PassosCadastro() {
         if (response.status === 404) {
           setPassoAtivo(passoAtivo + 1);
         } else {
-          setMensagem(`Login já cadastrado.${response.error}`);
+          setMensagem("Login já cadastrado.");
           setTipoSnack("error");
           setOpenSnack(true);
         }
@@ -140,7 +141,8 @@ function PassosCadastro() {
     }
   };
 
-  const efetuarCadastro = () => {
+  const efetuarCadastro = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!dadosPessoais.nome || !dadosPessoais.documento
       || !dadosPessoais.dataNascimento || !dadosPessoais.telefone || !dadosPessoais.sexo
       || !dadosPessoais.cidade || !dadosPessoais.uf) {
@@ -224,45 +226,48 @@ function PassosCadastro() {
       </Grid>
       <Grid item xs={12} >
         <Box>
-          {ultimoPasso() ? (
-            <DadosPessoais dadosPessoais={dadosPessoais} setDadosPessoais={setDadosPessoais} />
-          )
-            :
-            <DadosLogin dadosLogin={dadosLogin} setDadosLogin={setDadosLogin} />
-          }
-          <Box sx={{ display: "flex", flexDirection: "row", padding: "1rem 1rem" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={passoAtivo === 0}
-              onClick={voltar}
-              sx={{ width: "8rem" }}
-            >
-              Voltar
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            {ultimoPasso() ?
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                onClick={efetuarCadastro}
-                sx={{ width: "8rem" }}
-              >
-                <CheckIcon /> Concluir
-              </Button>
+          <form onSubmit={ultimoPasso() ? efetuarCadastro : proximo}>
+
+            {ultimoPasso() ? (
+              <DadosPessoais dadosPessoais={dadosPessoais} setDadosPessoais={setDadosPessoais} />
+            )
               :
+              <DadosLogin dadosLogin={dadosLogin} setDadosLogin={setDadosLogin} />
+            }
+            <Box sx={{ display: "flex", flexDirection: "row", padding: "1rem 1rem" }}>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={proximo}
-                type="submit"
+                disabled={passoAtivo === 0}
+                onClick={voltar}
                 sx={{ width: "8rem" }}
               >
-                Próximo
+                Voltar
               </Button>
-            }
-          </Box>
+              <Box sx={{ flex: "1 1 auto" }} />
+              {ultimoPasso() ?
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  // onClick={efetuarCadastro}
+                  sx={{ width: "8rem" }}
+                >
+                  <CheckIcon /> Concluir
+                </Button>
+                :
+                <Button
+                  variant="contained"
+                  color="primary"
+                  // onClick={proximo}
+                  type="submit"
+                  sx={{ width: "8rem" }}
+                >
+                  Próximo
+                </Button>
+              }
+            </Box>
+          </form>
         </Box>
       </Grid>
       <Typography variant="subtitle2" color={"red"}>Campos com * são obrigatórios</Typography>

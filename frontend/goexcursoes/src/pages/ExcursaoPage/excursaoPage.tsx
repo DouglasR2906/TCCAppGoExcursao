@@ -105,6 +105,9 @@ export default function ExcursaoPage() {
       setMensagem("Favor realizar login!");
       setTipoSnack("error");
       setOpenSnack(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
       return;
     }
     setOpen(true);
@@ -115,84 +118,81 @@ export default function ExcursaoPage() {
   };
 
   return (
-    <Grid height="100vh">
-      <Grid container spacing={2} sx={{
-        bgcolor: "background.paper",
-        // boxShadow: 1,
-        // borderRadius: "5px",
-        border: "none",
-        width: "95vw",
-        p: 2,
-        m: 2,
-        display: "flex",
-        maxWidth: "95vw",
-      }}>
-        <Grid item container sx={{ display: "flex", alignItems: "center", padding: 2 }}>
-          <Typography variant="h4" sx={{ flex: 1 }}>{excursao.tituloExcursao}</Typography>
-          <Button variant="contained" sx={{ marginLeft: "auto" }} onClick={abrirModal}>
-            <span>Reservar</span>
-          </Button>
-          <Button variant="text" sx={{ marginLeft: "auto", alignItems: "center" }} onClick={() => navigate(-1)}>
-            <GrClose size={20} />
-          </Button>
-        </Grid>
-        <Grid item container spacing={2} md={6}>
-          <Grid item xs={12}>
-            <Card sx={{ height: "100%" }} >
-              <CardContent>
-                <Typography>{excursao.descricaoExcursao}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                <Typography variant="h6">Origem: {excursao.cidadeOrigemExcursao}</Typography>
-                <Typography variant="h6">Destino: {excursao.cidadeDestinoExcursao}</Typography>
-                <Typography variant="h6">
-                  Saída: {dataIda?.format("DD/MM/YYYY")} às {excursao.horaIdaExcursao}
-                </Typography>
-                <Typography variant="h6">
-                  Volta: {dataVolta?.format("DD/MM/YYYY")} às {excursao.horaVoltaExcursao}
-                </Typography>
 
-                <List color='black'>
-                  <Typography> Formas de Pagamento:</Typography>
-                  <Grid container>
-                    {formasPagamento.map((item) => (
-                      <Grid item key={item.idFormaPagto} xs={12} sm={12} md={6}>
-                        <ListItem><BiDollarCircle size={20} />{item.descricaoFormaPagamento}</ListItem>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </List>
-                <Typography variant="h5">Valor: R${excursao.valorExcursao.toFixed(2)}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+    <Grid container spacing={2} sx={{
+      bgcolor: "background.paper",
+      // boxShadow: 1,
+      // borderRadius: "5px",
+      border: "none",
+      width: "95vw",
+      p: 2,
+      m: 2,
+      display: "flex",
+    }}>
+      <Grid container sx={{ display: "flex", alignItems: "center", padding: 2 }}>
+        <Typography variant="h4" sx={{ flex: 1 }}>{excursao.tituloExcursao}</Typography>
+        <Button variant="contained" sx={{ marginLeft: "auto" }} onClick={abrirModal}>
+          <span>Reservar</span>
+        </Button>
+        <Button variant="text" sx={{ marginLeft: "auto", alignItems: "center" }} onClick={() => navigate(-1)}>
+          <GrClose size={20} />
+        </Button>
+      </Grid>
+      <Grid container spacing={2} md={6} marginRight={{ xs: 0, md: 2 }} marginBottom={{ xs: 2, md: 0 }}>
+        <Grid item xs={12}>
+          <Card sx={{ height: "100%" }} >
+            <CardContent>
+              <Typography>{excursao.descricaoExcursao}</Typography>
+            </CardContent>
+          </Card>
         </Grid>
-        <Grid item container md={6} spacing={2}>
-          <Grid item xs={12}>
-            <Card sx={{ height: "100%" }}>
-              <CardContent sx={{ padding: "0.5rem" }}>
-                <Galeria imagens={imagens} />
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                <Typography variant="h6">Divulgador</Typography>
-                <Typography>Nome: Douglas Rodrigues</Typography>
-                <Typography>Contato: douglasr.comp@hotamil.com</Typography>
-                {Avaliacao(4.3)}
-              </CardContent>
-            </Card>
-          </Grid>
+        <Grid item xs={12}>
+          <Card sx={{ height: "100%" }}>
+            <CardContent>
+              <Typography variant="h6">Origem: {excursao.cidadeOrigemExcursao}</Typography>
+              <Typography variant="h6">Destino: {excursao.cidadeDestinoExcursao}</Typography>
+              <Typography variant="h6">
+                Saída: {dataIda?.format("DD/MM/YYYY")} às {excursao.horaIdaExcursao}
+              </Typography>
+              <Typography variant="h6">
+                Volta: {dataVolta?.format("DD/MM/YYYY")} às {excursao.horaVoltaExcursao}
+              </Typography>
+
+              <List color='black'>
+                <Typography> Formas de Pagamento:</Typography>
+                <Grid container>
+                  {formasPagamento.map((item) => (
+                    <Grid item key={item.idFormaPagto} xs={12} sm={12} md={6}>
+                      <ListItem><BiDollarCircle size={20} />{item.descricaoFormaPagamento}</ListItem>
+                    </Grid>
+                  ))}
+                </Grid>
+              </List>
+              <Typography variant="h5">Valor: R${excursao.valorExcursao.toFixed(2)}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      <Grid container md={6} spacing={2}>
+        <Grid item xs={12} height={"30rem"}>
+          <Card sx={{ height: "100%", padding: "0.5rem" }} >
+            <Galeria imagens={imagens} />
+          </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Card sx={{ height: "100%" }}>
+            <CardContent>
+              <Typography variant="h6">Divulgador</Typography>
+              <Typography>Nome: Douglas Rodrigues</Typography>
+              <Typography>Contato: douglasr.comp@hotamil.com</Typography>
+              {Avaliacao(4.3)}
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
       <ModalReserva excursao={excursao} open={open} onClose={fecharModal} usuario={autenticacaoStore.usuario} formasPagamento={formasPagamento} />
       <SnackALert open={openSnack} setOpen={setOpenSnack} mensagem={mensagem} tipoSnack={tipoSnack} />
-    </Grid>
+    </Grid >
+
   );
 }

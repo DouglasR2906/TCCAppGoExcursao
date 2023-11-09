@@ -77,7 +77,7 @@ export default function ListagemReservasUser() {
                 {statusReserva[reserva.statusReserva]}
               </TableCell>
               <TableCell align="center">
-                <Button variant="text" onClick={() => navigate(`reserva/${reserva.idReserva}`)}>
+                <Button variant="text" onClick={() => navigate(`/usuario/reservas/${reserva.idReserva}`)}>
                   <FormatListBulletedIcon />
                 </Button>
               </TableCell>

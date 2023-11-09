@@ -2,7 +2,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import Key from "@mui/icons-material/Key";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Button, FormGroup, Grid, IconButton, InputAdornment, MenuItem, OutlinedInput, Select, Typography } from "@mui/material";
+import { Button, Grid, IconButton, InputAdornment, MenuItem, OutlinedInput, Select, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import useGet from "Api/useGet";
 import usePut from "Api/usePut";
@@ -127,7 +127,8 @@ export default function DadosCadastro() {
     console.log("Dados Pessoais:", dadosPessoais);
   }, [dadosLogin, dadosPessoais]);
 
-  const SalvarDadosCadastro = () => {
+  const SalvarDadosCadastro = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!dadosPessoais.nome || !dadosPessoais.documento
       || !dadosPessoais.dataNascimento || !dadosPessoais.telefone || !dadosPessoais.sexo
       || !dadosPessoais.cidade || !dadosPessoais.uf) {
@@ -226,7 +227,7 @@ export default function DadosCadastro() {
     event.preventDefault();
   };
   return (
-    <FormGroup onSubmit={SalvarDadosCadastro}>
+    <form onSubmit={(event) => SalvarDadosCadastro(event)}>
       <Typography variant="h6" color="initial">Dados Cadastrais:</Typography>
       <Grid container >
         <Grid item xs={12} marginTop={1} flexBasis={"100%"} maxWidth={"100%"} padding={"0rem 1rem"}>
@@ -315,6 +316,7 @@ export default function DadosCadastro() {
           <Typography sx={{ color: "#237871" }}>Nome Completo *</Typography>
           <OutlinedInput
             fullWidth
+            required
             type="text"
             size="small"
             value={dadosPessoais.nome}
@@ -330,6 +332,7 @@ export default function DadosCadastro() {
           >
             <OutlinedInput
               fullWidth
+              required
               type="text"
               size="small"
               placeholder="000.000.000-00"
@@ -351,6 +354,7 @@ export default function DadosCadastro() {
           <Typography sx={{ color: "#237871" }}>Cidade *</Typography>
           <OutlinedInput
             fullWidth
+            required
             type="text"
             size="small"
             value={dadosPessoais.cidade}
@@ -361,6 +365,7 @@ export default function DadosCadastro() {
           <Typography sx={{ color: "#237871" }}>UF *</Typography>
           <OutlinedInput
             fullWidth
+            required
             type="text"
             size="small"
             value={dadosPessoais.uf}
@@ -421,6 +426,7 @@ export default function DadosCadastro() {
           >
             <OutlinedInput
               fullWidth
+              required
               type="text"
               size="small"
               placeholder="(00) 0 0000-0000"
@@ -455,10 +461,10 @@ export default function DadosCadastro() {
           }
         </Grid> */}
         <Grid item xs={2} margin={"0 auto"} padding={"0.25rem 1rem"} >
-          <Button fullWidth variant="outlined" type="submit" onClick={SalvarDadosCadastro}>Gravar</Button>
+          <Button fullWidth variant="outlined" type="submit">Gravar</Button>
         </Grid>
       </Grid>
       <SnackALert open={openSnack} setOpen={setOpenSnack} mensagem={mensagem} tipoSnack={tipoSnack} />
-    </FormGroup >
+    </form >
   );
 }

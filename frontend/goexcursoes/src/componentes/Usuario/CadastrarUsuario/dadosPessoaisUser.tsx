@@ -65,6 +65,7 @@ function DadosPessoais({ dadosPessoais, setDadosPessoais }: Props) {
         <Typography sx={{ color: "#237871" }}>Nome Completo *</Typography>
         <OutlinedInput
           fullWidth
+          required
           type="text"
           size="small"
           value={nome}
@@ -80,6 +81,7 @@ function DadosPessoais({ dadosPessoais, setDadosPessoais }: Props) {
         >
           <OutlinedInput
             fullWidth
+            required
             type="text"
             size="small"
             placeholder="000.000.000-00"
@@ -101,6 +103,7 @@ function DadosPessoais({ dadosPessoais, setDadosPessoais }: Props) {
         <Typography sx={{ color: "#237871" }}>Cidade *</Typography>
         <OutlinedInput
           fullWidth
+          required
           type="text"
           size="small"
           value={cidade}
@@ -111,10 +114,11 @@ function DadosPessoais({ dadosPessoais, setDadosPessoais }: Props) {
         <Typography sx={{ color: "#237871" }}>UF *</Typography>
         <OutlinedInput
           fullWidth
+          required
           type="text"
           size="small"
           value={uf}
-          onChange={(event) => setUf(event.target.value)}
+          onChange={(event) => setUf(event.target.value.toUpperCase())}
         />
       </Grid>
       <Grid item xs={12} md={10} marginTop={1} flexBasis={"100%"} maxWidth={"100%"} padding={{ xs: "0rem 1rem", md: "0rem 0.25rem 0rem 1rem" }}>
@@ -143,7 +147,7 @@ function DadosPessoais({ dadosPessoais, setDadosPessoais }: Props) {
           fullWidth
           type="text"
           size="small"
-          value={logradouro}
+          value={bairro}
           onChange={(event) => setBairro(event.target.value)}
         />
       </Grid>
@@ -171,6 +175,7 @@ function DadosPessoais({ dadosPessoais, setDadosPessoais }: Props) {
         >
           <OutlinedInput
             fullWidth
+            required
             type="text"
             size="small"
             placeholder="(00) 0 0000-0000"

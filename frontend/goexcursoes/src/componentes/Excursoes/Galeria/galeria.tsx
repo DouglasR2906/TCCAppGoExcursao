@@ -1,4 +1,5 @@
-import { A11y, Navigation, Pagination } from "swiper/modules";
+import { CardMedia } from "@mui/material";
+import { A11y, Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/scss";
@@ -11,19 +12,20 @@ interface Props {
 function Galeria({ imagens }: Props) {
   return (
     <Swiper
-      modules={[Navigation, Pagination, A11y]}
+      modules={[Navigation, Pagination, A11y, Autoplay]}
       navigation
       pagination={{ clickable: true }}
-      height={100}
-      loop
+      autoHeight={true}
+      autoplay
     >
       {imagens.map((imagem, index) => (
         <SwiperSlide key={index} >
-          <img src={imagem} alt={`Imagem ${index}`} style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }} />
+          <CardMedia
+            component="img"
+            height="400"
+            image={imagem}
+            alt="Cidade Destino Excursão"
+          />
         </SwiperSlide >
       ))}
     </Swiper>

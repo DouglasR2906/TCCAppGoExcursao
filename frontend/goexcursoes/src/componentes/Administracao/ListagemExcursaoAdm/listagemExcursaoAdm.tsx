@@ -1,5 +1,5 @@
-
 import EditIcon from "@mui/icons-material/Edit";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -57,6 +57,7 @@ export default function ListagemExcursaoAdm() {
             <TableCell align="center">Destino</TableCell>
             <TableCell align="right">Valor Total</TableCell>
             <TableCell align="center">Editar</TableCell>
+            <TableCell align="left">Reservas</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -72,6 +73,11 @@ export default function ListagemExcursaoAdm() {
               <TableCell align="center">
                 <Button variant="text" onClick={() => navigate(`novo/${excursao.idExcursao}`)}>
                   <EditIcon />
+                </Button>
+              </TableCell>
+              <TableCell align="left">
+                <Button variant="text" onClick={() => navigate(`/reservas/${excursao.idExcursao}`)}>
+                  <FormatListBulletedIcon />
                 </Button>
               </TableCell>
             </TableRow>

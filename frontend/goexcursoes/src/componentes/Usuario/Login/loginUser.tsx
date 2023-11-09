@@ -26,7 +26,7 @@ function Login() {
     event.preventDefault();
   };
 
-  const efetuarLogin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const efetuarLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     http.post("login", { login: login, senha: senha })
       .then(resposta => {
@@ -36,7 +36,7 @@ function Login() {
         setOpenSnack(true);
         setTimeout(() => {
           navigate(-1);
-        }, 2000);
+        }, 1000);
       })
       .catch(erro => {
         setMensagem("Erro ao efetuar login! Usuário ou senha inválido.");
@@ -70,7 +70,7 @@ function Login() {
         margin="2rem 0rem"
       >
         <Grid item xs={12} textAlign={"end"}>
-          <Button variant="text" onClick={() => navigate(-1)} sx={{ marginLeft: "auto", margintop: 2 }}>
+          <Button variant="text" onClick={() => navigate("/")} sx={{ marginLeft: "auto", margintop: 2 }}>
             <GrClose size={20} />
           </Button>
         </Grid>
@@ -86,57 +86,59 @@ function Login() {
           <Typography variant="h5" color="initial">Faça login em sua conta</Typography>
         </Grid>
         <Grid item xs={12} >
-          <Grid container justifyContent={"center"} alignItems={"center"} >
-            <Grid item xs={8} margin={1} flexBasis={"100%"} maxWidth={"100%"} padding={"0rem 1rem"}>
-              <Typography variant="body1" sx={{ color: "#237871" }} width={"100%"}>Login</Typography>
-              <OutlinedInput
-                fullWidth
-                type="email"
-                size="small"
-                placeholder="email@mail.com"
-                value={login}
-                onChange={(event) => setLogin(event.target.value)}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <AccountCircleIcon />
-                  </InputAdornment>
-                }
-              />
+          <form onSubmit={efetuarLogin}>
+            <Grid container justifyContent={"center"} alignItems={"center"} >
+              <Grid item xs={8} margin={1} flexBasis={"100%"} maxWidth={"100%"} padding={"0rem 1rem"}>
+                <Typography variant="body1" sx={{ color: "#237871" }} width={"100%"}>Login</Typography>
+                <OutlinedInput
+                  fullWidth
+                  type="email"
+                  size="small"
+                  placeholder="email@mail.com"
+                  value={login}
+                  onChange={(event) => setLogin(event.target.value)}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <AccountCircleIcon />
+                    </InputAdornment>
+                  }
+                />
+              </Grid>
+              <Grid item xs={8} margin={1} flexBasis={"100%"} maxWidth={"100%"} padding={"0rem 1rem"}>
+                <Typography sx={{ color: "#237871" }}>Senha</Typography>
+                <OutlinedInput
+                  fullWidth
+                  type={showPassword ? "text" : "password"}
+                  size="small"
+                  placeholder="Senha"
+                  value={senha}
+                  onChange={(event) => setSenha(event.target.value)}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <KeyIcon />
+                    </InputAdornment>
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </Grid>
+              <Grid item xs={6} margin={1} textAlign={"center"}>
+                <Button variant="contained" color="primary" type="submit">
+                  Entrar
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={8} margin={1} flexBasis={"100%"} maxWidth={"100%"} padding={"0rem 1rem"}>
-              <Typography sx={{ color: "#237871" }}>Senha</Typography>
-              <OutlinedInput
-                fullWidth
-                type={showPassword ? "text" : "password"}
-                size="small"
-                placeholder="Senha"
-                value={senha}
-                onChange={(event) => setSenha(event.target.value)}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <KeyIcon />
-                  </InputAdornment>
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </Grid>
-            <Grid item xs={6} margin={1} textAlign={"center"}>
-              <Button variant="contained" color="primary" type="submit" onClick={(event) => efetuarLogin(event)}>
-                Entrar
-              </Button>
-            </Grid>
-          </Grid>
+          </form>
         </Grid>
         <Grid item xs textAlign={"center"}>
           <CardContent >
