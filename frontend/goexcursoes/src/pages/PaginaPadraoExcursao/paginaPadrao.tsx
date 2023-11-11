@@ -10,7 +10,7 @@ export default function PaginaPadrao() {
       <Cabecalho posicao="fixed" exibirUsuario={true} />
       <Box
         component="main"
-        sx={{ flexGrow: 1, width: "100", marginTop: 9 }}
+        sx={{ flexGrow: 1, width: "100", marginTop: 8 }}
       >
         <Outlet />
       </Box>

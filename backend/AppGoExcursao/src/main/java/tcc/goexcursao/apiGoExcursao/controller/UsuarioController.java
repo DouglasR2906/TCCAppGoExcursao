@@ -38,7 +38,7 @@ public class UsuarioController {
         }
         var usuario = new Usuario(dadosUsuario.loginUsuario(), senhaCodificada, dadosUsuario.ativoUsuario(), dadosUsuario.tipoUsuario());
        repository.save(usuario);
-        var uri = uriBuilder.path("/Usuario/{login}").buildAndExpand(usuario.getLoginUsuario()).toUri();
+        var uri = uriBuilder.path("/usuario/{login}").buildAndExpand(usuario.getLoginUsuario()).toUri();
         return ResponseEntity.created(uri).body(new DadosUsuarioListagem(usuario));
     }
 

@@ -1,30 +1,25 @@
+import Grid from "@mui/material/Grid";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import React from "react";
 import { ICategoria } from "types/categoria";
-import styel from "./ListaSuspensa.module.scss";
 
 interface Props {
-  obrigatorio: boolean,
-  label: string,
   itens: ICategoria[],
-  valor: string,
-  aoAlterado: React.Dispatch<React.SetStateAction<string>>
+  valor: number,
+  setValor: React.Dispatch<React.SetStateAction<number>>
 }
 
-function ListaSuspensa({ obrigatorio, label, itens, valor, aoAlterado }: Props) {
-
-  const aoSelecionado = (evento: React.ChangeEvent<HTMLSelectElement>) => {
-    if (aoAlterado) {
-      aoAlterado(evento.target.value);
-    }
-  };
+function ListaSuspensa({ itens, valor, setValor }: Props) {
 
   return (
-    <div className={styel.lista}>
-      <label>{label}</label>
-      <select onChange={aoSelecionado} required={obrigatorio} value={valor}>
-        {itens.map((item) => <option key={item.idCategoria} className="option" value={item.descricaoCategoria}>{item.descricaoCategoria}</option>)}
-      </select>
-    </div>
+    <Grid sx={{ display: "inline-block" }} xs={12}>
+      <InputLabel>Filtros</InputLabel>
+      <Select onChange={(event) => setValor(Number(event.target.value))} value={valor}>
+        {itens.map((item) => <MenuItem key={item.idCategoria} className="option" value={item.idCategoria}>{item.descricaoCategoria}</MenuItem>)}
+      </Select>
+    </Grid>
   );
 }
 

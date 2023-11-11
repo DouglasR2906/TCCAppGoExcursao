@@ -33,7 +33,7 @@ public class SecurityConfigurations {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://192.168.0.10:3000");
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
@@ -51,7 +51,7 @@ public class SecurityConfigurations {
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .authorizeHttpRequests(req ->{
                     req.requestMatchers(HttpMethod.POST, "/login", "/dadosCadastrais", "/usuario").permitAll();
-                    req.requestMatchers(HttpMethod.GET, "/usuario/**", "/excursao", "/excursao/**").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/usuario/**", "/excursao", "/excursao/**", "/categoria", "/municipio").permitAll();
                     req.requestMatchers("/v3/api-docs/**","/swagger-ui.html","/swagger-ui/**").permitAll();
                     //req.requestMatchers(HttpMethod.DELETE "/usuario").hasRole("ADMIN"); Autorizacao por perfil de usuario
                     //req.anyRequest().permitAll();

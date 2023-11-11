@@ -1,9 +1,18 @@
+import Formulario from "componentes/Excursoes/Formulario/formularioBusca";
+import { Dayjs } from "dayjs";
 import style from "./Banner.module.scss";
 
-function Banner() {
+interface Props {
+  adicionaBusca: (busca: string, dataIda: Dayjs | null, dataVolta: Dayjs | null) => void
+}
+
+function Banner({ adicionaBusca }: Props) {
   return (
     <div className={style.imgBanner}>
       <img src='/assets/img/Banner.png' alt='Imagem do banner' />
+      <div className={style.formulario}>
+        <Formulario adicionaBusca={adicionaBusca} />
+      </div>
       <svg
         className={style.wave}
         xmlns='http://www.w3.org/2000/svg'

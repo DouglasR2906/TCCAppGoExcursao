@@ -40,7 +40,7 @@ public class ViajantesController {
 
         viajantes.setReserva(reserva);
         viajantesRepository.save(viajantes);
-        var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(viajantes.getIdViajantes()).toUri();
+        var uri = uriBuilder.path("/viajantes/{id}").buildAndExpand(viajantes.getIdViajantes()).toUri();
         return ResponseEntity.created(uri).body(new DadosViajantesListagem(viajantes));
     }
 

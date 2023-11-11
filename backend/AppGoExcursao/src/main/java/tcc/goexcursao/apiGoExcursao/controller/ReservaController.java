@@ -30,7 +30,7 @@ public class ReservaController {
     @Autowired
     private ReservaRepository reservaRepository;
     @Autowired
-    private ExcrusaoRepository excrusaoRepository;
+    private ExcursaoRepository excursaoRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
@@ -43,7 +43,7 @@ public class ReservaController {
     @Transactional
     public ResponseEntity<DadosReservaListagem> cadastrar(@RequestBody @Valid DadosReserva dadosReserva, UriComponentsBuilder uriBuilder) {
         var usuario = usuarioRepository.findById(dadosReserva.idUsuarioReserva()).orElse(null);
-        var excursao = excrusaoRepository.findById(dadosReserva.idExcursaoReserva()).orElse(null);
+        var excursao = excursaoRepository.findById(dadosReserva.idExcursaoReserva()).orElse(null);
         var formaPagamento = formaPagamentoRepository.findById(dadosReserva.idFormaPagtoReserva()).orElse(null);
         if (usuario == null){
             throw new ValidacaoException("Usuário informado não encontrado!");
@@ -69,7 +69,7 @@ public class ReservaController {
             viajantesRepository.save(newViajante);
         }
 
-        var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(reserva.getIdReserva()).toUri();
+        var uri = uriBuilder.path("/reserva/{id}").buildAndExpand(reserva.getIdReserva()).toUri();
         return ResponseEntity.created(uri).body(new DadosReservaListagem(reserva));
     }
 

@@ -30,7 +30,7 @@ public class FormaPagamentoController {
     public ResponseEntity<DadosFormaPagamentoListagem> cadastrar(@RequestBody @Valid DadosFormaPagamento dados, UriComponentsBuilder uriBuilder) {
         var formaPagamento =  new FormaPagamento(dados);
         formaPagamentoRepository.save(formaPagamento);
-        var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(formaPagamento.getIdFormaPagamento()).toUri();
+        var uri = uriBuilder.path("/formaPagamento/{id}").buildAndExpand(formaPagamento.getIdFormaPagamento()).toUri();
         return ResponseEntity.created(uri).body(new DadosFormaPagamentoListagem(formaPagamento));
     }
 

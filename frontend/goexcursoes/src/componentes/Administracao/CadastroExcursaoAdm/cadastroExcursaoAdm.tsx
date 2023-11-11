@@ -20,6 +20,8 @@ import { TipoSnack } from "types/tipoSnack";
 
 export default function CadastroExcursaoAdm() {
   const params = useParams();
+  const { usuario } = autenticacaoStore;
+  const tokenUsuario = usuario.tokenUsuario;
   const [excursao, setExcursao] = useState<IExcursao>({
     idExcursao: 0,
     idUsuarioExcursao: 0,
@@ -44,7 +46,7 @@ export default function CadastroExcursaoAdm() {
   const [formasPagamentoSelecionadas, setFormasPagamentoSelecionadas] = useState<string[]>([""]);
   const [formasPagamentoLista, setFormasPagamentoLista] = useState<IFormaPagamento[]>([]);
   const [formasPagamentoExcursao, setFormasPagamentoExcursao] = useState<IFormaPagamentoExcursao[]>([]);
-  const [idUsuario, setIdUsuario] = useState<string | number>(0);
+  const [idUsuario, setIdUsuario] = useState<string | number>(usuario.idUsuario);
   const [titutlo, setTitutloExcursao] = useState<string | number>("");
   const [descricao, setDescricao] = useState<string | number>("");
   const [cidadeOrigem, setCidadeOrigem] = useState<string | number>("");
@@ -59,7 +61,8 @@ export default function CadastroExcursaoAdm() {
   const [imagens, setImagens] = useState<File[]>([]);
 
   useEffect(() => {
-    useGet({ url: "categoria", token: autenticacaoStore.usuario.tokenUsuario })
+
+    useGet({ url: "categoria", token: tokenUsuario })
       .then((resposta) => {
         setCategorias(resposta.data as ICategoria[]);
       })
@@ -70,7 +73,7 @@ export default function CadastroExcursaoAdm() {
         console.log(erro);
       })
       .finally();
-    useGet({ url: "formaPagamento", token: autenticacaoStore.usuario.tokenUsuario })
+    useGet({ url: "formaPagamento", token: tokenUsuario })
       .then((resposta) => {
         setFormasPagamentoLista(resposta.data as IFormaPagamento[]);
       })
@@ -84,14 +87,14 @@ export default function CadastroExcursaoAdm() {
 
   useEffect(() => {
     if (params.id && parseInt(params.id) > 0) {
-      useGet<IExcursao>({ url: `excursao/${params.id}`, token: autenticacaoStore.usuario.tokenUsuario })
+      useGet<IExcursao>({ url: `excursao/${params.id}`, token: tokenUsuario })
         .then(resposta => {
           setExcursao(resposta.data as IExcursao);
         })
         .catch(erro => {
           console.log(erro);
         }).finally();
-      useGet({ url: `excursao/${params.id}/formasPagtoExcursao`, token: autenticacaoStore.usuario.tokenUsuario })
+      useGet({ url: `excursao/${params.id}/formasPagtoExcursao`, token: tokenUsuario })
         .then((resposta) => {
           setFormasPagamentoExcursao(resposta.data as IFormaPagamentoExcursao[]);
         })
@@ -149,13 +152,13 @@ export default function CadastroExcursaoAdm() {
     setFormasPagamentoSelecionadas(formasPagto);
   }, [formasPagamentoExcursao]);
 
-  useEffect(() => {
-    if (imagens.length > 0 && excursao.idExcursao > 0) {
-      imagens.map((imagem) => {
-        EnviarImagens(imagem, excursao.idExcursao);
-      });
-    }
-  }, [imagens]);
+  // useEffect(() => {
+  //   if (imagens.length > 0 && excursao.idExcursao > 0) {
+  //     imagens.map((imagem) => {
+  //       EnviarImagens(imagem, excursao.idExcursao);
+  //     });
+  //   }
+  // }, [imagens]);
 
   const adicionaNovasFormas = () => {
     const novasFormas: IFormaPagamentoExcursao[] = [];
@@ -182,7 +185,7 @@ export default function CadastroExcursaoAdm() {
   const SalvarExcursao = () => {
     const excursaoAtualizada: IExcursao = {
       idExcursao: excursao.idExcursao > 0 ? excursao.idExcursao : 0,
-      idUsuarioExcursao: Number(autenticacaoStore.usuario.idUsuario),
+      idUsuarioExcursao: Number(idUsuario),
       tituloExcursao: titutlo.toString(),
       descricaoExcursao: descricao.toString(),
       cidadeOrigemExcursao: cidadeOrigem.toString(),
@@ -198,10 +201,13 @@ export default function CadastroExcursaoAdm() {
       canceladaExcursao: false
     };
     if (params.id) {
-      usePut({ url: "/excursao", dados: excursaoAtualizada, token: autenticacaoStore.usuario.tokenUsuario })
+      usePut({ url: "/excursao", dados: excursaoAtualizada, token: tokenUsuario })
         .then(resposta => {
           setExcursao(resposta.data as IExcursao);
           adicionaNovasFormas();
+          imagens.map((imagem) => {
+            EnviarImagens(imagem, excursao.idExcursao);
+          });
           setTipoSnack("success");
           setMensagem("Excursao atualizada com sucesso!");
           setOpenSnack(true);
@@ -213,7 +219,7 @@ export default function CadastroExcursaoAdm() {
           console.log(erro);
         });
     } else {
-      usePost({ url: "/excursao", dados: excursaoAtualizada, token: autenticacaoStore.usuario.tokenUsuario })
+      usePost({ url: "/excursao", dados: excursaoAtualizada, token: tokenUsuario })
         .then(resposta => {
           setExcursao(resposta.data as IExcursao);
           setTipoSnack("success");
@@ -238,9 +244,6 @@ export default function CadastroExcursaoAdm() {
     <FormGroup onSubmit={SalvarExcursao}>
       <Typography variant="h6" color="initial">Dados Excursão:</Typography>
       <Grid container display={"flex"} flexDirection={"row"} overflow={"auto"} maxHeight={"70vh"}>
-        <Grid item xs={12}>
-          <CampoTextoMui label="Id Usuario" valor={idUsuario} setValor={setIdUsuario} tipoDeDado="numerico" />
-        </Grid>
         <Grid item xs={12}>
           <CampoTextoMui label="Titulo:" valor={titutlo} setValor={setTitutloExcursao} tipoDeDado="string" />
         </Grid>

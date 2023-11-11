@@ -15,7 +15,9 @@ function SnackALert({ open, setOpen, mensagem, tipoSnack }: Props) {
     <Snackbar
       open={open}
       autoHideDuration={tipoSnack === "success" ? 1000 : 2000}
-      onClose={() => setOpen(false)} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+      onClose={() => setOpen(false)} anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      sx={{ marginTop: 8 }}
+    >
       <Alert severity={tipoSnack} variant="filled" sx={{ width: "100%" }}>
         {mensagem}
       </Alert>

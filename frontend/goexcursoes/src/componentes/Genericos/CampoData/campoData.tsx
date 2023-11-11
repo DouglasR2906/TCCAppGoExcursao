@@ -1,14 +1,15 @@
+import Grid from "@mui/material/Grid";
+import InputLabel from "@mui/material/InputLabel";
 import { DatePicker } from "@mui/x-date-pickers";
 import { InputDataProps } from "../../../types/inputData";
-import style from "./CampoData.module.scss";
 
-function CampoData({ label, valor, setData }: InputDataProps) {
+function CampoData({ obrigatorio, label, valor, setData }: InputDataProps) {
 
   return (
-    <div className={style.campodata}>
-      <label>{label}</label>
-      <DatePicker value={valor} onChange={(valor) => setData(valor)} />
-    </div>
+    <Grid margin={"0.5rem 0.5rem"}>
+      <InputLabel>{label}</InputLabel>
+      <DatePicker slotProps={{ textField: { size: "small", margin: "dense", required: obrigatorio } }} value={valor} onChange={(valor) => setData(valor)} />
+    </Grid>
   );
 }
 

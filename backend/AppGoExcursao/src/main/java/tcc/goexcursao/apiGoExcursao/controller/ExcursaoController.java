@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
 public class ExcursaoController {
 
     @Autowired
-    private ExcrusaoRepository excrusaoRepository;
+    private ExcursaoRepository excursaoRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
@@ -49,32 +51,14 @@ public class ExcursaoController {
     @PostMapping
     @Transactional
     public ResponseEntity<DadosExcursaoListagem> cadastrar(@RequestBody @Valid DadosExcursao dadosExcursao, UriComponentsBuilder uriBuilder) {
-        var usuario = usuarioRepository.findById(dadosExcursao.idUsuarioExcursao()).orElse(null);
-        var categoria = categoriaRepository.findById(dadosExcursao.categoriaExcursao()).orElse(null);
-
-        if (usuario == null && !usuario.getAtivoUsuario()) {
-            throw new ValidacaoException("Usuário informado não encontrado ou inativo!");
-        }
-
-        if (categoria == null){
-            throw new ValidacaoException("Categoria informada não encontrado!");
-        }
-
-        var excursao = new Excursao(dadosExcursao);
-        excursao.setUsuario(usuario);
-        excursao.setCategoria(categoria);
-        excrusaoRepository.save(excursao);
-
-        excursao = excrusaoRepository.getReferenceById(excursao.getIdExcursao());
-        excursao.setUrlImagensExcursao("http://localhost/GoExcursoes/Imagens/" + excursao.getIdExcursao() + "/" );
-
+        var excursao = excursaoService.cadastrar(dadosExcursao);
         var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(excursao.getIdExcursao()).toUri();
         return ResponseEntity.created(uri).body(new DadosExcursaoListagem(excursao));
     }
 
     @PostMapping(value = "/upload/imagens/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadImage(@RequestPart MultipartFile imagem, @PathVariable Long id) {
-        var excursao = excrusaoRepository.getReferenceById(id);
+        var excursao = excursaoRepository.getReferenceById(id);
         if (excursao != null){
             try {
                 excursaoService.UploadImagem(imagem, excursao.getIdExcursao());
@@ -88,7 +72,7 @@ public class ExcursaoController {
 
     @GetMapping("/imagens/{id}")
     public ResponseEntity<Object> listaImagens(@PathVariable Long id) {
-        var excursao = excrusaoRepository.getReferenceById(id);
+        var excursao = excursaoRepository.getReferenceById(id);
         if (excursao != null){
             try {
                 var listaImagens = excursaoService.listaImagens(excursao);
@@ -100,45 +84,38 @@ public class ExcursaoController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Excursao não encontrada.");
     }
 
-    @GetMapping
-    public ResponseEntity<List<DadosExcursaoListagem>> listar(){
-        var excursoes = excrusaoRepository.findAll().stream().map(DadosExcursaoListagem::new).toList();
-        return ResponseEntity.ok(excursoes);
-    }
-
     @GetMapping("/usuario/{id}")
     public ResponseEntity<Page<DadosExcursaoListagem>> listarByUsuario(@PathVariable Long id, @PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
         var usuario = usuarioRepository.getReferenceById(id);
-        var pageExcursoes = excrusaoRepository.findAllByUsuario(usuario, paginacao).map(DadosExcursaoListagem::new);
+        var pageExcursoes = excursaoRepository.findAllByUsuario(usuario, paginacao).map(DadosExcursaoListagem::new);
         return ResponseEntity.ok(pageExcursoes);
     }
-    @GetMapping("/listarTodas")
+    @GetMapping
     public ResponseEntity<Page<DadosExcursaoListagem>> listar(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
-        var pageExcursoes = excrusaoRepository.findAll(paginacao).map(DadosExcursaoListagem::new);
+        var pageExcursoes = excursaoRepository.findAll(paginacao).map(DadosExcursaoListagem::new);
         return ResponseEntity.ok(pageExcursoes);
     }
 
-    @GetMapping("/listarCanceladas")
-    public ResponseEntity<Page<DadosExcursaoListagem>> listarCanceladas(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
-        var pageExcursoes = excrusaoRepository.findAllByCanceladaExcursaoTrue(paginacao).map(DadosExcursaoListagem::new);
-        return ResponseEntity.ok(pageExcursoes);
-    }
-
-    @GetMapping("/listarAtivas")
-    public ResponseEntity<Page<DadosExcursaoListagem>> listarAtivas(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
-        var pageExcursoes =  excrusaoRepository.findAllByCanceladaExcursaoFalse(paginacao).map(DadosExcursaoListagem::new);
+    @GetMapping("/buscarFiltros")
+    public ResponseEntity<Page<DadosExcursaoListagem>> buscaByFiltros(
+            @PageableDefault(size  = 1, sort = {"tituloExcursao"}) Pageable paginacao,
+            @RequestParam(required = false) String cidadeDestino,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal
+    ){
+        Page<DadosExcursaoListagem> pageExcursoes = excursaoService.buscarByFiltros(paginacao, cidadeDestino, dataInicial, dataFinal);
         return ResponseEntity.ok(pageExcursoes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosExcursaoListagem> findById(@PathVariable Long id){
-        var excursao = excrusaoRepository.getReferenceById(id);
+        var excursao = excursaoRepository.getReferenceById(id);
         return ResponseEntity.ok(new DadosExcursaoListagem(excursao));
     }
     @PutMapping
     @Transactional
     public ResponseEntity<DadosExcursaoListagem> atualizar(@RequestBody @Valid DadosExcursaoAtualizar dadosExcursao){
-        var excursao = excrusaoRepository.getReferenceById(dadosExcursao.idExcursao());
+        var excursao = excursaoRepository.getReferenceById(dadosExcursao.idExcursao());
         excursao.atualizarInformacoes(dadosExcursao);
         return ResponseEntity.ok(new DadosExcursaoListagem(excursao));
     }
@@ -146,7 +123,7 @@ public class ExcursaoController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity excluir(@PathVariable Long id){
-        var excursao = excrusaoRepository.getReferenceById(id);
+        var excursao = excursaoRepository.getReferenceById(id);
         excursao.excluir();
         return ResponseEntity.noContent().build();
     }
@@ -154,7 +131,7 @@ public class ExcursaoController {
     @PostMapping("/addFormaPagtoExcursao")
     @Transactional
     public ResponseEntity<DadosFormaPagtoExcursaoListagem> addFormaPagamento(@RequestBody @Valid DadosFormaPagtoExcursao formaPagtoexcursao){
-        var excursao = excrusaoRepository.findById(formaPagtoexcursao.idExcursao()).orElse(null);
+        var excursao = excursaoRepository.findById(formaPagtoexcursao.idExcursao()).orElse(null);
         var formaPagamento = formaPagamentoRepository.findById(formaPagtoexcursao.idFormaPagto()).orElse(null);
 
         if (excursao == null){
@@ -165,14 +142,14 @@ public class ExcursaoController {
             throw new ValidacaoException("Forma de pagamento informada não encontrada!");
         }
         excursao.getFormasPagamento().add(formaPagamento);
-        excrusaoRepository.save(excursao);
+        excursaoRepository.save(excursao);
 
         return ResponseEntity.ok(new DadosFormaPagtoExcursaoListagem(excursao,formaPagamento));
     }
 
     @GetMapping("/{id}/formasPagtoExcursao")
     public ResponseEntity<List<DadosFormaPagtoExcursaoListagem>> listarFormasPagto(@PathVariable Long id){
-        var excursao = excrusaoRepository.findById(id).orElse(null);
+        var excursao = excursaoRepository.findById(id).orElse(null);
         if (excursao == null){
             throw new ValidacaoException("Excursão não encontrada!");
         }

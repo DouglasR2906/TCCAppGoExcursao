@@ -1,28 +1,43 @@
 import http from "http/http";
 
 // Defina uma interface para o tipo de dados que você espera receber como resposta
-interface ResponseData<T> {
+interface ResponseData<T, P> {
   success: boolean;
   data: T | null;
+  params: P | null;
   status: number;
   error: string | null;
 }
 
 // Função genérica para fazer uma requisição GET
-async function useGet<T>({
+async function useGet<T, P extends object = any>({
   url,
   token,
+  params = {} as P,
 }: {
   url: string;
   token?: string;
-}): Promise<ResponseData<T>> {
+  params?: P;
+}): Promise<ResponseData<T, P>> {
   try {
-    const response = await (token
-      ? http.get(url, { headers: { Authorization: `Bearer ${token}` } })
+    const response = await (token && params
+      ? http.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: params,
+        })
+      : token && !params
+      ? http.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      : !token && params
+      ? http.get(url, {
+          params: params,
+        })
       : http.get(url));
     return {
       success: true,
       data: response.data,
+      params: null,
       status: response.status,
       error: null,
     };
@@ -34,6 +49,7 @@ async function useGet<T>({
       return {
         success: false,
         data: null,
+        params: null,
         status: error.response.status,
         error: error.response.status || "Erro executar get",
       };
@@ -42,6 +58,7 @@ async function useGet<T>({
       return {
         success: false,
         data: null,
+        params: null,
         status: error.request.status,
         error: "Não foi possível se conectar à API",
       };
@@ -50,6 +67,7 @@ async function useGet<T>({
       return {
         success: false,
         data: null,
+        params: null,
         status: 999,
         error: "Erro inesperado",
       };

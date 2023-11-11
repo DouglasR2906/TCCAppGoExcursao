@@ -174,7 +174,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
               }
               {/* Adicionar Passageiros */}
               {passo === 1 &&
-                <Grid item container padding={"0rem 1rem 0rem 1rem"} alignItems={"flex-start"} >
+                <Grid item container padding={"1.5rem 1rem 0rem 1rem"} alignItems={"flex-start"} >
                   <FormugalarioViajantes viajantes={viajantes} setViajantes={setViajantes} qtde={qtde} />
                 </Grid>
               }

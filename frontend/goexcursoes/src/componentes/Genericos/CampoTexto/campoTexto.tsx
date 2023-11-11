@@ -1,7 +1,7 @@
 import React from "react";
-import style from "./CampoTexto.module.scss";
-import { InputTextoProps } from "../../../types/inputTexto";
 import { FaLocationDot } from "react-icons/fa6";
+import { InputTextoProps } from "../../../types/inputTexto";
+import style from "./CampoTexto.module.scss";
 
 function CampoTexto({ icone, obrigatorio, label, placeholder, valor, aoAlterado }: InputTextoProps) {
 

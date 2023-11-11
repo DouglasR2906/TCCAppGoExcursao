@@ -13,8 +13,8 @@ interface Props {
 }
 
 function CardExcursao({ excursao, selecionarExcursao }: Props) {
-  const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs());
-  const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs());
+  const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs(excursao.dataIdaExcursao));
+  const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs(excursao.dataVoltaExcursao));
   const [imagens, setImagens] = useState<string[]>([]);
 
   useEffect(() => {
@@ -41,16 +41,22 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
             {excursao.tituloExcursao}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Data Partida: {dataIda?.format("DD/MM/YYYY")}
+            <strong>Origem:</strong> {excursao.cidadeOrigemExcursao}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Data Volta: {dataVolta?.format("DD/MM/YYYY")}
+            <strong>Destino:</strong> {excursao.cidadeDestinoExcursao}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Categoria: {excursao.categoriaExcursao}
+            <strong>Data Partida:</strong> {dataIda?.format("DD/MM/YYYY")}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Data Volta:</strong> {dataVolta?.format("DD/MM/YYYY")}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Categoria:</strong> {excursao.categoriaExcursao}
           </Typography>
           <Typography variant="h6" color="text.secondary">
-            A partir: {excursao.valorExcursao?.toFixed(2)}
+            <strong>A partir:</strong> {excursao.valorExcursao?.toFixed(2)}
           </Typography>
         </CardContent>
       </CardActionArea>

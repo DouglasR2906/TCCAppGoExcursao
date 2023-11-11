@@ -100,10 +100,10 @@ function DadosExcursaoReserva(props: Props) {
             volta <strong>{dataVolta}</strong> às <strong>{excursao.horaVoltaExcursao}h</strong>
           </Typography>
           <Typography textAlign={"left"} variant="subtitle1">
-            Saindo de <strong>{excursao.cidadeOrigemExcursao}</strong>
+            Saindo de <strong>{excursao.cidadeOrigemExcursao} </strong>
             para <strong>{excursao.cidadeDestinoExcursao}</strong>
           </Typography>
-          <Grid container>
+          <Grid container paddingTop={"1rem"}>
             <FormControl fullWidth>
               <FormLabel sx={{ color: "black" }}> Formas de Pagamento:</FormLabel>
               <RadioGroup
@@ -133,13 +133,13 @@ function DadosExcursaoReserva(props: Props) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} padding={"0rem 1rem 0rem 1rem"}>
+      <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"}>
         <Typography variant="h6" textAlign={"left"}>Divulgador</Typography>
         <Typography textAlign={"left"}>Nome: Douglas Rodrigues</Typography>
         <Typography textAlign={"left"}>Contato: douglasr.comp@hotamil.com</Typography>
         {Avaliacao(4.8)}
       </Grid>
-      <Grid container padding={"0rem 1rem 0rem 1rem"} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+      <Grid container padding={"1rem 1rem 0rem 1rem"} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
 
         <Grid item xs={6} >
           <Typography textAlign={"left"}>
