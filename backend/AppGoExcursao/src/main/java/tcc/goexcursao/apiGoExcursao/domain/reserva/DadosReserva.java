@@ -11,7 +11,7 @@ import java.util.List;
 
 public record DadosReserva(
         @NotNull
-        Long idUsuarioReserva,
+        Long idClienteReserva,
         @NotNull
         Long idExcursaoReserva,
         int qtdViajantesReserva,

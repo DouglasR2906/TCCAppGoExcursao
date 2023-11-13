@@ -15,7 +15,7 @@ import { IExcursao } from "types/excursao";
 import { IFormaPagamentoExcursao } from "types/formaPagamento";
 import { IReserva } from "types/reserva";
 import { TipoSnack } from "types/tipoSnack";
-import { IUsuarioLogado } from "types/usuario";
+import { IDivulgador, IUsuarioLogado } from "types/usuario";
 import { IViajante } from "types/viajantes";
 import DadosExcursaoReserva from "./dadosExcursaoReserva";
 import FormugalarioViajantes from "./formularioPassageiros";
@@ -23,13 +23,14 @@ import FormugalarioViajantes from "./formularioPassageiros";
 interface Props {
   usuario: IUsuarioLogado;
   excursao: IExcursao;
+  divulgador: IDivulgador;
   formasPagamento: IFormaPagamentoExcursao[];
   open: boolean;
   onClose: () => void;
 }
 
 
-const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Props) => {
+const ModalReserva = ({ open, onClose, excursao, usuario, divulgador, formasPagamento }: Props) => {
   const [mensagem, setMensagem] = useState("");
   const [tipoSnack, setTipoSnack] = useState<TipoSnack>("success");
   const [openSnack, setOpenSnack] = useState(false);
@@ -40,7 +41,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
 
   const [reserva, setReserva] = useState<IReserva>({
     idExcursaoReserva: 0,
-    idUsuarioReserva: 0,
+    idClienteReserva: 0,
     qtdViajantesReserva: 0,
     valorTotalReserva: 0,
     idFormaPagtoReserva: 0,
@@ -116,7 +117,7 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
     }
 
     setReserva({
-      idUsuarioReserva: usuario.idUsuario,
+      idClienteReserva: usuario.idUsuario,
       idExcursaoReserva: excursao.idExcursao,
       qtdViajantesReserva: qtde,
       valorTotalReserva: totalGeral,
@@ -170,7 +171,9 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
                   totalGeral={totalGeral}
                   setTotalGeral={setTotalGeral}
                   dataIda={dataIda?.format("DD/MM/YYYY")}
-                  dataVolta={dataVolta?.format("DD/MM/YYYY")} />
+                  dataVolta={dataVolta?.format("DD/MM/YYYY")}
+                  divulgador={divulgador}
+                />
               }
               {/* Adicionar Passageiros */}
               {passo === 1 &&
@@ -195,14 +198,14 @@ const ModalReserva = ({ open, onClose, excursao, usuario, formasPagamento }: Pro
                     </Grid>
                     <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"left"}>
                       <Typography textAlign={"left"} variant="subtitle1">
-                        Viagem dia <strong>{dataIda?.format("DD/MM/YYYY")}</strong>
-                        às <strong>{excursao.horaIdaExcursao}h</strong> {" "}
+                        Viagem dia <strong>{dataIda?.format("DD/MM/YYYY")} </strong>
+                        às <strong>{excursao.horaIdaExcursao}h </strong> {" "}
 
-                        volta <strong>{dataVolta?.format("DD/MM/YYYY")}</strong>
-                        às <strong>{excursao.horaVoltaExcursao}h</strong> <br />
+                        volta <strong>{dataVolta?.format("DD/MM/YYYY")} </strong>
+                        às <strong>{excursao.horaVoltaExcursao}h </strong> <br />
 
-                        Saindo de <strong>{excursao.cidadeOrigemExcursao}</strong>
-                        para <strong>{excursao?.cidadeDestinoExcursao}</strong> <br />
+                        Saindo de <strong>{excursao.cidadeOrigemExcursao} </strong>
+                        para <strong>{excursao?.cidadeDestinoExcursao} </strong> <br />
                         Local de embarque: {excursao.localEmbarqueExcursao}
                       </Typography>
                     </Grid>

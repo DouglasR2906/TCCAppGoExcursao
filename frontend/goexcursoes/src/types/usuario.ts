@@ -11,6 +11,12 @@ export interface ILogin {
   senha: string;
 }
 
+export interface IDivulgador {
+  idUsuario: number;
+  loginUsuario: string;
+  nomeUsuario: string;
+}
+
 export interface IUsuarioLogado {
   idUsuario: number;
   loginUsuario: string;

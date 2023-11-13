@@ -2,6 +2,7 @@ package tcc.goexcursao.apiGoExcursao.domain.excursao;
 
 import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import tcc.goexcursao.apiGoExcursao.domain.categoria.Categoria;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -35,7 +36,7 @@ public record DadosExcursao(
         @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
         LocalTime horaVoltaExcursao,
         @NotNull
-        Long categoriaExcursao,
+        Categoria categoriaExcursao,
         @NotNull
         Boolean canceladaExcursao,
         @NotBlank

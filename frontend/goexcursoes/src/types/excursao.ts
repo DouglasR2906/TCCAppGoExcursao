@@ -1,3 +1,5 @@
+import { ICategoria } from "./categoria";
+
 export interface IExcursao {
   idExcursao: number;
   idUsuarioExcursao: number;
@@ -10,7 +12,7 @@ export interface IExcursao {
   dataVoltaExcursao: string;
   horaIdaExcursao: string;
   horaVoltaExcursao: string;
-  categoriaExcursao: number | string;
+  categoriaExcursao: ICategoria;
   canceladaExcursao: boolean;
   urlImagensExcursao: string;
   localEmbarqueExcursao: string;

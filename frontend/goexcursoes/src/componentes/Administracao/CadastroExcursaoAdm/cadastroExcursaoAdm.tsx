@@ -3,6 +3,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import useGet from "Api/useGet";
 import usePost from "Api/usePost";
 import usePut from "Api/usePut";
+import AutocompleteComponent from "componentes/Genericos/AutoCompleteMunicipios/autoCompleteMunicipios";
 import CampoTextoMui from "componentes/Genericos/CampoTexto/campoTextoMui";
 import CampoValor from "componentes/Genericos/CampoTexto/campoValor";
 import ListaChip from "componentes/Genericos/ListaChip/listaChip";
@@ -11,7 +12,7 @@ import UploadImagens from "componentes/Genericos/UploadImagens/uploadImagens";
 import dayjs from "dayjs";
 import http from "http/http";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import autenticacaoStore from "store/autenticacao.store";
 import { ICategoria } from "types/categoria";
 import { IExcursao } from "types/excursao";
@@ -20,6 +21,7 @@ import { TipoSnack } from "types/tipoSnack";
 
 export default function CadastroExcursaoAdm() {
   const params = useParams();
+  const navigate = useNavigate();
   const { usuario } = autenticacaoStore;
   const tokenUsuario = usuario.tokenUsuario;
   const [excursao, setExcursao] = useState<IExcursao>({
@@ -34,7 +36,7 @@ export default function CadastroExcursaoAdm() {
     dataVoltaExcursao: dayjs().format("YYYY-MM-DD"),
     horaIdaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
     horaVoltaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
-    categoriaExcursao: 0,
+    categoriaExcursao: { idCategoria: 0, descricaoCategoria: "" },
     canceladaExcursao: false,
     urlImagensExcursao: "",
     localEmbarqueExcursao: ""
@@ -49,14 +51,14 @@ export default function CadastroExcursaoAdm() {
   const [idUsuario, setIdUsuario] = useState<string | number>(usuario.idUsuario);
   const [titutlo, setTitutloExcursao] = useState<string | number>("");
   const [descricao, setDescricao] = useState<string | number>("");
-  const [cidadeOrigem, setCidadeOrigem] = useState<string | number>("");
-  const [cidadeDestino, setCidadeDestino] = useState<string | number>("");
+  const [cidadeOrigem, setCidadeOrigem] = useState<string>("");
+  const [cidadeDestino, setCidadeDestino] = useState<string>("");
   const [dataIda, setDataIda] = useState(dayjs());
   const [dataVolta, setDataVolta] = useState(dayjs());
   const [horaIda, setHoraIda] = useState<string | number>("");
   const [horaVolta, setHoraVolta] = useState<string | number>("");
   const [localEmbarque, setLocalEmbarque] = useState<string | number>("");
-  const [categoria, setCategoria] = useState(0);
+  const [categoria, setCategoria] = useState<ICategoria>({ idCategoria: 0, descricaoCategoria: "" });
   const [valorTotal, setValorTotal] = useState({ valor: "0" });
   const [imagens, setImagens] = useState<File[]>([]);
 
@@ -118,7 +120,7 @@ export default function CadastroExcursaoAdm() {
         dataVoltaExcursao: dayjs().format("YYYY-MM-DD"),
         horaIdaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
         horaVoltaExcursao: `${dayjs().hour().toString().padStart(2, "0")}:${dayjs().minute().toString().padStart(2, "0")}`,
-        categoriaExcursao: 0,
+        categoriaExcursao: { idCategoria: 0, descricaoCategoria: "" },
         canceladaExcursao: false,
         urlImagensExcursao: "",
         localEmbarqueExcursao: ""
@@ -130,18 +132,25 @@ export default function CadastroExcursaoAdm() {
   }, [params.id]);
 
   useEffect(() => {
-    setIdUsuario(excursao.idUsuarioExcursao);
-    setTitutloExcursao(excursao.tituloExcursao);
-    setDescricao(excursao.descricaoExcursao);
-    setCidadeOrigem(excursao.cidadeOrigemExcursao);
-    setCidadeDestino(excursao.cidadeDestinoExcursao);
-    setLocalEmbarque(excursao.localEmbarqueExcursao);
-    setValorTotal({ valor: excursao.valorExcursao.toString() });
-    setCategoria(Number(excursao.categoriaExcursao));
-    setDataIda(dayjs(excursao.dataIdaExcursao));
-    setDataVolta(dayjs(excursao.dataVoltaExcursao));
-    setHoraIda(excursao.horaIdaExcursao);
-    setHoraVolta(excursao.horaVoltaExcursao);
+    if (excursao.idExcursao > 0) {
+      setIdUsuario(excursao.idUsuarioExcursao);
+      setTitutloExcursao(excursao.tituloExcursao);
+      setDescricao(excursao.descricaoExcursao);
+      setCidadeOrigem(excursao.cidadeOrigemExcursao);
+      setCidadeDestino(excursao.cidadeDestinoExcursao);
+      setLocalEmbarque(excursao.localEmbarqueExcursao);
+      setValorTotal({ valor: excursao.valorExcursao.toString() });
+      setCategoria(excursao.categoriaExcursao);
+      setDataIda(dayjs(excursao.dataIdaExcursao));
+      setDataVolta(dayjs(excursao.dataVoltaExcursao));
+      setHoraIda(excursao.horaIdaExcursao);
+      setHoraVolta(excursao.horaVoltaExcursao);
+      if (imagens.length > 0 && excursao.idExcursao > 0) {
+        imagens.map((imagem) => {
+          EnviarImagens(imagem, excursao.idExcursao);
+        });
+      }
+    }
   }, [excursao]);
 
   useEffect(() => {
@@ -151,6 +160,21 @@ export default function CadastroExcursaoAdm() {
     });
     setFormasPagamentoSelecionadas(formasPagto);
   }, [formasPagamentoExcursao]);
+
+  useEffect(() => {
+    if (dataVolta?.isBefore(dataIda)) {
+      setDataVolta(dataIda);
+    }
+  }, [dataIda]);
+
+  useEffect(() => {
+    if (dataVolta?.isBefore(dataIda)) {
+      setDataVolta(dataIda);
+      setMensagem("Data de volta deve ser maior que a data de ida!");
+      setTipoSnack("error");
+      setOpenSnack(true);
+    }
+  }, [dataVolta]);
 
   // useEffect(() => {
   //   if (imagens.length > 0 && excursao.idExcursao > 0) {
@@ -184,7 +208,7 @@ export default function CadastroExcursaoAdm() {
 
   const SalvarExcursao = () => {
     const excursaoAtualizada: IExcursao = {
-      idExcursao: excursao.idExcursao > 0 ? excursao.idExcursao : 0,
+      idExcursao: excursao ? excursao.idExcursao : 0,
       idUsuarioExcursao: Number(idUsuario),
       tituloExcursao: titutlo.toString(),
       descricaoExcursao: descricao.toString(),
@@ -201,13 +225,10 @@ export default function CadastroExcursaoAdm() {
       canceladaExcursao: false
     };
     if (params.id) {
-      usePut({ url: "/excursao", dados: excursaoAtualizada, token: tokenUsuario })
+      usePut<IExcursao>({ url: "/excursao", dados: excursaoAtualizada, token: tokenUsuario })
         .then(resposta => {
           setExcursao(resposta.data as IExcursao);
           adicionaNovasFormas();
-          imagens.map((imagem) => {
-            EnviarImagens(imagem, excursao.idExcursao);
-          });
           setTipoSnack("success");
           setMensagem("Excursao atualizada com sucesso!");
           setOpenSnack(true);
@@ -219,12 +240,15 @@ export default function CadastroExcursaoAdm() {
           console.log(erro);
         });
     } else {
-      usePost({ url: "/excursao", dados: excursaoAtualizada, token: tokenUsuario })
+      usePost<IExcursao>({ url: "/excursao", dados: excursaoAtualizada, token: tokenUsuario })
         .then(resposta => {
-          setExcursao(resposta.data as IExcursao);
-          setTipoSnack("success");
-          setMensagem("Excursao cadastrada com sucesso!");
-          setOpenSnack(true);
+          if (resposta.data) {
+            setExcursao(resposta.data as IExcursao);
+            setTipoSnack("success");
+            setMensagem("Excursao cadastrada com sucesso!");
+            setOpenSnack(true);
+            navigate(`/admin/novo/${resposta.data?.idExcursao}`);
+          }
         })
         .catch(erro => {
           setTipoSnack("error");
@@ -235,8 +259,17 @@ export default function CadastroExcursaoAdm() {
     }
   };
 
+  const selecionarCategoria = (valor: string) => {
+    const categoriaSelecionada = categorias.find(function (categoria) {
+      return categoria.descricaoCategoria === valor;
+    });
+    if (categoriaSelecionada)
+      setCategoria(categoriaSelecionada);
+  };
+
   const ExcluirExcursao = () => {
-    if (params.id) http.delete(`/excursao/${excursao.idExcursao}`);
+    if (params.id) http.delete(`excursao/${excursao.idExcursao}`, { headers: { Authorization: `Bearer ${tokenUsuario}` } });
+    navigate("/admin");
   };
 
   return (
@@ -262,11 +295,21 @@ export default function CadastroExcursaoAdm() {
         </Grid>
         <Grid container >
           <Grid item xs={6} paddingRight={1}>
-            <CampoTextoMui label="Cidade Origem:" valor={cidadeOrigem} setValor={setCidadeOrigem} tipoDeDado="string"
+            <AutocompleteComponent
+              valor={cidadeOrigem}
+              setValor={setCidadeOrigem}
+              label="Cidade Origem:"
+              placeholder="Cidade de Origem"
+              exibirLabel={false}
             />
           </Grid>
           <Grid item xs={6}>
-            <CampoTextoMui label="Cidade Destino:" valor={cidadeDestino} setValor={setCidadeDestino} tipoDeDado="string"
+            <AutocompleteComponent
+              valor={cidadeDestino}
+              setValor={setCidadeDestino}
+              label="Cidade Destino:"
+              placeholder="Cidade de destino"
+              exibirLabel={false}
             />
           </Grid>
         </Grid>
@@ -288,13 +331,13 @@ export default function CadastroExcursaoAdm() {
                 labelId="labelCategoria"
                 id="selectCategoria"
                 required
-                value={categoria}
-                onChange={(evento) => {
-                  const valor = evento.target.value;
-                  setCategoria(Number(valor));
+                value={categoria.descricaoCategoria}
+                onChange={(event) => {
+                  const valor = event.target.value;
+                  selecionarCategoria(valor);
                 }}>
                 {categorias.map((categoria) =>
-                  <MenuItem key={categoria.idCategoria} value={categoria.idCategoria}>
+                  <MenuItem key={categoria.idCategoria} value={categoria.descricaoCategoria}>
                     {categoria.descricaoCategoria}
                   </MenuItem>)
                 }
@@ -355,9 +398,11 @@ export default function CadastroExcursaoAdm() {
             />
           </Grid>
         </Grid>
-        <Grid item container justifyContent={"space-between"}>
-          <UploadImagens imagens={imagens} setImagens={setImagens} />
-        </Grid>
+        {excursao.idExcursao > 0 &&
+          <Grid item container justifyContent={"space-between"}>
+            <UploadImagens imagens={imagens} setImagens={setImagens} />
+          </Grid>
+        }
       </Grid>
       <Grid container display={"flex"} marginTop={1} justifyContent={"space-between"}>
         <Grid item xs={2}>

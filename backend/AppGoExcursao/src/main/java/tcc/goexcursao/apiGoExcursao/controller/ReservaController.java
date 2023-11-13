@@ -42,7 +42,7 @@ public class ReservaController {
     @PostMapping
     @Transactional
     public ResponseEntity<DadosReservaListagem> cadastrar(@RequestBody @Valid DadosReserva dadosReserva, UriComponentsBuilder uriBuilder) {
-        var usuario = usuarioRepository.findById(dadosReserva.idUsuarioReserva()).orElse(null);
+        var usuario = usuarioRepository.findById(dadosReserva.idClienteReserva()).orElse(null);
         var excursao = excursaoRepository.findById(dadosReserva.idExcursaoReserva()).orElse(null);
         var formaPagamento = formaPagamentoRepository.findById(dadosReserva.idFormaPagtoReserva()).orElse(null);
         if (usuario == null){
@@ -58,7 +58,7 @@ public class ReservaController {
         }
 
         var reserva = new Reserva(dadosReserva);
-        reserva.setDivulgador(usuario);
+        reserva.setCliente(usuario);
         reserva.setExcursao(excursao);
         reserva.setFormaPagtoReserva(formaPagamento);
         reservaRepository.save(reserva);
@@ -86,14 +86,21 @@ public class ReservaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosReservaListagem> findById(@PathVariable Long id){
+    public ResponseEntity<DadosReservaDetalhado> findById(@PathVariable Long id){
         var reserva = reservaRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DadosReservaListagem(reserva));
+        return ResponseEntity.ok(new DadosReservaDetalhado(reserva));
     }
     @GetMapping("/usuario/{id}")
     public ResponseEntity<Page<DadosReservaListagem>> listarByUsuario(@PathVariable Long id, @PageableDefault(size  =10, sort = {"idReserva"}) Pageable paginacao){
         var divulgador = usuarioRepository.getReferenceById(id);
-        var pageReservas = reservaRepository.findAllByDivulgador(divulgador, paginacao).map(DadosReservaListagem::new);
+        var pageReservas = reservaRepository.findAllByCliente(divulgador, paginacao).map(DadosReservaListagem::new);
+        return ResponseEntity.ok(pageReservas);
+    }
+
+    @GetMapping("/excursao/{id}")
+    public ResponseEntity<Page<DadosReservaListagem>> listarByExcursao(@PathVariable Long id, @PageableDefault(size  =10, sort = {"idReserva"}) Pageable paginacao){
+        var excursao = excursaoRepository.getReferenceById(id);
+        var pageReservas = reservaRepository.findAllByExcursao(excursao, paginacao).map(DadosReservaListagem::new);
         return ResponseEntity.ok(pageReservas);
     }
     @PutMapping

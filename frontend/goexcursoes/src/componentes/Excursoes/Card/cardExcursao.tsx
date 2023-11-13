@@ -7,6 +7,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import autenticacaoStore from "store/autenticacao.store";
 import { IExcursao } from "types/excursao";
+import { IDivulgador } from "types/usuario";
 interface Props {
   excursao: IExcursao,
   selecionarExcursao: (idSelecionada: number) => void,
@@ -16,8 +17,19 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
   const [dataIda, setDataIda] = useState<Dayjs | null>(dayjs(excursao.dataIdaExcursao));
   const [dataVolta, setDataVolta] = useState<Dayjs | null>(dayjs(excursao.dataVoltaExcursao));
   const [imagens, setImagens] = useState<string[]>([]);
+  const [divulgador, setDivulgador] = useState<IDivulgador>({
+    idUsuario: 0,
+    loginUsuario: "",
+    nomeUsuario: "",
+  });
 
   useEffect(() => {
+    useGet<IDivulgador>({ url: `usuario/${excursao.idUsuarioExcursao}`, token: autenticacaoStore.usuario.tokenUsuario })
+      .then((response) => {
+        if (response.data) {
+          setDivulgador(response.data as IDivulgador);
+        }
+      }).catch(erro => console.log(erro));
     useGet<string[]>({ url: `excursao/imagens/${excursao.idExcursao}`, token: autenticacaoStore.usuario.tokenUsuario })
       .then((response) => {
         if (response.data) {
@@ -26,9 +38,8 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
       }).catch(erro => console.log(erro));
   }, []);
 
-
   return (
-    <Card sx={{ maxWidth: 400, height: 380 }}>
+    <Card sx={{ maxWidth: 400, height: 420 }}>
       <CardActionArea onClick={() => selecionarExcursao(excursao.idExcursao)}>
         <CardMedia
           component="img"
@@ -37,7 +48,7 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
           alt="Cidade Destino Excursão"
         />
         <CardContent >
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h6" component="div">
             {excursao.tituloExcursao}
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -53,7 +64,10 @@ function CardExcursao({ excursao, selecionarExcursao }: Props) {
             <strong>Data Volta:</strong> {dataVolta?.format("DD/MM/YYYY")}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <strong>Categoria:</strong> {excursao.categoriaExcursao}
+            <strong>Categoria:</strong> {excursao.categoriaExcursao.descricaoCategoria}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Divulgado por:</strong> {divulgador.nomeUsuario}
           </Typography>
           <Typography variant="h6" color="text.secondary">
             <strong>A partir:</strong> {excursao.valorExcursao?.toFixed(2)}

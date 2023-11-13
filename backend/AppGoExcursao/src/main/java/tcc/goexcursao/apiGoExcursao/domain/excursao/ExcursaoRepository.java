@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ExcursaoRepository extends JpaRepository<Excursao, Long> {
     Page<Excursao> findAllByCanceladaExcursaoTrue(Pageable paginacao);
-
+    @Query("SELECT e FROM Excursao e WHERE e.usuario = :usuario AND e.canceladaExcursao = false")
     Page<Excursao> findAllByUsuario(Usuario usuario, Pageable paginacao);
 
     Page<Excursao> findAllByCanceladaExcursaoFalse(Pageable paginacao);
@@ -25,6 +25,7 @@ public interface ExcursaoRepository extends JpaRepository<Excursao, Long> {
             (:cidadeDestino IS NULL OR e.cidadeDestinoExcursao = :cidadeDestino) 
             AND (:dataInicio IS NULL OR e.dataIdaExcursao >= :dataInicio)
             AND (:dataFinal IS NULL OR e.dataIdaExcursao <= :dataFinal)
+            AND e.canceladaExcursao = false
             """
     )
     Page<Excursao> buscarPorDestinoDataIda(@Param("cidadeDestino") String cidadeDestino,

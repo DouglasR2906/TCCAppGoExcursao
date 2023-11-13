@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public record DadosReservaListagem(
         Long idReserva,
         String tituloExcursaoReserva,
+        String nomeClienteReserva,
         String destinoExcursaoReserva,
         int qtdViajantesReserva,
         BigDecimal valorTotalReserva,
@@ -14,6 +15,7 @@ public record DadosReservaListagem(
     public DadosReservaListagem(Reserva reserva) {
         this(reserva.getIdReserva(),
             reserva.getExcursao().getTituloExcursao(),
+            reserva.getCliente().getDadosCadastraisUsuario().getNomeDadosCadastrais(),
             reserva.getExcursao().getCidadeDestinoExcursao(),
             reserva.getQtdViajantesReserva(),
             reserva.getValorTotalReserva(),

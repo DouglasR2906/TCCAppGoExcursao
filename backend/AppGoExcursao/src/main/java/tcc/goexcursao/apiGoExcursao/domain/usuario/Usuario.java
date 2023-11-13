@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais.DadosCadastrais;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,10 +32,13 @@ public class Usuario implements UserDetails {
     private String senhaUsuario;
     @Column(name = "ativo_usuarios")
     private Boolean ativoUsuario;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_usuario")
     private TipoUsuario tipoUsuario;
+
+    @OneToOne
+    @JoinColumn(name = "id_dadoscadastrais_usuarios")
+    private DadosCadastrais dadosCadastraisUsuario;
 
 
     public Usuario(DadosUsuario dadosUsuario){

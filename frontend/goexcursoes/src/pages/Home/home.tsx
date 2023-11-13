@@ -24,57 +24,64 @@ interface IBusca {
 function Inicio() {
   const navigate = useNavigate();
   const [excursoes, setExcursoes] = useState<IExcursao[]>([]);
-  const [busca, setBusca] = useState<IBusca>({ cidadeDestino: "", dataInicial: "", dataFinal: "" });
+  const [busca, setBusca] = useState<IBusca>({ cidadeDestino: null, dataInicial: null, dataFinal: null });
   const [filtro, setFiltro] = useState<string>("Todos");
   const [categorias, setCategorias] = useState<ICategoria[]>([]);
   const [pagina, setPagina] = useState(0);
-  const [size, setSize] = useState(1);
+  const size = 4;
   const [totalPaginas, setTotalPaginas] = useState(0);
+  const [categoriasCarregadas, setCategoriasCarregadas] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    useGet<IPaginacao<IExcursao>>({ url: "excursao" })
-      .then(resposta => {
-        if (resposta.data)
-          setExcursoes(resposta.data.content as IExcursao[]);
-      })
-      .catch(erro => {
-        console.log(erro);
-      })
-      .finally();
+    setBusca({});
     useGet<ICategoria[]>({ url: "categoria" })
       .then(((response) => {
-        if (response.data) setCategorias(response.data);
+        if (response.data) {
+          setCategorias(response.data);
+          setCategoriasCarregadas(true);
+        }
       }))
       .catch(erro => console.log("Erro busca categorias:", erro))
       .finally();
   }, []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (pagina === 0) window.scrollTo(0, 0);
+    const params = {
+      cidadeDestino: busca.cidadeDestino ? busca.cidadeDestino : null,
+      dataInicial: busca.dataInicial ? busca.dataInicial : null,
+      dataFinal: busca.dataFinal ? busca.dataFinal : null,
+      page: pagina,
+      size: size,
+      sort: "dataIdaExcursao"
+    };
     useGet<IPaginacao<IExcursao>, IBusca>({
       url: "excursao/buscarFiltros",
-      params: {
-        cidadeDestino: busca.cidadeDestino ? busca.cidadeDestino : null,
-        dataInicial: busca.dataInicial ? busca.dataInicial : null,
-        dataFinal: busca.dataFinal ? busca.dataFinal : null,
-        page: pagina,
-        size: size
-      }
+      params: params
     })
       .then(resposta => {
-        if (resposta.data)
-          setExcursoes(resposta.data.content as IExcursao[]);
+        if (resposta.data) {
+          const novasExcursoes = resposta.data.content as IExcursao[];
+          if (pagina === 0) {
+            setExcursoes(novasExcursoes);
+          } else {
+            setExcursoes(excursoesAnt => [...excursoesAnt, ...novasExcursoes]);
+          }
+          setTotalPaginas(resposta.data.totalPages);
+        }
       })
       .catch(erro => {
         console.log(erro);
       })
       .finally();
-  }, [busca]);
-
+  }, [busca, pagina]);
 
   const adicionaBusca = (cidadeDestino: string, dataInicial: Dayjs | null, dataFinal: Dayjs | null) => {
-    if (cidadeDestino === " ")
+    setPagina(0);
+    console.log("busca", cidadeDestino);
+
+    if (cidadeDestino === "")
       setBusca({
         dataInicial: dataInicial?.format("YYYY-MM-DD"),
         dataFinal: dataFinal?.format("YYYY-MM-DD")
@@ -94,9 +101,11 @@ function Inicio() {
     }
   }
 
-  const mudarDePagina = (novaPagina: number) => {
-    setPagina(novaPagina);
+  const carregarMais = () => {
+    if (pagina < (totalPaginas - 1)) setPagina(pagina + 1);
   };
+
+
 
   return (
     <Grid >
@@ -106,8 +115,9 @@ function Inicio() {
         excursoes={excursoes}
         selecionarExcursao={selecionarExcursao}
         filtro={filtro}
+        paginaAtual={pagina}
         totalPaginas={totalPaginas}
-        onPageChange={(novaPagina) => mudarDePagina(novaPagina)}
+        onPageChange={() => carregarMais()}
       />
     </Grid>
   );

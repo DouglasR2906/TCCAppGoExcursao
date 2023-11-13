@@ -368,6 +368,7 @@ export default function DadosCadastro() {
             required
             type="text"
             size="small"
+            margin="dense"
             value={dadosPessoais.uf}
             onChange={(event) => setDadosPessoais({ ...dadosPessoais, uf: event.target.value })}
           />

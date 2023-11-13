@@ -26,7 +26,7 @@ function PassosCadastro() {
   const [mensagem, setMensagem] = useState("");
   const [tipoSnack, setTipoSnack] = useState<TipoSnack>("success");
   const [openSnack, setOpenSnack] = useState(false);
-  const [cadastroUsuario, setCadastroUsuario] = useState<IUsuario>({
+  const [dadosUsuario, setDadosUsuario] = useState<IUsuario>({
     idUsuario: 0,
     loginUsuario: "",
     senhaUsuario: "",
@@ -161,7 +161,7 @@ function PassosCadastro() {
       usePost<IUsuario>({ url: "usuario", dados: newCadastroUsuario })
         .then((response) => {
           if (response.data) {
-            setCadastroUsuario(response.data as IUsuario);
+            setDadosUsuario(response.data as IUsuario);
             cadastrarDados(response.data.idUsuario);
           } else {
             setMensagem("Erro ao efetuar cadastro.");
@@ -227,7 +227,6 @@ function PassosCadastro() {
       <Grid item xs={12} >
         <Box>
           <form onSubmit={ultimoPasso() ? efetuarCadastro : proximo}>
-
             {ultimoPasso() ? (
               <DadosPessoais dadosPessoais={dadosPessoais} setDadosPessoais={setDadosPessoais} />
             )

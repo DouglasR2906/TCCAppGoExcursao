@@ -1,6 +1,7 @@
 package tcc.goexcursao.apiGoExcursao.domain.excursao;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import tcc.goexcursao.apiGoExcursao.domain.categoria.Categoria;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,7 +20,7 @@ public record DadosExcursaoListagem(
         LocalDate dataVoltaExcursao,
         LocalTime horaIdaExcursao,
         LocalTime horaVoltaExcursao,
-        String categoriaExcursao,
+        Categoria categoriaExcursao,
         Boolean canceladaExcursao,
         String localEmbarqueExcursao,
         String urlImagensExcursao
@@ -36,7 +37,7 @@ public record DadosExcursaoListagem(
                 excursao.getDataVoltaExcursao(),
                 excursao.getHoraIdaExcursao(),
                 excursao.getHoraVoltaExcursao(),
-                excursao. getCategoria().getDescricaoCategoria(),
+                excursao.getCategoria(),
                 excursao.getCanceladaExcursao(),
                 excursao.getLocalEmbarqueExcursao(),
                 excursao.getUrlImagensExcursao()

@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { GrAdd, GrSubtract } from "react-icons/gr";
 import { IExcursao } from "types/excursao";
 import { IFormaPagamentoExcursao } from "types/formaPagamento";
+import { IDivulgador } from "types/usuario";
 
 interface Props {
   excursao: IExcursao
@@ -28,6 +29,7 @@ interface Props {
   setTotalGeral: React.Dispatch<React.SetStateAction<number>>
   dataIda: string | undefined
   dataVolta: string | undefined
+  divulgador: IDivulgador;
 }
 
 function DadosExcursaoReserva(props: Props) {
@@ -41,7 +43,8 @@ function DadosExcursaoReserva(props: Props) {
     totalGeral,
     setTotalGeral,
     dataIda,
-    dataVolta
+    dataVolta,
+    divulgador
   } = props;
 
   const removeQtde = () => {
@@ -135,8 +138,8 @@ function DadosExcursaoReserva(props: Props) {
       </Grid>
       <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"}>
         <Typography variant="h6" textAlign={"left"}>Divulgador</Typography>
-        <Typography textAlign={"left"}>Nome: Douglas Rodrigues</Typography>
-        <Typography textAlign={"left"}>Contato: douglasr.comp@hotamil.com</Typography>
+        <Typography textAlign={"left"}>Nome: {divulgador.nomeUsuario}</Typography>
+        <Typography textAlign={"left"}>Contato: {divulgador.loginUsuario}</Typography>
         {Avaliacao(4.8)}
       </Grid>
       <Grid container padding={"1rem 1rem 0rem 1rem"} display={"flex"} alignItems={"center"} justifyContent={"space-between"}>

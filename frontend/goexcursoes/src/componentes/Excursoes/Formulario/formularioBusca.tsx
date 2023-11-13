@@ -44,7 +44,13 @@ function Formulario({ adicionaBusca }: Props) {
       <form onSubmit={(event) => aoBuscar(event)}>
         <Grid container alignItems="center" padding={1}>
           <Grid item xs={12} md={4}>
-            <AutocompleteComponent valor={busca} setValor={setBusca} />
+            <AutocompleteComponent
+              valor={busca}
+              setValor={setBusca}
+              label=""
+              placeholder="Cidade de destino"
+              exibirLabel={true}
+            />
           </Grid>
           <Grid item xs={3}>
             <CampoData

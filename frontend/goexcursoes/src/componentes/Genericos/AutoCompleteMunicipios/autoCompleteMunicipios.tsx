@@ -6,20 +6,19 @@ import TextField from "@mui/material/TextField";
 import useGet from "Api/useGet";
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
-import autenticacaoStore from "store/autenticacao.store";
 import { Municipio } from "types/municipio";
 
 
 interface Props {
   valor: string;
   setValor: React.Dispatch<React.SetStateAction<string>>;
+  label: string;
+  placeholder: string;
+  exibirLabel: boolean;
 }
 
-function AutocompleteComponent({ valor, setValor }: Props) {
-  const { usuario } = autenticacaoStore;
-  const tokenUsuario = usuario.tokenUsuario;
+function AutocompleteComponent({ valor, setValor, label, placeholder, exibirLabel }: Props) {
   const [municipios, setMunicipios] = useState<Municipio[]>([]);
-  const [selectedMunicipio, setSelectedMunicipio] = useState<Municipio | null>(null);
 
   useEffect(() => {
     useGet<Municipio[]>({ url: "municipio" })
@@ -31,23 +30,35 @@ function AutocompleteComponent({ valor, setValor }: Props) {
   }, []);
 
   return (
-    <Stack margin={"0 0.5rem"}>
-      <InputLabel sx={{ opacity: 1 }}>Buscar Destino</InputLabel>
+    <Stack >
+      {label === "" && exibirLabel && <InputLabel sx={{ opacity: 1 }}>Buscar Destino</InputLabel>}
       <Autocomplete
         freeSolo
         disableClearable
         fullWidth
         size="small"
         value={valor}
-        onChange={(event, newValue) => setValor(newValue)}
-        options={municipios.map((option) => `${option.nomeMunicipio} ${option.ufMunicipio}`)}
+        onChange={(event, newValue) => {
+          if (newValue.length > 0) {
+            setValor(newValue);
+          } else {
+            setValor("");
+          }
+        }
+        }
+        options={municipios.map((option) => (
+          `${option.nomeMunicipio} ${option.ufMunicipio}`)
+        )}
         renderInput={(params) =>
           <TextField
             {...params}
             margin="dense"
-            placeholder="Cidade de destino"
+            required
+            placeholder={placeholder}
+            label={label !== "" ? label : ""}
             InputProps={{
               ...params.InputProps,
+              type: "search",
               startAdornment: (
                 <>
                   <FaLocationDot style={{ margin: "0 4", color: "#686665" }} />
@@ -58,7 +69,6 @@ function AutocompleteComponent({ valor, setValor }: Props) {
           />
         }
       />
-
     </Stack>
   );
 }

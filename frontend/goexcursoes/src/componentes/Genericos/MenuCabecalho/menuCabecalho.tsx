@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import autenticacaoStore from "store/autenticacao.store";
 
 
-const settings = ["Dados Cadastrais", "Reservas", "Administração", "Sair"];
+const settings = ["Administração", "Dados Cadastrais", "Reservas", "Sair"];
 
 function MenuCabecalho() {
   const navigate = useNavigate();

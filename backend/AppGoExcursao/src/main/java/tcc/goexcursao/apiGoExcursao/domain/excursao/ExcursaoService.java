@@ -32,7 +32,7 @@ public class ExcursaoService extends Exception{
     public Excursao cadastrar(DadosExcursao dadosExcursao){
 
         var usuario = usuarioRepository.findById(dadosExcursao.idUsuarioExcursao()).orElse(null);
-        var categoria = categoriaRepository.findById(dadosExcursao.categoriaExcursao()).orElse(null);
+        var categoria = categoriaRepository.findById(dadosExcursao.categoriaExcursao().getIdCategoria()).orElse(null);
 
         if (usuario == null && !usuario.getAtivoUsuario()) {
             throw new ValidacaoException("Usuário informado não encontrado ou inativo!");
@@ -54,12 +54,12 @@ public class ExcursaoService extends Exception{
     }
 
     public void UploadImagem(MultipartFile imagem, Long id ) throws IOException {
-        diretorioBase += id;
-        File diretorio = new File(diretorioBase);
+        String diretorioImagens = diretorioBase + id;
+        File diretorio = new File(diretorioImagens);
         if (!diretorio.exists()) {
             diretorio.mkdirs();
         }
-        String filePath = diretorioBase + "/" + imagem.getOriginalFilename();
+        String filePath = diretorioImagens + "/" + imagem.getOriginalFilename();
         try {
             Files.write(Paths.get(filePath), imagem.getBytes());
         } catch (IOException e) {
@@ -89,7 +89,4 @@ public class ExcursaoService extends Exception{
     public Page<DadosExcursaoListagem> buscarByFiltros(Pageable paginacao, String cidadeDestino, LocalDate dataInicio, LocalDate dataFinal){
         return excursaoRepository.buscarPorDestinoDataIda(cidadeDestino, dataInicio, dataFinal, paginacao).map(DadosExcursaoListagem::new);
     }
-
-
-
 }

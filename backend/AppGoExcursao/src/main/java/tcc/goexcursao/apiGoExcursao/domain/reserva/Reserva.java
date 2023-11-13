@@ -5,8 +5,11 @@ import lombok.*;
 import tcc.goexcursao.apiGoExcursao.domain.excursao.Excursao;
 import tcc.goexcursao.apiGoExcursao.domain.formaPagamento.FormaPagamento;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.Usuario;
+import tcc.goexcursao.apiGoExcursao.domain.viajantes.Viajantes;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "reserva")
 @Entity(name = "reserva")
@@ -23,7 +26,7 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "id_usuario_reserva")
-    private Usuario divulgador;
+    private Usuario cliente;
 
     @ManyToOne
     @JoinColumn(name = "id_excursao_reserva")
@@ -41,6 +44,7 @@ public class Reserva {
 
     @Column(name = "status_reserva")
     private int statusReserva;
+
     public Reserva(DadosReserva reserva){
         this.qtdViajantesReserva = reserva.qtdViajantesReserva();
         this.valorTotalReserva = reserva.valorTotalReserva();

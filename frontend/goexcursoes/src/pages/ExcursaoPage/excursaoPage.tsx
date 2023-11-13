@@ -1,8 +1,8 @@
 import { Button, Card, CardContent, Grid, List, ListItem, Typography } from "@mui/material";
 import useGet from "Api/useGet";
 import Galeria from "componentes/Excursoes/Galeria/galeria";
-import ModalReserva from "componentes/Excursoes/ModalReserva/modalReserva";
 import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
+import ModalReserva from "componentes/Reserva/ModalReserva/modalReserva";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { BiDollarCircle } from "react-icons/bi";
@@ -12,6 +12,7 @@ import autenticacaoStore from "store/autenticacao.store";
 import { IExcursao } from "types/excursao";
 import { IFormaPagamentoExcursao } from "types/formaPagamento";
 import { TipoSnack } from "types/tipoSnack";
+import { IDivulgador } from "types/usuario";
 
 export default function ExcursaoPage() {
   const { id } = useParams();
@@ -23,6 +24,11 @@ export default function ExcursaoPage() {
   const [formasPagamento, setFormasPagamento] = useState<IFormaPagamentoExcursao[]>([]);
   const [open, setOpen] = useState(false);
   const [imagens, setImagens] = useState<string[]>([]);
+  const [divulgador, setDivulgador] = useState<IDivulgador>({
+    idUsuario: 0,
+    loginUsuario: "",
+    nomeUsuario: "",
+  });
 
   const [excursao, setExcursao] = useState<IExcursao>({
     idExcursao: 0,
@@ -36,7 +42,7 @@ export default function ExcursaoPage() {
     dataVoltaExcursao: "",
     horaIdaExcursao: "",
     horaVoltaExcursao: "",
-    categoriaExcursao: "",
+    categoriaExcursao: { idCategoria: 0, descricaoCategoria: "" },
     canceladaExcursao: false,
     urlImagensExcursao: "",
     localEmbarqueExcursao: ""
@@ -73,6 +79,12 @@ export default function ExcursaoPage() {
           setOpenSnack(true);
           console.log(erro);
         }).finally();
+      useGet<IDivulgador>({ url: `usuario/${excursao.idUsuarioExcursao}`, token: autenticacaoStore.usuario.tokenUsuario })
+        .then((response) => {
+          if (response.data) {
+            setDivulgador(response.data as IDivulgador);
+          }
+        }).catch(erro => console.log(erro));
     }
     setDataIda(dayjs(excursao.dataIdaExcursao));
     setDataVolta(dayjs(excursao.dataVoltaExcursao));
@@ -183,14 +195,14 @@ export default function ExcursaoPage() {
           <Card sx={{ height: "100%" }}>
             <CardContent>
               <Typography variant="h6">Divulgador</Typography>
-              <Typography>Nome: Douglas Rodrigues</Typography>
-              <Typography>Contato: douglasr.comp@hotamil.com</Typography>
+              <Typography>Nome: {divulgador.nomeUsuario}</Typography>
+              <Typography>Contato: {divulgador.loginUsuario}</Typography>
               {Avaliacao(4.3)}
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} usuario={autenticacaoStore.usuario} formasPagamento={formasPagamento} />
+      <ModalReserva excursao={excursao} open={open} onClose={fecharModal} usuario={autenticacaoStore.usuario} formasPagamento={formasPagamento} divulgador={divulgador} />
       <SnackALert open={openSnack} setOpen={setOpenSnack} mensagem={mensagem} tipoSnack={tipoSnack} />
     </Grid >
 

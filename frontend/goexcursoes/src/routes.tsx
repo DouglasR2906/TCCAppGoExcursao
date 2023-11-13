@@ -1,9 +1,10 @@
 import CadastroExcursaoAdm from "componentes/Administracao/CadastroExcursaoAdm/cadastroExcursaoAdm";
 import ListagemExcursaoAdm from "componentes/Administracao/ListagemExcursaoAdm/listagemExcursaoAdm";
+import DetalhesReserva from "componentes/Reserva/DetalhesReserva/detalhesReserva";
+import ListagemReservas from "componentes/Reserva/ListagemReservas/listagemReservas";
 import CadastrarUsuario from "componentes/Usuario/CadastrarUsuario/cadastrarUsuarioUser";
 import DadosCadastro from "componentes/Usuario/DadosCadastrais/dadoCadastraisUser";
 import Login from "componentes/Usuario/Login/loginUser";
-import ListagemReservasUser from "componentes/Usuario/Reserva/listagemReservasUser";
 import ExcursaoPage from "pages/ExcursaoPage/excursaoPage";
 import Inicio from "pages/Home/home";
 import PaginaPadraoAdm from "pages/PaginaPadraoAdm/paginaPadraoAdm";
@@ -26,10 +27,13 @@ export default function AppRoutes() {
             <Route path="/admin/" element={<ListagemExcursaoAdm />} />
             <Route path="/admin/novo" element={<CadastroExcursaoAdm />} />
             <Route path="/admin/novo/:id" element={<CadastroExcursaoAdm />} />
+            <Route path="/admin/reservas/:id" element={<ListagemReservas />} />
+            <Route path="/admin/reserva/:idReserva/:reservaDeExcursao" element={<DetalhesReserva />} />
           </Route>
           <Route path="/usuario" element={<PaginaPadraoUser />}>
             <Route path="/usuario/" element={<DadosCadastro />} />
-            <Route path="/usuario/reservas" element={<ListagemReservasUser />} />
+            <Route path="/usuario/reservas" element={<ListagemReservas />} />
+            <Route path="/usuario/reserva/:idReserva" element={<DetalhesReserva />} />
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />

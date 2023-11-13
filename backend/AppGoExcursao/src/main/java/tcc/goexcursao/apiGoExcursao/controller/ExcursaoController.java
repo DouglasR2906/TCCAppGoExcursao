@@ -72,10 +72,11 @@ public class ExcursaoController {
 
     @GetMapping("/imagens/{id}")
     public ResponseEntity<Object> listaImagens(@PathVariable Long id) {
-        var excursao = excursaoRepository.getReferenceById(id);
+        Excursao excursao = excursaoRepository.findById(id).orElse(null);
         if (excursao != null){
             try {
                 var listaImagens = excursaoService.listaImagens(excursao);
+                System.out.println(listaImagens);
                 return ResponseEntity.ok(listaImagens);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao fazer o upload da imagem.");
@@ -91,8 +92,8 @@ public class ExcursaoController {
         return ResponseEntity.ok(pageExcursoes);
     }
     @GetMapping
-    public ResponseEntity<Page<DadosExcursaoListagem>> listar(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
-        var pageExcursoes = excursaoRepository.findAll(paginacao).map(DadosExcursaoListagem::new);
+    public ResponseEntity<Page<DadosExcursaoListagem>> listar(@PageableDefault(size  = 10, sort = {"tituloExcursao"}) Pageable paginacao){
+        var pageExcursoes = excursaoRepository.findAllByCanceladaExcursaoFalse(paginacao).map(DadosExcursaoListagem::new);
         return ResponseEntity.ok(pageExcursoes);
     }
 

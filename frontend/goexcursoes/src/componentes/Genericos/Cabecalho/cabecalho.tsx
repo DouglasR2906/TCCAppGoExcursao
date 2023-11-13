@@ -1,10 +1,11 @@
+import { Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MenuCabecalho from "../MenuCabecalho/menuCabecalho";
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 }
 
 function Cabecalho({ posicao, exibirUsuario }: Props) {
-
+  const navigate = useNavigate();
 
   return (
     <AppBar position={posicao} sx={{
@@ -21,13 +22,16 @@ function Cabecalho({ posicao, exibirUsuario }: Props) {
     }}>
       <Container maxWidth="xl" sx={{ opacity: 1 }}>
         <Toolbar >
-          <Link to={"/"}>
+          <Button onClick={() => {
+            navigate("/");
+            window.location.reload();
+          }}>
             <Avatar
               sx={{ borderRadius: 0, width: "7rem", height: "3rem", display: { xs: "flex", md: "flex" }, mr: 1 }}
               src="/imagens/logo.png"
               alt="logo-cabeçalho"
             />
-          </Link>
+          </Button>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             {/*<IconButton
               size="large"

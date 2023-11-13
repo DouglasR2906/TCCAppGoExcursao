@@ -1,6 +1,7 @@
 package tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais;
 
 import jakarta.validation.constraints.NotBlank;
+import tcc.goexcursao.apiGoExcursao.domain.usuario.Usuario;
 
 import java.time.LocalDate;
 
