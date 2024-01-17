@@ -49,6 +49,10 @@ public class Excursao {
     private Categoria categoria;
     @Column(name = "cancelada_excursao")
     private Boolean canceladaExcursao;
+    @Column(name = "local_embarque_excursao")
+    private String localEmbarqueExcursao;
+    @Column(name = "url_imagens_excursao")
+    private String urlImagensExcursao;
 
     @ManyToMany
     @JoinTable(
@@ -69,6 +73,8 @@ public class Excursao {
         this.horaIdaExcursao = dadosExcursao.horaIdaExcursao();
         this.horaVoltaExcursao = dadosExcursao.horaVoltaExcursao();
         this.canceladaExcursao = dadosExcursao.canceladaExcursao();
+        this.localEmbarqueExcursao = dadosExcursao.localEmbarqueExcursao();
+        this.urlImagensExcursao = dadosExcursao.urlImagensExcursao();
     }
 
     public void atualizarInformacoes(DadosExcursaoAtualizar dadosExcursao){
@@ -101,6 +107,12 @@ public class Excursao {
         }
         if (dadosExcursao.canceladaExcursao() != null){
             this.canceladaExcursao = dadosExcursao.canceladaExcursao();
+        }
+        if (dadosExcursao.localEmbarqueExcursao() != null){
+            this.localEmbarqueExcursao = dadosExcursao.localEmbarqueExcursao();
+        }
+        if (dadosExcursao.urlImagensExcursao() != null){
+            this.urlImagensExcursao = dadosExcursao.urlImagensExcursao();
         }
     }
 

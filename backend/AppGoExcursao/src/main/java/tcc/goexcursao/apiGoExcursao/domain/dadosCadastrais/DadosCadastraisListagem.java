@@ -8,7 +8,6 @@ public record DadosCadastraisListagem(
     String nomeDadosCadastrais,
     String documentoDadosCadastrais,
     LocalDate dataNascimentoDadosCadastrais,
-    String paisDadosCadastrais,
     String cidadeDadosCadastrais,
     String ufDadosCadastrais,
     SexoDadosCadastrais sexoDadosCadastrais
@@ -19,7 +18,6 @@ public record DadosCadastraisListagem(
                 dadosCadastrais.getNomeDadosCadastrais(),
                 dadosCadastrais.getDocumentoDadosCadastrais(),
                 dadosCadastrais.getDataNascimentoDadosCadastrais(),
-                dadosCadastrais.getPaisDadosCadastrais(),
                 dadosCadastrais.getCidadeDadosCadastrais(),
                 dadosCadastrais.getUfDadosCadastrais(),
                 dadosCadastrais.getSexoDadosCadastrais());

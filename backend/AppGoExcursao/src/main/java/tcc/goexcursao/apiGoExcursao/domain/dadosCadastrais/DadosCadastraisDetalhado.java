@@ -1,5 +1,8 @@
 package tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais;
 
+import jakarta.validation.constraints.NotBlank;
+import tcc.goexcursao.apiGoExcursao.domain.usuario.Usuario;
+
 import java.time.LocalDate;
 
 public record DadosCadastraisDetalhado(
@@ -8,12 +11,13 @@ public record DadosCadastraisDetalhado(
     String nomeDadosCadastrais,
     String documentoDadosCadastrais,
     LocalDate dataNascimentoDadosCadastrais,
-    String paisDadosCadastrais,
     String cidadeDadosCadastrais,
     String ufDadosCadastrais,
-    String emailDadosCadastrais,
-    String telefone1DadosCadastrais,
-    String telefone2DadosCadastrais,
+    String logradouroDadosCadastrais,
+    Integer numeroDadosCadastrais,
+    String bairroDadosCadastrais,
+    String cepDadosCadastrais,
+    String telefoneDadosCadastrais,
     SexoDadosCadastrais sexoDadosCadastrais
      ) {
     public DadosCadastraisDetalhado(DadosCadastrais dadosCadastrais){
@@ -22,12 +26,13 @@ public record DadosCadastraisDetalhado(
         dadosCadastrais.getNomeDadosCadastrais(),
         dadosCadastrais.getDocumentoDadosCadastrais(),
         dadosCadastrais.getDataNascimentoDadosCadastrais(),
-        dadosCadastrais.getPaisDadosCadastrais(),
         dadosCadastrais.getCidadeDadosCadastrais(),
         dadosCadastrais.getUfDadosCadastrais(),
-        dadosCadastrais.getEmailDadosCadastrais(),
-        dadosCadastrais.getTelefone1DadosCadastrais(),
-        dadosCadastrais.getTelefone2DadosCadastrais(),
+        dadosCadastrais.getLogradouroDadosCadastrais(),
+        dadosCadastrais.getNumeroDadosCadastrais(),
+        dadosCadastrais.getBairroDadosCadastrais(),
+        dadosCadastrais.getCepDadosCadastrais(),
+        dadosCadastrais.getTelefoneDadosCadastrais(),
         dadosCadastrais.getSexoDadosCadastrais());
     }
 }

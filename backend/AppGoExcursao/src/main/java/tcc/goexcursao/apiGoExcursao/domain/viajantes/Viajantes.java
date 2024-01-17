@@ -32,6 +32,11 @@ public class Viajantes {
         this.documentoViajantes = dadosViajantes.documentoViajantes();
     }
 
+    public Viajantes(DadosViajantesReserva dadosViajantesReserva){
+        this.nomeViajantes = dadosViajantesReserva.nomeViajantes();
+        this.documentoViajantes = dadosViajantesReserva.documentoViajantes();
+    }
+
     public void atualizarViajante(DadosViajantesAtualizar dadosViajantesAtualizar){
         if (dadosViajantesAtualizar.nomeViajantes() != null){
             this.nomeViajantes = dadosViajantesAtualizar.nomeViajantes();

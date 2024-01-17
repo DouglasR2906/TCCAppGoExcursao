@@ -28,18 +28,20 @@ public class DadosCadastrais {
     private String documentoDadosCadastrais;
     @Column(name = "data_nascimento_dadoscadastrais")
     LocalDate dataNascimentoDadosCadastrais;
-    @Column(name = "pais_dadoscadastrais")
-    private String paisDadosCadastrais;
     @Column(name = "cidade_dadoscadastrais")
     private String cidadeDadosCadastrais;
     @Column(name = "uf_dadoscadastrais")
     private String ufDadosCadastrais;
-    @Column(name = "email_dadoscadastrais")
-    private String emailDadosCadastrais;
+    @Column(name = "logradouro_dadoscadastrais")
+    private String logradouroDadosCadastrais;
+    @Column(name = "numero_dadoscadastrais")
+    private Integer numeroDadosCadastrais;
+    @Column(name = "bairro_dadoscadastrais")
+    private String bairroDadosCadastrais;
+    @Column(name = "cep_dadoscadastrais")
+    private String cepDadosCadastrais;
     @Column(name = "telefone_1_dadoscadastrais")
-    private String telefone1DadosCadastrais;
-    @Column(name = "telefone_2_dadoscadastrais")
-    private String telefone2DadosCadastrais;
+    private String telefoneDadosCadastrais;
     @Enumerated(EnumType.STRING)
     @Column(name = "sexo_dadoscadastrais")
     private SexoDadosCadastrais sexoDadosCadastrais;
@@ -48,12 +50,13 @@ public class DadosCadastrais {
         this.nomeDadosCadastrais = dadosCadastro.nomeDadosCadastrais();
         this.documentoDadosCadastrais = dadosCadastro.documentoDadosCadastrais();
         this.dataNascimentoDadosCadastrais = dadosCadastro.dataNascimentoDadosCadastrais();
-        this.paisDadosCadastrais = dadosCadastro.paisDadosCadastrais();
         this.cidadeDadosCadastrais = dadosCadastro.cidadeDadosCadastrais();
         this.ufDadosCadastrais = dadosCadastro.ufDadosCadastrais();
-        this.emailDadosCadastrais = dadosCadastro.emailDadosCadastrais();
-        this.telefone1DadosCadastrais = dadosCadastro.telefone1DadosCadastrais();
-        this.telefone2DadosCadastrais = dadosCadastro.telefone2DadosCadastrais();
+        this.logradouroDadosCadastrais = dadosCadastro.logradouroDadosCadastrais();
+        this.numeroDadosCadastrais = dadosCadastro.numeroDadosCadastrais();
+        this.bairroDadosCadastrais = dadosCadastro.bairroDadosCadastrais();
+        this.cepDadosCadastrais = dadosCadastro.cepDadosCadastrais();
+        this.telefoneDadosCadastrais = dadosCadastro.telefoneDadosCadastrais();
         this.sexoDadosCadastrais = dadosCadastro.sexoDadosCadastrais();
     }
 
@@ -67,25 +70,26 @@ public class DadosCadastrais {
         if (dadosDadosCadastrais.dataNascimentoDadosCadastrais() != null){
             this.dataNascimentoDadosCadastrais = dadosDadosCadastrais.dataNascimentoDadosCadastrais();
         }
-        if (dadosDadosCadastrais.paisDadosCadastrais() != null){
-            this.paisDadosCadastrais = dadosDadosCadastrais.paisDadosCadastrais();
-        }
         if (dadosDadosCadastrais.cidadeDadosCadastrais() != null){
             this.cidadeDadosCadastrais = dadosDadosCadastrais.cidadeDadosCadastrais();
         }
         if (dadosDadosCadastrais.ufDadosCadastrais() != null){
             this.ufDadosCadastrais = dadosDadosCadastrais.ufDadosCadastrais();
         }
-        if (dadosDadosCadastrais.emailDadosCadastrais() != null){
-            this.emailDadosCadastrais = dadosDadosCadastrais.emailDadosCadastrais();
+        if (dadosDadosCadastrais.logradouroDadosCadastrais() != null){
+            this.logradouroDadosCadastrais = dadosDadosCadastrais.logradouroDadosCadastrais();
         }
-        if (dadosDadosCadastrais.telefone1DadosCadastrais() != null){
-            this.telefone1DadosCadastrais = dadosDadosCadastrais.telefone1DadosCadastrais();
+        if (dadosDadosCadastrais.numeroDadosCadastrais() != null){
+            this.numeroDadosCadastrais = dadosDadosCadastrais.numeroDadosCadastrais();
         }
-        if (dadosDadosCadastrais.telefone2DadosCadastrais() == null){
-            this.telefone2DadosCadastrais = " ";
-        }else {
-            this.telefone2DadosCadastrais = dadosDadosCadastrais.telefone2DadosCadastrais();
+        if (dadosDadosCadastrais.bairroDadosCadastrais() != null){
+            this.bairroDadosCadastrais = dadosDadosCadastrais.bairroDadosCadastrais();
+        }
+        if (dadosDadosCadastrais.cepDadosCadastrais() != null){
+            this.cepDadosCadastrais = dadosDadosCadastrais.cepDadosCadastrais();
+        }
+        if (dadosDadosCadastrais.telefoneDadosCadastrais() != null){
+            this.telefoneDadosCadastrais = dadosDadosCadastrais.telefoneDadosCadastrais();
         }
         if (dadosDadosCadastrais.sexoDadosCadastrais() != null){
             this.sexoDadosCadastrais = dadosDadosCadastrais.sexoDadosCadastrais();

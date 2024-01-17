@@ -11,8 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.excursao.*;
+import tcc.goexcursao.apiGoExcursao.domain.formaPagamento.FormaPagamentoRepository;
 import tcc.goexcursao.apiGoExcursao.domain.reserva.*;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.UsuarioRepository;
+import tcc.goexcursao.apiGoExcursao.domain.viajantes.DadosViajantesReserva;
+import tcc.goexcursao.apiGoExcursao.domain.viajantes.Viajantes;
+import tcc.goexcursao.apiGoExcursao.domain.viajantes.ViajantesRepository;
 import tcc.goexcursao.apiGoExcursao.infra.exception.TradorDeErros;
 import tcc.goexcursao.apiGoExcursao.infra.exception.ValidacaoException;
 
@@ -26,19 +30,21 @@ public class ReservaController {
     @Autowired
     private ReservaRepository reservaRepository;
     @Autowired
-    private ExcrusaoRepository excrusaoRepository;
-
+    private ExcursaoRepository excursaoRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
-
+    @Autowired
+    private ViajantesRepository viajantesRepository;
+    @Autowired
+    private FormaPagamentoRepository formaPagamentoRepository;
     @Autowired
     TradorDeErros tradorDeErros;
     @PostMapping
     @Transactional
     public ResponseEntity<DadosReservaListagem> cadastrar(@RequestBody @Valid DadosReserva dadosReserva, UriComponentsBuilder uriBuilder) {
-        var usuario = usuarioRepository.findById(dadosReserva.idUsuarioReserva()).orElse(null);
-        var excursao = excrusaoRepository.findById(dadosReserva.idExcursaoReserva()).orElse(null);
-
+        var usuario = usuarioRepository.findById(dadosReserva.idClienteReserva()).orElse(null);
+        var excursao = excursaoRepository.findById(dadosReserva.idExcursaoReserva()).orElse(null);
+        var formaPagamento = formaPagamentoRepository.findById(dadosReserva.idFormaPagtoReserva()).orElse(null);
         if (usuario == null){
             throw new ValidacaoException("Usuário informado não encontrado!");
         }
@@ -47,12 +53,23 @@ public class ReservaController {
             throw new ValidacaoException("Excursão informada não encontrada!");
         }
 
+        if (dadosReserva.viajantes() == null){
+            throw new ValidacaoException("Viajantes não informados!");
+        }
+
         var reserva = new Reserva(dadosReserva);
-        reserva.setDivulgador(usuario);
+        reserva.setCliente(usuario);
         reserva.setExcursao(excursao);
+        reserva.setFormaPagtoReserva(formaPagamento);
         reservaRepository.save(reserva);
 
-        var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(reserva.getIdReserva()).toUri();
+        for (DadosViajantesReserva viajante: dadosReserva.viajantes()) {
+            var newViajante =  new Viajantes(viajante);
+            newViajante.setReserva(reserva);
+            viajantesRepository.save(newViajante);
+        }
+
+        var uri = uriBuilder.path("/reserva/{id}").buildAndExpand(reserva.getIdReserva()).toUri();
         return ResponseEntity.created(uri).body(new DadosReservaListagem(reserva));
     }
 
@@ -63,21 +80,42 @@ public class ReservaController {
     }
 
     @GetMapping("/listarTodas")
-    public ResponseEntity<Page<DadosReservaListagem>> listar(@PageableDefault(size  =10, sort = {"tituloExcursao"}) Pageable paginacao){
+    public ResponseEntity<Page<DadosReservaListagem>> listar(@PageableDefault(size  =10, sort = {"idReserva"}) Pageable paginacao){
         var pageReservas = reservaRepository.findAll(paginacao).map(DadosReservaListagem::new);
         return ResponseEntity.ok(pageReservas);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosReservaListagem> findById(@PathVariable Long id){
+    public ResponseEntity<DadosReservaDetalhado> findById(@PathVariable Long id){
         var reserva = reservaRepository.getReferenceById(id);
-        return ResponseEntity.ok(new DadosReservaListagem(reserva));
+        return ResponseEntity.ok(new DadosReservaDetalhado(reserva));
+    }
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<Page<DadosReservaListagem>> listarByUsuario(@PathVariable Long id, @PageableDefault(size  =10, sort = {"idReserva"}) Pageable paginacao){
+        var divulgador = usuarioRepository.getReferenceById(id);
+        var pageReservas = reservaRepository.findAllByCliente(divulgador, paginacao).map(DadosReservaListagem::new);
+        return ResponseEntity.ok(pageReservas);
+    }
+
+    @GetMapping("/excursao/{id}")
+    public ResponseEntity<Page<DadosReservaListagem>> listarByExcursao(@PathVariable Long id, @PageableDefault(size  =10, sort = {"idReserva"}) Pageable paginacao){
+        var excursao = excursaoRepository.getReferenceById(id);
+        var pageReservas = reservaRepository.findAllByExcursao(excursao, paginacao).map(DadosReservaListagem::new);
+        return ResponseEntity.ok(pageReservas);
     }
     @PutMapping
     @Transactional
     public ResponseEntity<DadosReservaListagem> atualizar(@RequestBody @Valid DadosReservaAtualizar dadosReserva){
         var reserva = reservaRepository.getReferenceById(dadosReserva.idReserva());
         reserva.atualizarReserva(dadosReserva);
+        return ResponseEntity.ok(new DadosReservaListagem(reserva));
+    }
+
+    @PutMapping("/atualizarStatus/{id}")
+    @Transactional
+    public ResponseEntity<DadosReservaListagem> atualizarStatus(@RequestBody @Valid DadosReservaAtualizar dadosReserva){
+        var reserva = reservaRepository.getReferenceById(dadosReserva.idReserva());
+        reserva.atualizarStatus(dadosReserva);
         return ResponseEntity.ok(new DadosReservaListagem(reserva));
     }
 

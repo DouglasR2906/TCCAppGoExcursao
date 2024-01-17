@@ -7,6 +7,8 @@ public record DadosUsuarioAtualizar(
     Long idUsuario,
     String loginUsuario,
     String senhaUsuario,
-    Boolean ativoUsuario
+    Boolean ativoUsuario,
+
+    TipoUsuario tipoUsuario
      ) {   
 }

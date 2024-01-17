@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import tcc.goexcursao.apiGoExcursao.domain.categoria.*;
-import tcc.goexcursao.apiGoExcursao.domain.excursao.ExcrusaoRepository;
+import tcc.goexcursao.apiGoExcursao.domain.excursao.ExcursaoRepository;
 import tcc.goexcursao.apiGoExcursao.domain.reserva.*;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.DadosUsuarioListagem;
 import tcc.goexcursao.apiGoExcursao.domain.usuario.UsuarioRepository;
@@ -35,7 +35,7 @@ public class CategoriaController {
     public ResponseEntity<DadosCategoriaListagem> cadastrar(@RequestBody @Valid DadosCategoria dados, UriComponentsBuilder uriBuilder) {
         var categoria =  new Categoria(dados);
         categoriaRepository.save(categoria);
-        var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(categoria.getIdCategoria()).toUri();
+        var uri = uriBuilder.path("/categoria/{id}").buildAndExpand(categoria.getIdCategoria()).toUri();
         return ResponseEntity.created(uri).body(new DadosCategoriaListagem(categoria));
     }
 

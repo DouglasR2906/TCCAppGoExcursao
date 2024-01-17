@@ -42,7 +42,7 @@ public class DadosCadastraisController {
         var dadosCadastrais = new DadosCadastrais(dadosCadastro);
         dadosCadastrais.setUsuario(usuario);
         dadosCadastraisRepository.save(dadosCadastrais);
-        var uri = uriBuilder.path("/DadosCadastrais/{id}").buildAndExpand(dadosCadastrais.getIdDadosCadastrais()).toUri();
+        var uri = uriBuilder.path("/dadosCadastrais/{id}").buildAndExpand(dadosCadastrais.getIdDadosCadastrais()).toUri();
         return ResponseEntity.created(uri).body(new DadosCadastraisDetalhado(dadosCadastrais));
     }
 

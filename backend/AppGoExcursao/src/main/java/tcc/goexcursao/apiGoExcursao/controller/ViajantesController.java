@@ -40,26 +40,33 @@ public class ViajantesController {
 
         viajantes.setReserva(reserva);
         viajantesRepository.save(viajantes);
-        var uri = uriBuilder.path("/excursao/{id}").buildAndExpand(viajantes.getIdViajantes()).toUri();
+        var uri = uriBuilder.path("/viajantes/{id}").buildAndExpand(viajantes.getIdViajantes()).toUri();
         return ResponseEntity.created(uri).body(new DadosViajantesListagem(viajantes));
     }
 
     @GetMapping
     public ResponseEntity<List<DadosViajantesListagem>> listar(){
-        var categoria = viajantesRepository.findAll().stream().map(DadosViajantesListagem::new).toList();
-        return ResponseEntity.ok(categoria);
+        var viajantes = viajantesRepository.findAll().stream().map(DadosViajantesListagem::new).toList();
+        return ResponseEntity.ok(viajantes);
     }
 
     @GetMapping("/listarTodas")
-    public ResponseEntity<Page<DadosViajantesListagem>> listar(@PageableDefault(size  =10, sort = {"descricaCategoria"}) Pageable paginacao){
-        var pageCategoria = viajantesRepository.findAll(paginacao).map(DadosViajantesListagem::new);
-        return ResponseEntity.ok(pageCategoria);
+    public ResponseEntity<Page<DadosViajantesListagem>> listar(@PageableDefault(size  =10, sort = {"descricaViajantes"}) Pageable paginacao){
+        var pageViajantes = viajantesRepository.findAll(paginacao).map(DadosViajantesListagem::new);
+        return ResponseEntity.ok(pageViajantes);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosViajantesListagem> findById(@PathVariable Long id){
-        var categoria = viajantesRepository.findById(id).orElse(null);
-        return ResponseEntity.ok(new DadosViajantesListagem(categoria));
+        var viajantes = viajantesRepository.findById(id).orElse(null);
+        return ResponseEntity.ok(new DadosViajantesListagem(viajantes));
+    }
+
+    @GetMapping("/reserva/{id}")
+    public ResponseEntity<List<DadosViajantesListagem>> findByReserva(@PathVariable Long id){
+        var reserva = reservaRepository.getReferenceById(id);
+        var viajantes = viajantesRepository.findByReserva(reserva).stream().map(DadosViajantesListagem::new).toList();
+        return ResponseEntity.ok(viajantes);
     }
     @PutMapping
     @Transactional

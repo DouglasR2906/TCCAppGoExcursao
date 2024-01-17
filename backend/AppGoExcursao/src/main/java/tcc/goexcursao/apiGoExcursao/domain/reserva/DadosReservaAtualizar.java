@@ -8,11 +8,12 @@ public record DadosReservaAtualizar(
         @NotNull
         Long idReserva,
         @NotNull
-        Long idUsuarioReserva,
+        Long idClienteReserva,
         @NotNull
         Long idExcursaoReserva,
         int qtdViajantesReserva,
         BigDecimal valorTotalReserva,
-        int formaPagtoReserva
+        Long formaPagtoReserva,
+        int statusReserva
 ) {
 }

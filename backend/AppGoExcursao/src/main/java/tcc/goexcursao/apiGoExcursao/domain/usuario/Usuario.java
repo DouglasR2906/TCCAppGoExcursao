@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tcc.goexcursao.apiGoExcursao.domain.dadosCadastrais.DadosCadastrais;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "idUsuario")
 public class Usuario implements UserDetails {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuarios")
@@ -30,18 +32,27 @@ public class Usuario implements UserDetails {
     private String senhaUsuario;
     @Column(name = "ativo_usuarios")
     private Boolean ativoUsuario;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario")
+    private TipoUsuario tipoUsuario;
 
-    
+    @OneToOne
+    @JoinColumn(name = "id_dadoscadastrais_usuarios")
+    private DadosCadastrais dadosCadastraisUsuario;
+
+
     public Usuario(DadosUsuario dadosUsuario){
         this.loginUsuario = dadosUsuario.loginUsuario();
         this.senhaUsuario = dadosUsuario.senhaUsuario();
         this.ativoUsuario = dadosUsuario.ativoUsuario();
+        this.tipoUsuario = dadosUsuario.tipoUsuario();
     }
 
-    public Usuario(String loginUsuario, String senhaCodificada, Boolean ativoUsuario) {
+    public Usuario(String loginUsuario, String senhaCodificada, Boolean ativoUsuario, TipoUsuario tipoUsuario) {
         this.loginUsuario = loginUsuario;
         this.senhaUsuario = senhaCodificada;
         this.ativoUsuario = ativoUsuario;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public void atualizarInformacoes(DadosUsuarioAtualizar dadosUsuario) {
@@ -50,6 +61,9 @@ public class Usuario implements UserDetails {
         }
         if (dadosUsuario.ativoUsuario() != null){
             this.ativoUsuario = dadosUsuario.ativoUsuario();
+        }
+        if (dadosUsuario.tipoUsuario() != null){
+            this.tipoUsuario = dadosUsuario.tipoUsuario();
         }
     }
 
@@ -65,18 +79,8 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        /*List<GrantedAuthority> authorities = new ArrayList<>();
-        Caso eu queira utilizar uma validação de permissão por tipo de perfil
-        e utilizar uma enum para o tipo de usuario
-        public enum TipoUsuario {
-            ADMIN,
-            CLIENTE,
-            DIVULGADOR
-        }
-        @Enumerated(EnumType.STRING)
-        @Column(name = "tipoUsuario", length = 20) // Defina o tamanho adequado para o seu caso
-        private TipoUsuario tipoUsuario;
+        //return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
         switch (tipoUsuario) {
             case ADMIN:
@@ -85,13 +89,15 @@ public class Usuario implements UserDetails {
             case CLIENTE:
                 authorities.add(new SimpleGrantedAuthority("ROLE_CLIENTE"));
                 break;
-            case DIVULGADOR:
-                authorities.add(new SimpleGrantedAuthority("ROLE_DIVULGADOR"));
+            case ORGANIZADOR:
+                authorities.add(new SimpleGrantedAuthority("ROLE_ORGANIZADOR"));
                 break;
             default:
-                authorities.add(new SimpleGrantedAuthority("ROLE_USUARIO"));
+                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
                 break;
-        }*/
+        }
+
+        return  authorities;
     }
 
     @Override

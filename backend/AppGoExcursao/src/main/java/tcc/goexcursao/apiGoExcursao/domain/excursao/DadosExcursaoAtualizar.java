@@ -29,6 +29,9 @@ public record DadosExcursaoAtualizar(
         @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
         LocalTime horaVoltaExcursao,
         Long idCategoriaExcursao,
-        Boolean canceladaExcursao
+        Boolean canceladaExcursao,
+        String localEmbarqueExcursao,
+        String urlImagensExcursao
+
 ) {
 }
