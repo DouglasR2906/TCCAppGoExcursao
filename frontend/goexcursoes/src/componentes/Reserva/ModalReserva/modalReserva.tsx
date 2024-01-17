@@ -1,10 +1,4 @@
-import {
-  Button,
-  Container,
-  Grid,
-  Modal,
-  Typography
-} from "@mui/material";
+import { Button, Container, Grid, Modal, Typography } from "@mui/material";
 import usePost from "Api/usePost";
 import SnackALert from "componentes/Genericos/SnackAlert/snackAlert";
 import dayjs, { Dayjs } from "dayjs";
@@ -29,8 +23,14 @@ interface Props {
   onClose: () => void;
 }
 
-
-const ModalReserva = ({ open, onClose, excursao, usuario, divulgador, formasPagamento }: Props) => {
+const ModalReserva = ({
+  open,
+  onClose,
+  excursao,
+  usuario,
+  divulgador,
+  formasPagamento,
+}: Props) => {
   const [mensagem, setMensagem] = useState("");
   const [tipoSnack, setTipoSnack] = useState<TipoSnack>("success");
   const [openSnack, setOpenSnack] = useState(false);
@@ -59,7 +59,11 @@ const ModalReserva = ({ open, onClose, excursao, usuario, divulgador, formasPaga
 
   useEffect(() => {
     if (reserva.valorTotalReserva > 0) {
-      usePost<IReserva>({ url: "reserva", dados: reserva, token: autenticacaoStore.usuario.tokenUsuario })
+      usePost<IReserva>({
+        url: "reserva",
+        dados: reserva,
+        token: autenticacaoStore.usuario.tokenUsuario,
+      })
         .then((resposta) => {
           if (resposta.data) {
             setMensagem("Reserva concluida com sucesso!");
@@ -70,16 +74,19 @@ const ModalReserva = ({ open, onClose, excursao, usuario, divulgador, formasPaga
             }, 2000);
           }
         })
-        .catch(erro => {
+        .catch((erro) => {
           setMensagem("Erro ao eftuar reserva!");
           setTipoSnack("error");
           setOpenSnack(true);
           console.log(erro);
-        }).finally();
+        })
+        .finally();
     }
   }, [reserva]);
 
-  const ConfirmaRererva = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const ConfirmaRererva = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     event.preventDefault();
     if (qtde === 0) {
       setMensagem("Quantidade de passageiros inválida - Favor Verificar");
@@ -122,45 +129,85 @@ const ModalReserva = ({ open, onClose, excursao, usuario, divulgador, formasPaga
       qtdViajantesReserva: qtde,
       valorTotalReserva: totalGeral,
       idFormaPagtoReserva: formaPagtoReserva,
-      viajantes: viajantes
+      viajantes: viajantes,
     });
 
     return;
   };
 
   return (
-    <Modal open={open} onClose={onClose} sx={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
-    }}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <>
-        <Grid container sx={{
-          bgcolor: "AliceBlue",
-          borderRadius: "5px",
-          boxShadow: "rgb(99, 99, 99, 10) 0px 5px 10px 0px",
-          width: { xs: "95%", md: "60%" },
-          height: "95vh",
-          maxWidth: "95vw",
-          maxHeight: "95vh",
-          overflowY: "auto"
-        }}>
+        <Grid
+          container
+          sx={{
+            bgcolor: "AliceBlue",
+            borderRadius: "5px",
+            boxShadow: "rgb(99, 99, 99, 10) 0px 5px 10px 0px",
+            width: { xs: "95%", md: "60%" },
+            height: "95vh",
+            maxWidth: "95vw",
+            maxHeight: "95vh",
+            overflowY: "auto",
+          }}
+        >
           {/* Informações */}
           <Container>
-            <Grid container display={"flex"} flexDirection={"row"} alignItems={"flex-start"} justifyContent={"center"}>
-              <Grid item display={"flex"} alignItems={"flex-start"} padding={"1rem 1rem 0rem 1rem"} height={"fit-content"} width={"100%"}>
-                <Typography variant="h5" sx={{ flex: 1 }}>{passo > 1 ? "Confirmar Reserva?" : "Informações da Reserva:"} </Typography>
-                <Button variant="text" onClick={onClose} sx={{ marginLeft: "auto" }}>
+            <Grid
+              container
+              display={"flex"}
+              flexDirection={"row"}
+              alignItems={"flex-start"}
+              justifyContent={"center"}
+            >
+              <Grid
+                item
+                display={"flex"}
+                alignItems={"flex-start"}
+                padding={"1rem 1rem 0rem 1rem"}
+                height={"fit-content"}
+                width={"100%"}
+              >
+                <Typography variant="h5" sx={{ flex: 1 }}>
+                  {passo > 1 ? "Confirmar Reserva?" : "Informações da Reserva:"}{" "}
+                </Typography>
+                <Button
+                  variant="text"
+                  onClick={onClose}
+                  sx={{ marginLeft: "auto" }}
+                >
                   <GrClose size={20} />
                 </Button>
               </Grid>
               <Grid container height={"fit-content"}>
-                <Typography bgcolor={passo >= 0 ? "#00FF00" : "#8FBC8F"} sx={{ flex: 1, width: "34%", height: "0.3rem", borderRadius: 0 }} />
-                <Typography bgcolor={passo > 0 ? "#00FF00" : "#8FBC8F"} sx={{ width: "33%", height: "0.3rem", borderRadius: 0 }} />
-                <Typography bgcolor={passo > 1 ? "#00FF00" : "#8FBC8F"} sx={{ width: "33%", height: "0.3rem", borderRadius: 0 }} />
+                <Typography
+                  bgcolor={passo >= 0 ? "#00FF00" : "#8FBC8F"}
+                  sx={{
+                    flex: 1,
+                    width: "34%",
+                    height: "0.3rem",
+                    borderRadius: 0,
+                  }}
+                />
+                <Typography
+                  bgcolor={passo > 0 ? "#00FF00" : "#8FBC8F"}
+                  sx={{ width: "33%", height: "0.3rem", borderRadius: 0 }}
+                />
+                <Typography
+                  bgcolor={passo > 1 ? "#00FF00" : "#8FBC8F"}
+                  sx={{ width: "33%", height: "0.3rem", borderRadius: 0 }}
+                />
               </Grid>
               {/* Forma Pagamento e Quantidade Passageiros */}
-              {passo === 0 &&
+              {passo === 0 && (
                 <DadosExcursaoReserva
                   excursao={excursao}
                   formasPagamento={formasPagamento}
@@ -174,79 +221,169 @@ const ModalReserva = ({ open, onClose, excursao, usuario, divulgador, formasPaga
                   dataVolta={dataVolta?.format("DD/MM/YYYY")}
                   divulgador={divulgador}
                 />
-              }
+              )}
               {/* Adicionar Passageiros */}
-              {passo === 1 &&
-                <Grid item container padding={"1.5rem 1rem 0rem 1rem"} alignItems={"flex-start"} >
-                  <FormugalarioViajantes viajantes={viajantes} setViajantes={setViajantes} qtde={qtde} />
+              {passo === 1 && (
+                <Grid
+                  item
+                  container
+                  padding={"1.5rem 1rem 0rem 1rem"}
+                  alignItems={"flex-start"}
+                >
+                  <FormugalarioViajantes
+                    viajantes={viajantes}
+                    setViajantes={setViajantes}
+                    qtde={qtde}
+                  />
                 </Grid>
-              }
+              )}
               {/* Confirmar reserva */}
-              {passo > 1 &&
+              {passo > 1 && (
                 <Grid item>
-                  <Grid container sx={{ display: "flex", flexDirection: "row" }}>
-                    <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"center"}>
-                      <Typography variant="h6">{excursao.tituloExcursao}</Typography>
+                  <Grid
+                    container
+                    sx={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <Grid
+                      item
+                      xs={12}
+                      padding={"1rem 1rem 0rem 1rem"}
+                      width={"100%"}
+                      textAlign={"center"}
+                    >
+                      <Typography variant="h6">
+                        {excursao.tituloExcursao}
+                      </Typography>
                     </Grid>
-                    <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"left"}>
-                      <Typography variant="h6" textAlign={"left"}>Viajantes: </Typography>
+                    <Grid
+                      item
+                      xs={12}
+                      padding={"1rem 1rem 0rem 1rem"}
+                      width={"100%"}
+                      textAlign={"left"}
+                    >
+                      <Typography variant="h6" textAlign={"left"}>
+                        Viajantes:{" "}
+                      </Typography>
                       {viajantes.map((viajante) => (
-                        <Typography key={viajante.nomeViajantes} textAlign={"left"}>
-                          {viajante.nomeViajantes}  - {viajante.documentoViajantes}
+                        <Typography
+                          key={viajante.nomeViajantes}
+                          textAlign={"left"}
+                        >
+                          {viajante.nomeViajantes} -{" "}
+                          {viajante.documentoViajantes}
                         </Typography>
                       ))}
                     </Grid>
-                    <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"left"}>
+                    <Grid
+                      item
+                      xs={12}
+                      padding={"1rem 1rem 0rem 1rem"}
+                      width={"100%"}
+                      textAlign={"left"}
+                    >
                       <Typography textAlign={"left"} variant="subtitle1">
-                        Viagem dia <strong>{dataIda?.format("DD/MM/YYYY")} </strong>
-                        às <strong>{excursao.horaIdaExcursao}h </strong> {" "}
-
-                        volta <strong>{dataVolta?.format("DD/MM/YYYY")} </strong>
-                        às <strong>{excursao.horaVoltaExcursao}h </strong> <br />
-
-                        Saindo de <strong>{excursao.cidadeOrigemExcursao} </strong>
-                        para <strong>{excursao?.cidadeDestinoExcursao} </strong> <br />
+                        Viagem dia{" "}
+                        <strong>{dataIda?.format("DD/MM/YYYY")} </strong>
+                        às <strong>
+                          {excursao.horaIdaExcursao}h{" "}
+                        </strong> volta{" "}
+                        <strong>{dataVolta?.format("DD/MM/YYYY")} </strong>
+                        às <strong>{excursao.horaVoltaExcursao}h </strong>{" "}
+                        <br />
+                        Saindo de{" "}
+                        <strong>{excursao.cidadeOrigemExcursao} </strong>
+                        para <strong>
+                          {excursao?.cidadeDestinoExcursao}{" "}
+                        </strong>{" "}
+                        <br />
                         Local de embarque: {excursao.localEmbarqueExcursao}
                       </Typography>
                     </Grid>
-                    <Grid item xs={12} padding={"1rem 1rem 0rem 1rem"} width={"100%"} textAlign={"left"} >
+                    <Grid
+                      item
+                      xs={12}
+                      padding={"1rem 1rem 0rem 1rem"}
+                      width={"100%"}
+                      textAlign={"left"}
+                    >
                       <Grid container justifyContent={"space-between"}>
                         <Typography textAlign={"left"} variant="h6">
-                          <strong> {qtde > 1 ? `${qtde} x Pacotes` : `${qtde} x Pacote`} </strong>
+                          <strong>
+                            {" "}
+                            {qtde > 1
+                              ? `${qtde} x Pacotes`
+                              : `${qtde} x Pacote`}{" "}
+                          </strong>
                         </Typography>
-                        <Typography variant="h5"> <strong>R$ {totalGeral?.toFixed(2)}</strong></Typography>
+                        <Typography variant="h5">
+                          {" "}
+                          <strong>R$ {totalGeral?.toFixed(2)}</strong>
+                        </Typography>
                       </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
-              }
+              )}
             </Grid>
           </Container>
           {/* Botoes */}
-          <Grid container display="flex" flexDirection="column" alignItems={"flex-end"}>
-            <Grid item xs={12} padding={"1rem 1rem 1rem 1rem"} width={"100%"} display={"flex"} alignItems={"flex-end"}>
-              {passo >= 1 &&
-                <Button variant="contained" onClick={() => setPasso(passo - 1)} sx={{ marginRight: "auto" }}>
-                  <GrFormPrevious size={20} /><span style={{ marginLeft: "5px" }}>Voltar</span>
+          <Grid
+            container
+            display="flex"
+            flexDirection="column"
+            alignItems={"flex-end"}
+          >
+            <Grid
+              item
+              xs={12}
+              padding={"1rem 1rem 1rem 1rem"}
+              width={"100%"}
+              display={"flex"}
+              alignItems={"flex-end"}
+            >
+              {passo >= 1 && (
+                <Button
+                  variant="contained"
+                  onClick={() => setPasso(passo - 1)}
+                  sx={{ marginRight: "auto" }}
+                >
+                  <GrFormPrevious size={20} />
+                  <span style={{ marginLeft: "5px" }}>Voltar</span>
                 </Button>
-              }
-              {passo > 1 &&
-                <Button variant="contained" type="submit" onClick={(event) => ConfirmaRererva(event)}>
-                  <GrSend size={20} /><span style={{ marginLeft: "5px" }}>Confirmar</span>
+              )}
+              {passo > 1 && (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={(event) => ConfirmaRererva(event)}
+                >
+                  <GrSend size={20} />
+                  <span style={{ marginLeft: "5px" }}>Confirmar</span>
                 </Button>
-              }
-              {passo < 2 &&
-                <Button variant="contained" type="submit" onClick={() => setPasso(passo + 1)} sx={{ marginLeft: "auto" }}>
+              )}
+              {passo < 2 && (
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={() => setPasso(passo + 1)}
+                  sx={{ marginLeft: "auto" }}
+                >
                   <span style={{ marginRight: "5px" }}>Avançar</span>
                   <GrFormNext size={20} />
                 </Button>
-              }
-              <SnackALert open={openSnack} setOpen={setOpenSnack} mensagem={mensagem} tipoSnack={tipoSnack} />
+              )}
+              <SnackALert
+                open={openSnack}
+                setOpen={setOpenSnack}
+                mensagem={mensagem}
+                tipoSnack={tipoSnack}
+              />
             </Grid>
           </Grid>
         </Grid>
       </>
-    </Modal >
+    </Modal>
   );
 };
 
